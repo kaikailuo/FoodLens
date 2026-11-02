@@ -1,7 +1,7 @@
 {
   "recorded_on": "2026-11-02",
   "nutrition": {
-    "source": "课程提供的 data/source/annotations.zip 和 images.zip；无公开下载地址记录",
+    "source": "组员自行从教学云平台下载 annotations.zip 和 images.zip；原始包放 data/source/，解压后为 data/annotations/ 和 data/images/",
     "splits": [
       {
         "path": "annotations/test.jsonl",
