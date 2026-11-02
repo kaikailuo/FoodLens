@@ -1,6 +1,10 @@
-# 实际交付与验证（2026-11-01）
+# CPU 工程验证记录（2026-11-01）
 
-工程独立位于 `D:\Projects\courseProjects\DL_Course\foodlens_engineering`。未修改报告、原始 data 或已有审计文件。Python 3.12 隔离venv安装CPU torch 2.9.1+cpu / torchvision 0.24.1+cpu；无预训练权重下载，无GPU训练。
+本文保存 2026-11-01 的历史验证范围与结果，文中的耗时、loss 和本地产物位置仅指该次运行。当前复现步骤以[工程 README](README.md)为准，实现状态变化后应另追加带日期的记录，不把历史验证等同于新环境已通过。
+
+工程位于仓库的 `foodlens_engineering/`。该次未修改报告、原始 data 或已有审计文件。Python 3.12 隔离venv安装CPU torch 2.9.1+cpu / torchvision 0.24.1+cpu；无预训练权重下载，无GPU训练。
+
+文中 `artifacts/` 均相对工程目录，日志、checkpoint、原始 freeze 不随 Git 交付，干净克隆不存在这些文件；它们是历史证据位置，不是复现输入。可提交的依赖锁定文件是 `requirements-lock-cpu.txt`，新运行按 README 生成自己的 manifest 和产物。
 
 ## 实际通过的验证
 
@@ -38,19 +42,29 @@
 
 `artifacts/data_contract_check.json`：训练/验证/测试2338/414/506；训练151个全名；固定通用标点规则后全名往返差异0。训练标注SHA256为 `29a3742405361c00f8f8908bec7c5944a762b3e5529e5fd9e84d6bc95265c856`。
 
-本地Food500 JSON实际19880/4940条，训练数字与官方README所述19760存在差异，已告知主Agent；尚无可用图片唯一映射manifest。本轮只读取JSON计数/结构，没有全量图片或parquet审计。
+本地Food500 JSON实际19880/4940条，训练数字与官方README所述19760存在差异，原因尚未核实；尚无可用图片唯一映射manifest。该次只读取JSON计数/结构，没有全量图片或parquet审计。
 
 `pip check`：No broken requirements found。原始freeze在 `artifacts/environment-freeze.txt`；跨目录安装使用 `requirements-lock-cpu.txt`。官方CPU wheel SHA256 `a4e06b4f441675d26b462123c8a83e77c55f1ec8ebc081203be2db1ea8054add`，与HTTP官方checksum一致。pip初次网络下载不出进度，使用curl官方URL及Range续传完成，未使用第三方镜像。
 
-## 可复现命令
+## 如何重跑
 
-从工程根运行：
+按[工程 README 的环境与复现步骤](README.md#环境与复现)执行，包含标准环境安装、无数据/完整测试、RGB manifest 生成、4 样本 smoke、独立预测、同子集评价及可选全训练集分母检查。新产物默认位于 `artifacts/repro/`，不覆盖上文的历史输出。
 
-```powershell
-& .\.venv\Scripts\python.exe -m unittest discover -s tests -v
-& .\.venv\Scripts\python.exe -m foodlens.cli smoke --config configs\baseline.json --data-root ..\data --samples 4 --steps 3 --out artifacts\smoke
-& .\.venv\Scripts\python.exe -m foodlens.cli predict --checkpoint artifacts\smoke\smoke.pt --data-root ..\data --manifest artifacts\rgb_manifest.jsonl --samples 4 --out artifacts\prediction_only.jsonl
-& .\.venv\Scripts\python.exe -m foodlens.cli evaluate --annotations ..\data\annotations\train.jsonl --predictions artifacts\prediction_only.jsonl --out artifacts\all_train_metrics.json
-```
+下一阶段完整清单和历史官方接口调研链接在 README。主要未完成项：Food500唯一manifest及caption正式训练/四指标后端；正式ResNet预训练权重；完整GPU训练/早停/参数组/混合精度；Qwen revision/Processor/assistant-only mask和LoRA显存试跑；SCST、Judge/人评均仅保留接口。当前交付与平台约定见[项目 README](../README.md)，历史 CPU 结果不代表 Linux GPU 训练已验证。
 
-下一阶段完整清单和官方PyTorch/Torchvision调研链接在README。主要未完成项：Food500唯一manifest及caption正式训练/四指标后端；正式ResNet预训练权重；完整GPU训练/早停/参数组/混合精度；Qwen revision/Processor/assistant-only mask和LoRA显存试跑；SCST、Judge/人评均仅保留接口。当前无需要改第五章架构的分歧。
+## 历史环境排障
+
+该次使用的 bundled Python 初始化 ensurepip 失败，实际由带 pip 的 Python 通过 `python -m pip --python .venv\Scripts\python.exe install -r requirements-lock-cpu.txt` 安装到隔离环境。该方式要求调用者已有可用且支持 `--python` 的 pip，不是新成员标准复现的前置条件。原始 freeze 含本地 wheel 路径，不能直接当作可移植安装文件。
+
+## 文档命令复核（2026-11-02）
+
+本次完善文档后，在现有 Windows 环境以工程 venv 的 Python 3.12.14 重跑，使用已有课程数据；未从空环境重新下载安装依赖，也未进行 Linux/CUDA 或正式模型训练验证。
+
+- 按[数据 README](../data/README.md)中的原始代码块校验：三个划分的标注哈希、条数、split、全局 ID 唯一性和所有引用图片路径通过，共 3,258 个样本。此检查未做图片内容重复和完整解码审计。
+- 完整 unittest 21/21 通过；无数据 `ModelTests` 7/7 通过。
+- 现有 venv 没有 pip 模块；使用系统 pip 的 `python -m pip --python .venv\Scripts\python.exe check` 通过，无依赖冲突。工程 README 已补相应替代步骤。
+- 从新建的 `artifacts/repro/` 开始执行工程 README 中 manifest 生成、4 样本/3 步 smoke、独立预测、同子集评价和可选完整训练集分母检查，命令均成功。
+- manifest 严格只有 `id/image`；独立预测与 smoke 的 4 条结果逐条完全一致，checkpoint 精确往返通过，训练名称 token 往返差异为空。同子集评价为 4 条，完整分母为 2,338 条，缺失的 2,334 条保留为解析失败样本。
+- Markdown 本地文件/目录链接检查通过；外部论文链接未在本次重新核验。正式 PDF 和报告正文未修改，也未重新编译。
+
+本次仍是工程复核，名称 F1 为 0、4 条生成均截断，不产生模型质量结论。复核输出只保留本地；新成员仍按 README 自行生成。

@@ -1,5 +1,7 @@
 # 开题报告（GPT生成版）
 
+> 历史开题草稿，正文保留原始设想。课程范围以[课程原始要求整理稿](../COURSE_REQUIREMENTS.md)为准；课程要求中期原型和最终演示，但未强制 Web 界面。当前模型设计以[第五章技术方案](../report/sections/technical_plan.tex)为准，实际能力见[工程说明](../../foodlens_engineering/README.md)。
+
 ## 一、项目题目（固定/不重要）
 
 **FoodLens：基于深度学习的食物图像描述与结构化膳食记录生成**

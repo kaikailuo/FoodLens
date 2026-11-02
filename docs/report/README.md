@@ -6,6 +6,8 @@
 
 **重新编译：** 在项目根目录执行 `& .\docs\report\build.ps1`。
 
+第五章是后续实施设计，描述的正式训练与实验不等于已经完成；实际实现以[工程说明](../../foodlens_engineering/README.md)和运行证据为准。课程交付见[原始要求整理稿](../COURSE_REQUIREMENTS.md)，本 PDF 仅第四、五章，不能替代课程要求的完整开题或结题材料。当前训练平台以 Linux GPU 服务器为主，第五章约 300 元为早期估算，不作为实施预算上限。本目录不需要原作者本地 `.agents/` 绘图技能即可编译。
+
 ## 目录怎么读
 
 ```text
@@ -37,5 +39,7 @@ docs/report/
 | 核对原论文图来源 | `figures/literature/image_manifest.json` |
 
 报告构建需要 Windows 字体集，以及带中文支持的 TeX Live。将 `xelatex`、`bibtex` 加入 PATH，或设置 `$env:TEX_BIN`。脚本把中间文件写入 `build/latex/`，全部步骤成功后才更新根目录 PDF。
+
+构建验收：脚本退出码为 0，生成的 `docs/report/research_proposal.pdf` 可打开，目录、图表、公式和参考文献无缺失；当前交付参考为 16 页，正文修改后页数可能变化。检查 PDF 后再提交源文件及 PDF。TeX 与绘图依赖独立于 Python CPU 环境，运行模型测试不需要安装它们；其他操作系统的字体适配尚未验证。
 
 `literature/` 中的原论文图片保留作者署名、来源与许可记录。旧版目录名 `redesign/round2/` 已移除，后续版本通过 Git 管理。
