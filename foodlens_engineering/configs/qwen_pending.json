@@ -1,0 +1,9 @@
+{
+  "model_id": "Qwen/Qwen3-VL-4B-Instruct",
+  "revision": "MUST_PIN_BEFORE_GPU_RUN",
+  "seed": 42,
+  "lora": {"r": 8, "alpha": 16, "dropout": 0.05, "scope": "language attention Q/K/V/O; resolve actual module paths before injection"},
+  "assistant_only_loss": true,
+  "quantization": "BF16 first; optional NF4 double quantization after compatibility trial",
+  "status": "adapter boundary only; no weights, processor, PEFT or quantization packages downloaded"
+}

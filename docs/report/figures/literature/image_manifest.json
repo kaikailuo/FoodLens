@@ -1,0 +1,219 @@
+{
+  "figures": [
+    {
+      "key": "s2",
+      "source_pdf": "资料核验\\s2.pdf",
+      "source_url": "https://www.ijcai.org/proceedings/2022/0224.pdf",
+      "source_sha256": "5ed355f1eaed79cf4846b77685bed1fbff7467d872714b30b03e341ba16880a9",
+      "physical_page": 3,
+      "figure": 2,
+      "crop_top_origin_pt": [
+        77,
+        52,
+        532,
+        261
+      ],
+      "removed_off_figure_objects": 251,
+      "output": "s2-fig2.pdf",
+      "output_sha256": "5d405f438f0a2e107ccfe54def9239d6ce72cf9742347bda0fbde95288306e35",
+      "format": "PDF: vector text/paths with original raster components"
+    },
+    {
+      "key": "inverse",
+      "source_pdf": "资料核验\\inverse.pdf",
+      "source_url": "https://openaccess.thecvf.com/content_CVPR_2019/papers/Salvador_Inverse_Cooking_Recipe_Generation_From_Food_Images_CVPR_2019_paper.pdf",
+      "source_sha256": "00dcc657173056bec04241e68f2a6e73f0469af24db0c4b908c1da8ba79989dc",
+      "physical_page": 3,
+      "figure": 2,
+      "crop_top_origin_pt": [
+        46,
+        62,
+        552,
+        170
+      ],
+      "removed_off_figure_objects": 187,
+      "output": "inverse-cooking-fig2.pdf",
+      "output_sha256": "c9f9839ff4933252c72015933058fed319041776ca0107292ae37aeffc43ad17",
+      "format": "PDF: vector text/paths with original raster components"
+    },
+    {
+      "key": "nutrition",
+      "source_pdf": "figures\\originals\\nutrition5k-arxiv-v2.pdf",
+      "source_url": "https://arxiv.org/pdf/2103.03375v2",
+      "source_sha256": "a700ab692e15d293ea174b7b07fbcc4f52ba0578ec6ec694ede7a54f95c0c6c2",
+      "physical_page": 6,
+      "figure": 6,
+      "pixels": [
+        2994,
+        1452
+      ],
+      "pdf_image_name": "Im6.jpg",
+      "output": "nutrition5k-fig6.jpg",
+      "output_sha256": "bf15ee62f85992f0ece58e2f877186c86f7246a4fe9b11e204e13635f0ce713b",
+      "license": "CC BY 4.0",
+      "edit": "Native embedded image extracted without resizing or recompression"
+    },
+    {
+      "key": "qwen",
+      "source_pdf": "资料核验\\qwen.pdf",
+      "source_url": "https://arxiv.org/pdf/2511.21631v2",
+      "source_sha256": "ee075d08e67de1148d6437c6c1d481f7894183b8793905a2deb5f62664f49380",
+      "physical_page": 3,
+      "figure": 1,
+      "pixels": [
+        5908,
+        3413
+      ],
+      "pdf_image_name": "Im7.jpg",
+      "output": "qwen3vl-fig1.jpg",
+      "output_sha256": "e090fb21c1e8361a0954a6a70bee433712eb6b1180580c511304e0681e4e76fc",
+      "license": "arXiv non-exclusive distribution; no general third-party figure licence established",
+      "edit": "Native embedded image extracted without resizing or recompression"
+    },
+    {
+      "key": "qlora",
+      "source_pdf": "figures\\originals\\qlora-arxiv-v1.pdf",
+      "source_url": "https://arxiv.org/pdf/2305.14314v1",
+      "source_sha256": "33a4e757c19d6ea8d3cca8958fce8fe405e290272e135c99ee66065c775d5bd1",
+      "physical_page": 3,
+      "figure": 1,
+      "pixels": [
+        3810,
+        1568
+      ],
+      "pdf_image_name": "Im1.png",
+      "output": "qlora-fig1.png",
+      "output_sha256": "c4a6862c2faf9773d2311e780a1cf4dc94b1c6a4900c4e625b1da066e0873a7f",
+      "license": "CC BY 4.0",
+      "edit": "Native embedded image extracted without resizing or recompression"
+    },
+    {
+      "key": "qwen-deepstack-detail",
+      "source": "qwen3vl-fig1.jpg",
+      "crop_top_origin_pixels": [
+        4660,
+        1100,
+        5908,
+        2005
+      ],
+      "pixels": [
+        1248,
+        905
+      ],
+      "output": "qwen3vl-deepstack-detail.png",
+      "output_sha256": "2893b5b4478141c73802b1d4bbb00320713ccb057cca75f411170b518d28a621",
+      "edit": "Crop only; no resampling. LaTeX inset replaces lower-right video-input example, without covering the main network."
+    }
+  ],
+  "original_attachments": [
+    {
+      "path": "docs/research/郝天乐调研记录/图片和附件/image 1.png",
+      "pixels": [
+        962,
+        470
+      ],
+      "bytes": 229645,
+      "sha256": "a525952a0b1aec480ea16e95407a9d288dcd0a1a922ef7cb5770819d09e9d2cd"
+    },
+    {
+      "path": "docs/research/郝天乐调研记录/图片和附件/image 2.png",
+      "pixels": [
+        1006,
+        490
+      ],
+      "bytes": 70823,
+      "sha256": "5de877053cdd2eb017d9f6b88303de03aa7a36d483977924df7a9ca6fe47bf1d"
+    },
+    {
+      "path": "docs/research/郝天乐调研记录/图片和附件/image.png",
+      "pixels": [
+        1002,
+        567
+      ],
+      "bytes": 91345,
+      "sha256": "41362f7aec98ab51dcab1b9a744d02eda8614485c1702649c9a1176992affc23"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image 1.png",
+      "pixels": [
+        1411,
+        888
+      ],
+      "bytes": 1016774,
+      "sha256": "f3b81b102a1b00c5006354e6bd3b4680a2106f48fcaaf5fab21fc34f4bf7b7f5"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image 2.png",
+      "pixels": [
+        2120,
+        896
+      ],
+      "bytes": 807434,
+      "sha256": "1f5e5f8e0433752facfeb7e1fc002c0424cefa08576d84a66d1ac0eb13160b68"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image 3.png",
+      "pixels": [
+        1280,
+        605
+      ],
+      "bytes": 252944,
+      "sha256": "5738d1eb4b838067a9ca2de4906df52be105703285ed262b086939a72c926bc1"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image 4.png",
+      "pixels": [
+        1149,
+        624
+      ],
+      "bytes": 841521,
+      "sha256": "826a6f842c5a45245fa54f99a428a06b4bb30d9d608bd55f21ef7b2f4b5f155f"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image 5.png",
+      "pixels": [
+        1000,
+        670
+      ],
+      "bytes": 231162,
+      "sha256": "b8f157e272d2bebd347b91bd489fa292abd130ca8280eef48ef955f1eafe2573"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image 6.png",
+      "pixels": [
+        853,
+        1072
+      ],
+      "bytes": 594695,
+      "sha256": "cb90e3c717caea93b755bd69e8732310ee8f060247dd108605ab5c283c9462f4"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image 7.png",
+      "pixels": [
+        1626,
+        712
+      ],
+      "bytes": 301886,
+      "sha256": "b485396b5503e8af23311f6a9d821923d1a38d9cfd91555efaa86fd06ed47af7"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image 8.png",
+      "pixels": [
+        5908,
+        3413
+      ],
+      "bytes": 6291121,
+      "sha256": "4940e07f5beed9eae269cbeaf94f08b1feb32e4f8bba048584df0c2b286ef7d5"
+    },
+    {
+      "path": "docs/research/张嘉荣调研记录/图片和附件/image.png",
+      "pixels": [
+        1413,
+        507
+      ],
+      "bytes": 478538,
+      "sha256": "99c85de6ee13b98241a7c1817ed31891c1a977ca85777e935be7d9c619650671"
+    }
+  ],
+  "source_pdf_note": "source_pdf 记录提取时的历史位置；本地原论文PDF已清理。当前引用图片在本目录，source_url、哈希和许可用于溯源。"
+}

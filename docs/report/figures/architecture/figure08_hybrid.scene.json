@@ -1,0 +1,2174 @@
+{
+  "name": "figure08_hybrid",
+  "width": 1000,
+  "height": 824,
+  "items": [
+    {
+      "x": 20,
+      "y": 14,
+      "w": 960,
+      "h": 67,
+      "fill": "#FAFBFC",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "container",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-001"
+    },
+    {
+      "x": 40,
+      "y": 40.0,
+      "text": "INITIALIZE FROM TASK 1 A",
+      "size": 21,
+      "bold": true,
+      "color": "#AA7439",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-002"
+    },
+    {
+      "x": 40,
+      "y": 66.0,
+      "text": "ResNet-18 + visual projection + GRU; copy compatible vocabulary rows",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-003"
+    },
+    {
+      "points": [
+        [
+          190,
+          81
+        ],
+        [
+          190,
+          142
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-004"
+    },
+    {
+      "points": [
+        [
+          628,
+          81
+        ],
+        [
+          628,
+          142
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-005"
+    },
+    {
+      "points": [
+        [
+          20,
+          50
+        ],
+        [
+          9,
+          50
+        ],
+        [
+          9,
+          275
+        ],
+        [
+          510,
+          275
+        ],
+        [
+          510,
+          289
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-006"
+    },
+    {
+      "x": 28,
+      "y": 148,
+      "w": 62,
+      "h": 62,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 1,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-6",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-007"
+    },
+    {
+      "x": 59.0,
+      "y": 179.0,
+      "r": 21.080000000000002,
+      "fill": "#FFFFFF",
+      "stroke": "#B3C2CD",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure08_hybrid-v2-008",
+      "group": "component-6"
+    },
+    {
+      "x": 49.0,
+      "y": 176.0,
+      "r": 9,
+      "fill": "#F7E5CE",
+      "stroke": "#F7E5CE",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure08_hybrid-v2-009",
+      "group": "component-6"
+    },
+    {
+      "x": 67.0,
+      "y": 185.0,
+      "r": 8,
+      "fill": "#DDEFEA",
+      "stroke": "#DDEFEA",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure08_hybrid-v2-010",
+      "group": "component-6"
+    },
+    {
+      "x": 66.0,
+      "y": 168.0,
+      "r": 6,
+      "fill": "#DDEFEA",
+      "stroke": "#DDEFEA",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure08_hybrid-v2-011",
+      "group": "component-6"
+    },
+    {
+      "x": 51.0,
+      "y": 190.0,
+      "r": 5,
+      "fill": "#F7E5CE",
+      "stroke": "#F7E5CE",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure08_hybrid-v2-012",
+      "group": "component-6"
+    },
+    {
+      "x": 59,
+      "y": 236.0,
+      "text": "RGB",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-013"
+    },
+    {
+      "x": 142,
+      "y": 138,
+      "w": 118,
+      "h": 64,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-13",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-014"
+    },
+    {
+      "x": 137,
+      "y": 143,
+      "w": 118,
+      "h": 64,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-13",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-015"
+    },
+    {
+      "x": 132,
+      "y": 148,
+      "w": 118,
+      "h": 64,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-13",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-016"
+    },
+    {
+      "x": 191.0,
+      "y": 187.14,
+      "text": "ResNet-18",
+      "size": 21,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-13",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-017"
+    },
+    {
+      "x": 301.0,
+      "y": 136.0,
+      "w": 58,
+      "h": 58,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 0,
+      "sw": 1,
+      "dash": false,
+      "group": "component-17",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-018"
+    },
+    {
+      "x": 295.0,
+      "y": 142.0,
+      "w": 58,
+      "h": 58,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 0,
+      "sw": 1,
+      "dash": false,
+      "group": "component-17",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-019"
+    },
+    {
+      "x": 289.0,
+      "y": 148.0,
+      "w": 58,
+      "h": 58,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 0,
+      "sw": 1,
+      "dash": false,
+      "group": "component-17",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-020"
+    },
+    {
+      "points": [
+        [
+          297.2857142857143,
+          148
+        ],
+        [
+          297.2857142857143,
+          206
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-021",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          289,
+          156.28571428571428
+        ],
+        [
+          347,
+          156.28571428571428
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-022",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          305.57142857142856,
+          148
+        ],
+        [
+          305.57142857142856,
+          206
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-023",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          289,
+          164.57142857142858
+        ],
+        [
+          347,
+          164.57142857142858
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-024",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          313.85714285714283,
+          148
+        ],
+        [
+          313.85714285714283,
+          206
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-025",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          289,
+          172.85714285714286
+        ],
+        [
+          347,
+          172.85714285714286
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-026",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          322.14285714285717,
+          148
+        ],
+        [
+          322.14285714285717,
+          206
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-027",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          289,
+          181.14285714285714
+        ],
+        [
+          347,
+          181.14285714285714
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-028",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          330.42857142857144,
+          148
+        ],
+        [
+          330.42857142857144,
+          206
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-029",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          289,
+          189.42857142857144
+        ],
+        [
+          347,
+          189.42857142857144
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-030",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          338.7142857142857,
+          148
+        ],
+        [
+          338.7142857142857,
+          206
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-031",
+      "group": "component-17"
+    },
+    {
+      "points": [
+        [
+          289,
+          197.71428571428572
+        ],
+        [
+          347,
+          197.71428571428572
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-032",
+      "group": "component-17"
+    },
+    {
+      "x": 318,
+      "y": 235.0,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-033",
+      "tex": "512\\times7\\times7",
+      "original_text": "512 × 7 × 7"
+    },
+    {
+      "x": 387,
+      "y": 158,
+      "w": 70,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-33",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-034"
+    },
+    {
+      "x": 422.0,
+      "y": 186.8,
+      "text": "GAP",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-33",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-035"
+    },
+    {
+      "x": 490,
+      "y": 158,
+      "w": 10,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-35",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-036"
+    },
+    {
+      "x": 503,
+      "y": 158,
+      "w": 10,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-35",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-037"
+    },
+    {
+      "x": 516,
+      "y": 158,
+      "w": 10,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-35",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-038"
+    },
+    {
+      "x": 529,
+      "y": 158,
+      "w": 10,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-35",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-039"
+    },
+    {
+      "x": 515,
+      "y": 235.0,
+      "size": 23,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-040",
+      "tex": "v\\in\\mathbb{R}^{512}",
+      "original_text": "v: 512"
+    },
+    {
+      "x": 574,
+      "y": 145,
+      "w": 126,
+      "h": 66,
+      "fill": "#DCEAF4",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-40",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-041"
+    },
+    {
+      "x": 637.0,
+      "y": 173.0,
+      "text": "Linear",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-40",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-042"
+    },
+    {
+      "x": 637.0,
+      "y": 196.6,
+      "text": "tanh",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-40",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-043"
+    },
+    {
+      "x": 746,
+      "y": 158,
+      "w": 10,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-43",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-044"
+    },
+    {
+      "x": 759,
+      "y": 158,
+      "w": 10,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-43",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-045"
+    },
+    {
+      "x": 772,
+      "y": 158,
+      "w": 10,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-43",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-046"
+    },
+    {
+      "x": 785,
+      "y": 158,
+      "w": 10,
+      "h": 44,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-43",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-047"
+    },
+    {
+      "x": 772,
+      "y": 236.0,
+      "size": 23,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-048",
+      "tex": "z\\in\\mathbb{R}^{256}",
+      "original_text": "z: 256"
+    },
+    {
+      "points": [
+        [
+          90,
+          180
+        ],
+        [
+          132,
+          180
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-049"
+    },
+    {
+      "points": [
+        [
+          250,
+          180
+        ],
+        [
+          289,
+          180
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-050"
+    },
+    {
+      "points": [
+        [
+          359,
+          180
+        ],
+        [
+          387,
+          180
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-051"
+    },
+    {
+      "points": [
+        [
+          457,
+          180
+        ],
+        [
+          490,
+          180
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-052"
+    },
+    {
+      "points": [
+        [
+          542,
+          180
+        ],
+        [
+          574,
+          180
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-053"
+    },
+    {
+      "points": [
+        [
+          700,
+          180
+        ],
+        [
+          746,
+          180
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-054"
+    },
+    {
+      "x": 28,
+      "y": 300,
+      "w": 96,
+      "h": 40,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-54",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-055"
+    },
+    {
+      "x": 76.0,
+      "y": 326.8,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-54",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-056",
+      "tex": "S_{t-1}",
+      "original_text": "S(t-1)"
+    },
+    {
+      "points": [
+        [
+          124,
+          320
+        ],
+        [
+          165,
+          320
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-057"
+    },
+    {
+      "x": 165,
+      "y": 290,
+      "w": 133,
+      "h": 60,
+      "fill": "#DDEFEA",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-57",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-058"
+    },
+    {
+      "x": 231.5,
+      "y": 315.0,
+      "text": "Embedding",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-57",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-059"
+    },
+    {
+      "x": 231.5,
+      "y": 338.6,
+      "text": "256",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-57",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-060"
+    },
+    {
+      "points": [
+        [
+          298,
+          320
+        ],
+        [
+          342,
+          320
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-061"
+    },
+    {
+      "x": 358,
+      "y": 320,
+      "r": 16,
+      "fill": "#FFFFFF",
+      "stroke": "#3B7D71",
+      "sw": 1.4,
+      "kind": "circle",
+      "id": "figure08_hybrid-v2-062"
+    },
+    {
+      "x": 358,
+      "y": 327.0,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-063",
+      "tex": "\\Vert",
+      "original_text": "||"
+    },
+    {
+      "points": [
+        [
+          374,
+          320
+        ],
+        [
+          420,
+          320
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-064"
+    },
+    {
+      "x": 420,
+      "y": 289,
+      "w": 180,
+      "h": 65,
+      "fill": "#DDEFEA",
+      "stroke": "#3B7D71",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-64",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-065"
+    },
+    {
+      "x": 510.0,
+      "y": 316.0,
+      "text": "GRU 256",
+      "size": 22,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-64",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-066"
+    },
+    {
+      "x": 510.0,
+      "y": 341.96,
+      "size": 26,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-64",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-067",
+      "tex": "h_0=z",
+      "original_text": "h(0) = z"
+    },
+    {
+      "x": 358,
+      "y": 359.0,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-068",
+      "tex": "\\mathrm{concat}:512",
+      "original_text": "concat: 512"
+    },
+    {
+      "points": [
+        [
+          772,
+          202
+        ],
+        [
+          772,
+          215
+        ],
+        [
+          715,
+          215
+        ],
+        [
+          715,
+          259
+        ],
+        [
+          358,
+          259
+        ],
+        [
+          358,
+          304
+        ]
+      ],
+      "color": "#3C6B8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-069"
+    },
+    {
+      "points": [
+        [
+          542,
+          180
+        ],
+        [
+          555,
+          180
+        ],
+        [
+          555,
+          247
+        ],
+        [
+          847,
+          247
+        ],
+        [
+          847,
+          286
+        ],
+        [
+          864,
+          286
+        ]
+      ],
+      "color": "#3C6B8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-070"
+    },
+    {
+      "points": [
+        [
+          798,
+          180
+        ],
+        [
+          880,
+          180
+        ],
+        [
+          880,
+          270
+        ]
+      ],
+      "color": "#3C6B8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-071"
+    },
+    {
+      "x": 715,
+      "y": 247,
+      "r": 4,
+      "fill": "#FFFFFF",
+      "stroke": "#FFFFFF",
+      "sw": 0,
+      "kind": "circle",
+      "id": "figure08_hybrid-v2-072"
+    },
+    {
+      "points": [
+        [
+          715,
+          240
+        ],
+        [
+          715,
+          254
+        ]
+      ],
+      "color": "#3C6B8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-073"
+    },
+    {
+      "x": 880,
+      "y": 286,
+      "r": 16,
+      "fill": "#FFFFFF",
+      "stroke": "#76618F",
+      "sw": 1.4,
+      "kind": "circle",
+      "id": "figure08_hybrid-v2-074"
+    },
+    {
+      "x": 880,
+      "y": 293.0,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-075",
+      "tex": "\\Vert",
+      "original_text": "||"
+    },
+    {
+      "points": [
+        [
+          880,
+          302
+        ],
+        [
+          880,
+          319
+        ]
+      ],
+      "color": "#76618F",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-076"
+    },
+    {
+      "x": 792,
+      "y": 319,
+      "w": 176,
+      "h": 65,
+      "fill": "#E9E3F1",
+      "stroke": "#76618F",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-76",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-077"
+    },
+    {
+      "x": 880.0,
+      "y": 346.25,
+      "text": "MLP 256",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-76",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-078"
+    },
+    {
+      "x": 880.0,
+      "y": 371.03,
+      "text": "Softplus",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-76",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-079"
+    },
+    {
+      "x": 920,
+      "y": 310,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-080",
+      "tex": "768",
+      "original_text": "768"
+    },
+    {
+      "points": [
+        [
+          880,
+          384
+        ],
+        [
+          880,
+          411
+        ]
+      ],
+      "color": "#76618F",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-081"
+    },
+    {
+      "x": 791,
+      "y": 411,
+      "w": 32,
+      "h": 44,
+      "fill": "#E9E3F1",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-81",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-082"
+    },
+    {
+      "x": 807.0,
+      "y": 439.46,
+      "text": "W",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-81",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-083"
+    },
+    {
+      "x": 827,
+      "y": 411,
+      "w": 32,
+      "h": 44,
+      "fill": "#E9E3F1",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-81",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-084"
+    },
+    {
+      "x": 843.0,
+      "y": 439.46,
+      "text": "E",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-81",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-085"
+    },
+    {
+      "x": 863,
+      "y": 411,
+      "w": 32,
+      "h": 44,
+      "fill": "#E9E3F1",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-81",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-086"
+    },
+    {
+      "x": 879.0,
+      "y": 439.46,
+      "text": "P",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-81",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-087"
+    },
+    {
+      "x": 899,
+      "y": 411,
+      "w": 32,
+      "h": 44,
+      "fill": "#E9E3F1",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-81",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-088"
+    },
+    {
+      "x": 915.0,
+      "y": 439.46,
+      "text": "F",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-81",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-089"
+    },
+    {
+      "x": 935,
+      "y": 411,
+      "w": 32,
+      "h": 44,
+      "fill": "#E9E3F1",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-81",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-090"
+    },
+    {
+      "x": 951.0,
+      "y": 439.46,
+      "text": "C",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-81",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-091"
+    },
+    {
+      "x": 880,
+      "y": 487,
+      "size": 23,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-092",
+      "tex": "\\widehat{\\boldsymbol q}\\in\\mathbb{R}_{\\geq0}^{5}",
+      "original_text": "q: 5 totals"
+    },
+    {
+      "x": 25,
+      "y": 392,
+      "w": 522,
+      "h": 65,
+      "fill": "#FAFBFC",
+      "stroke": "#B3C2CD",
+      "r": 2,
+      "sw": 1.4,
+      "dash": false,
+      "group": "container",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-093"
+    },
+    {
+      "x": 31,
+      "y": 383.0,
+      "text": "Ingredient sequence (multi-word names)",
+      "size": 20,
+      "bold": true,
+      "color": "#3B7D71",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-094"
+    },
+    {
+      "x": 32,
+      "y": 408,
+      "w": 67,
+      "h": 34,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-95",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-095"
+    },
+    {
+      "x": 65.5,
+      "y": 431.46,
+      "text": "BOS",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-95",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-096"
+    },
+    {
+      "x": 105,
+      "y": 408,
+      "w": 67,
+      "h": 34,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-97",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-097"
+    },
+    {
+      "x": 138.5,
+      "y": 431.46,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-97",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-098",
+      "tex": "n_1",
+      "original_text": "n1"
+    },
+    {
+      "x": 178,
+      "y": 408,
+      "w": 67,
+      "h": 34,
+      "fill": "#F7E5CE",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-99",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-099"
+    },
+    {
+      "x": 211.5,
+      "y": 431.46,
+      "text": "SEP",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-99",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-100"
+    },
+    {
+      "x": 251,
+      "y": 408,
+      "w": 67,
+      "h": 34,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-101",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-101"
+    },
+    {
+      "x": 284.5,
+      "y": 431.46,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-101",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-102",
+      "tex": "n_{2,1}",
+      "original_text": "n2a"
+    },
+    {
+      "x": 324,
+      "y": 408,
+      "w": 67,
+      "h": 34,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-103",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-103"
+    },
+    {
+      "x": 357.5,
+      "y": 431.46,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-103",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-104",
+      "tex": "n_{2,2}",
+      "original_text": "n2b"
+    },
+    {
+      "x": 397,
+      "y": 408,
+      "w": 67,
+      "h": 34,
+      "fill": "#F7E5CE",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-105",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-105"
+    },
+    {
+      "x": 430.5,
+      "y": 431.46,
+      "text": "SEP",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-105",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-106"
+    },
+    {
+      "x": 470,
+      "y": 408,
+      "w": 67,
+      "h": 34,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-107",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-107"
+    },
+    {
+      "x": 503.5,
+      "y": 431.46,
+      "text": "EOS",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-107",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-108"
+    },
+    {
+      "points": [
+        [
+          510,
+          354
+        ],
+        [
+          510,
+          392
+        ]
+      ],
+      "color": "#3B7D71",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-109"
+    },
+    {
+      "x": 550,
+      "y": 380.0,
+      "text": "vocab projection",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-110"
+    },
+    {
+      "points": [
+        [
+          211,
+          442
+        ],
+        [
+          211,
+          474
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "select_hidden_state_that_predicts_SEP",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-111"
+    },
+    {
+      "x": 169,
+      "y": 474,
+      "w": 84,
+      "h": 40,
+      "fill": "#F7E5CE",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-112",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-112"
+    },
+    {
+      "x": 211.0,
+      "y": 500.46,
+      "size": 26,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-112",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-113",
+      "tex": "h_{b_1}",
+      "original_text": "h(b1)"
+    },
+    {
+      "points": [
+        [
+          430,
+          442
+        ],
+        [
+          430,
+          474
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "select_hidden_state_that_predicts_SEP",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-114"
+    },
+    {
+      "x": 388,
+      "y": 474,
+      "w": 84,
+      "h": 40,
+      "fill": "#F7E5CE",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-115",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-115"
+    },
+    {
+      "x": 430.0,
+      "y": 500.46,
+      "size": 26,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-115",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-116",
+      "tex": "h_{b_2}",
+      "original_text": "h(b2)"
+    },
+    {
+      "points": [
+        [
+          253,
+          494
+        ],
+        [
+          280,
+          494
+        ],
+        [
+          280,
+          551
+        ],
+        [
+          530,
+          551
+        ]
+      ],
+      "color": "#76618F",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-117"
+    },
+    {
+      "points": [
+        [
+          472,
+          494
+        ],
+        [
+          496,
+          494
+        ],
+        [
+          496,
+          534
+        ],
+        [
+          530,
+          534
+        ]
+      ],
+      "color": "#76618F",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-118"
+    },
+    {
+      "x": 530,
+      "y": 518,
+      "w": 156,
+      "h": 66,
+      "fill": "#E9E3F1",
+      "stroke": "#76618F",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-119",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-119"
+    },
+    {
+      "x": 608.0,
+      "y": 546.25,
+      "text": "Shared MLP 256",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-119",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-120"
+    },
+    {
+      "x": 608.0,
+      "y": 568.67,
+      "text": "Softplus",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-119",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-121"
+    },
+    {
+      "points": [
+        [
+          715,
+          259
+        ],
+        [
+          715,
+          498
+        ],
+        [
+          608,
+          498
+        ],
+        [
+          608,
+          518
+        ]
+      ],
+      "color": "#3C6B8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-122"
+    },
+    {
+      "x": 609,
+      "y": 613.0,
+      "size": 22,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-123",
+      "tex": "\\widehat{w}_1,\\widehat{w}_2,\\ldots\\;[\\mathrm{g}]",
+      "original_text": "w1, w2, ... (g)"
+    },
+    {
+      "points": [
+        [
+          608,
+          584
+        ],
+        [
+          608,
+          592
+        ]
+      ],
+      "color": "#76618F",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-124"
+    },
+    {
+      "x": 277,
+      "y": 640.0,
+      "text": "GRU state predicting SEP",
+      "size": 19,
+      "bold": false,
+      "color": "#AA7439",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-125"
+    },
+    {
+      "x": 277,
+      "y": 674,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-126",
+      "tex": "[h_{b_k};z]\\in\\mathbb{R}^{512}",
+      "original_text": "[h(bk); z]: 512 -> shared MLP"
+    },
+    {
+      "x": 748,
+      "y": 650,
+      "w": 222,
+      "h": 68,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-127",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-127"
+    },
+    {
+      "x": 859.0,
+      "y": 679.0,
+      "text": "JSON assembly",
+      "size": 20,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-127",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-128"
+    },
+    {
+      "x": 859.0,
+      "y": 702.6,
+      "text": "+ Schema validation",
+      "size": 20,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-127",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-129"
+    },
+    {
+      "points": [
+        [
+          608,
+          621
+        ],
+        [
+          608,
+          684
+        ],
+        [
+          748,
+          684
+        ]
+      ],
+      "color": "#76618F",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-130"
+    },
+    {
+      "points": [
+        [
+          880,
+          455
+        ],
+        [
+          985,
+          455
+        ],
+        [
+          985,
+          684
+        ],
+        [
+          970,
+          684
+        ]
+      ],
+      "color": "#76618F",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-131"
+    },
+    {
+      "points": [
+        [
+          25,
+          424
+        ],
+        [
+          15,
+          424
+        ],
+        [
+          15,
+          735
+        ],
+        [
+          850,
+          735
+        ],
+        [
+          850,
+          718
+        ]
+      ],
+      "color": "#3B7D71",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure08_hybrid-v2-132"
+    },
+    {
+      "x": 300,
+      "y": 726.0,
+      "text": "generated names",
+      "size": 19,
+      "bold": false,
+      "color": "#3B7D71",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-133"
+    },
+    {
+      "x": 26,
+      "y": 742,
+      "w": 944,
+      "h": 45,
+      "fill": "#F7E5CE",
+      "stroke": "#F7E5CE",
+      "r": 2,
+      "sw": 1.4,
+      "dash": false,
+      "group": "",
+      "kind": "rect",
+      "id": "figure08_hybrid-v2-134"
+    },
+    {
+      "x": 498,
+      "y": 772,
+      "size": 26,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure08_hybrid-v2-135",
+      "tex": "\\mathcal{L}=\\lambda_{\\mathrm{ing}}\\mathcal{L}_{\\mathrm{ing}}+\\lambda_w\\mathcal{L}_w+\\lambda_q\\mathcal{L}_q",
+      "original_text": "L = λ_ing L_ing + λ_w L_w + λ_q L_q   |   CE + standardized Smooth L1"
+    },
+    {
+      "x": 750,
+      "y": 517.0,
+      "text": "W  total_weight_g",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-136"
+    },
+    {
+      "x": 750,
+      "y": 538.24,
+      "text": "E  total_calories_kcal",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-137"
+    },
+    {
+      "x": 750,
+      "y": 559.48,
+      "text": "P  protein_g",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-138"
+    },
+    {
+      "x": 750,
+      "y": 580.72,
+      "text": "F  fat_g",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-139"
+    },
+    {
+      "x": 750,
+      "y": 601.96,
+      "text": "C  carbohydrate_g",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-140"
+    },
+    {
+      "x": 500,
+      "y": 811.0,
+      "text": "CE: ingredient tokens; standardized Smooth L1: item weights and five meal totals.",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure08_hybrid-v2-141"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+\documentclass[UTF8,a4paper,zihao=-4,fontset=windows]{ctexart}
+\usepackage[margin=2.35cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,graphicx}
+\usepackage{needspace}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xurl}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{fancyhdr,setspace}
+\input{styles/figure_style.tex}
+\setstretch{1.17}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\ctexset{section={format=\Large\bfseries\color{FLBlue},beforeskip=1.0ex,afterskip=1.3ex},
+ subsection={format=\large\bfseries\color{FLBlue},beforeskip=2.0ex,afterskip=1.0ex},
+ subsubsection={format=\normalsize\bfseries,beforeskip=1.3ex,afterskip=0.7ex}}
+\AddToHook{cmd/subsection/before}{\Needspace{9\baselineskip}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{FLMid} FoodLens 开题报告}
+\fancyhead[R]{\small\color{FLMid} 技术方案}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{9pt plus 2pt minus 2pt}
+\setlength{\floatsep}{9pt plus 2pt minus 2pt}
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\bottomfraction}{0.80}
+\renewcommand{\textfraction}{0.08}
+\urlstyle{same}
+\hypersetup{pdftitle={FoodLens 架构图第二版候选试排},pdfauthor={FoodLens}}
+\setlength{\textfloatsep}{9pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\setcounter{topnumber}{2}
+\begin{document}
+\fancyhead[R]{\small\color{FLMid} 相关工作}
+\setcounter{section}{3}
+\input{sections/related_work.tex}
+\clearpage
+\fancyhead[R]{\small\color{FLMid} 技术方案}
+\input{sections/technical_plan.tex}
+\clearpage
+\par\FloatBarrier
+\begingroup
+\setstretch{1.02}\small
+\setlength{\bibsep}{3pt}\interlinepenalty=10000
+\renewcommand{\refname}{参考文献}
+\bibliographystyle{bibliography/foodlens-unsrtnat}\bibliography{bibliography/references}
+\endgroup
+\end{document}

@@ -1,0 +1,9 @@
+{
+  "seed": 42,
+  "model": {"backbone": "resnet18", "pretrained": false, "hidden": 256, "embedding": 256, "heads": 4, "layers": 2, "feedforward": 1024, "dropout": 0.1, "frozen_backbone": true},
+  "optimizer": {"name": "AdamW", "lr": 0.0003, "layer4_lr_multiplier": 0.1, "gradient_clip": 1.0},
+  "loss_weights": [1.0, 1.0, 1.0],
+  "caption_generation": {"max_tokens": 64, "strategy": "greedy"},
+  "nutrition_generation": {"max_tokens": 128, "max_items": 32},
+  "note": "Explicitly set pretrained=true only when the approved official weights are available. This config is an implementation baseline, not a completed training recipe. CLI smoke uses its own tiny dimensions."
+}

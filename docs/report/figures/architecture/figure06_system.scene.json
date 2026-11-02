@@ -1,0 +1,1665 @@
+{
+  "name": "figure06_system",
+  "width": 1000,
+  "height": 657,
+  "items": [
+    {
+      "x": 26,
+      "y": 31.0,
+      "text": "FoodLens",
+      "size": 27,
+      "bold": true,
+      "color": "#3C6B8C",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-001"
+    },
+    {
+      "x": 330,
+      "y": 55,
+      "w": 650,
+      "h": 245,
+      "fill": "#FAFBFC",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "container",
+      "kind": "rect",
+      "id": "figure06_system-v2-002"
+    },
+    {
+      "x": 348,
+      "y": 86.0,
+      "text": "TASK 1  |  Image captioning",
+      "size": 23,
+      "bold": true,
+      "color": "#3C6B8C",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-003"
+    },
+    {
+      "x": 330,
+      "y": 345,
+      "w": 650,
+      "h": 250,
+      "fill": "#FAFBFC",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "container",
+      "kind": "rect",
+      "id": "figure06_system-v2-004"
+    },
+    {
+      "x": 348,
+      "y": 376.0,
+      "text": "TASK 2  |  Structured meal records",
+      "size": 23,
+      "bold": true,
+      "color": "#76618F",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-005"
+    },
+    {
+      "x": 28,
+      "y": 263,
+      "w": 62,
+      "h": 62,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 1,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-5",
+      "kind": "rect",
+      "id": "figure06_system-v2-006"
+    },
+    {
+      "x": 59.0,
+      "y": 294.0,
+      "r": 21.080000000000002,
+      "fill": "#FFFFFF",
+      "stroke": "#B3C2CD",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure06_system-v2-007",
+      "group": "component-5"
+    },
+    {
+      "x": 49.0,
+      "y": 291.0,
+      "r": 9,
+      "fill": "#F7E5CE",
+      "stroke": "#F7E5CE",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure06_system-v2-008",
+      "group": "component-5"
+    },
+    {
+      "x": 67.0,
+      "y": 300.0,
+      "r": 8,
+      "fill": "#DDEFEA",
+      "stroke": "#DDEFEA",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure06_system-v2-009",
+      "group": "component-5"
+    },
+    {
+      "x": 66.0,
+      "y": 283.0,
+      "r": 6,
+      "fill": "#DDEFEA",
+      "stroke": "#DDEFEA",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure06_system-v2-010",
+      "group": "component-5"
+    },
+    {
+      "x": 51.0,
+      "y": 305.0,
+      "r": 5,
+      "fill": "#F7E5CE",
+      "stroke": "#F7E5CE",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure06_system-v2-011",
+      "group": "component-5"
+    },
+    {
+      "x": 59,
+      "y": 355.0,
+      "text": "RGB",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-012"
+    },
+    {
+      "x": 125,
+      "y": 257,
+      "w": 130,
+      "h": 75,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-12",
+      "kind": "rect",
+      "id": "figure06_system-v2-013"
+    },
+    {
+      "x": 190.0,
+      "y": 290.0,
+      "text": "Data version",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-12",
+      "kind": "text",
+      "id": "figure06_system-v2-014"
+    },
+    {
+      "x": 190.0,
+      "y": 311.24,
+      "text": "Preprocess",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-12",
+      "kind": "text",
+      "id": "figure06_system-v2-015"
+    },
+    {
+      "points": [
+        [
+          90,
+          294
+        ],
+        [
+          125,
+          294
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-016"
+    },
+    {
+      "points": [
+        [
+          255,
+          294
+        ],
+        [
+          300,
+          294
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-017"
+    },
+    {
+      "points": [
+        [
+          300,
+          155
+        ],
+        [
+          300,
+          540
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-018"
+    },
+    {
+      "points": [
+        [
+          300,
+          155
+        ],
+        [
+          355,
+          155
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-019"
+    },
+    {
+      "points": [
+        [
+          300,
+          245
+        ],
+        [
+          355,
+          245
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-020"
+    },
+    {
+      "points": [
+        [
+          300,
+          433
+        ],
+        [
+          355,
+          433
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-021"
+    },
+    {
+      "points": [
+        [
+          300,
+          537
+        ],
+        [
+          355,
+          537
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-022"
+    },
+    {
+      "x": 365,
+      "y": 115,
+      "w": 105,
+      "h": 60,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-22",
+      "kind": "rect",
+      "id": "figure06_system-v2-023"
+    },
+    {
+      "x": 360,
+      "y": 120,
+      "w": 105,
+      "h": 60,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-22",
+      "kind": "rect",
+      "id": "figure06_system-v2-024"
+    },
+    {
+      "x": 355,
+      "y": 125,
+      "w": 105,
+      "h": 60,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-22",
+      "kind": "rect",
+      "id": "figure06_system-v2-025"
+    },
+    {
+      "x": 407.5,
+      "y": 161.46,
+      "text": "ResNet-18",
+      "size": 19,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-22",
+      "kind": "text",
+      "id": "figure06_system-v2-026"
+    },
+    {
+      "x": 365,
+      "y": 205,
+      "w": 105,
+      "h": 60,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-26",
+      "kind": "rect",
+      "id": "figure06_system-v2-027"
+    },
+    {
+      "x": 360,
+      "y": 210,
+      "w": 105,
+      "h": 60,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-26",
+      "kind": "rect",
+      "id": "figure06_system-v2-028"
+    },
+    {
+      "x": 355,
+      "y": 215,
+      "w": 105,
+      "h": 60,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-26",
+      "kind": "rect",
+      "id": "figure06_system-v2-029"
+    },
+    {
+      "x": 407.5,
+      "y": 251.46,
+      "text": "ResNet-18",
+      "size": 19,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-26",
+      "kind": "text",
+      "id": "figure06_system-v2-030"
+    },
+    {
+      "x": 335,
+      "y": 143,
+      "text": "A",
+      "size": 18,
+      "bold": true,
+      "color": "#3C6B8C",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-031"
+    },
+    {
+      "x": 335,
+      "y": 233,
+      "text": "B",
+      "size": 18,
+      "bold": true,
+      "color": "#3C6B8C",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-032"
+    },
+    {
+      "x": 499,
+      "y": 133,
+      "w": 10,
+      "h": 43,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-32",
+      "kind": "rect",
+      "id": "figure06_system-v2-033"
+    },
+    {
+      "x": 512,
+      "y": 133,
+      "w": 10,
+      "h": 43,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-32",
+      "kind": "rect",
+      "id": "figure06_system-v2-034"
+    },
+    {
+      "x": 525,
+      "y": 133,
+      "w": 10,
+      "h": 43,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-32",
+      "kind": "rect",
+      "id": "figure06_system-v2-035"
+    },
+    {
+      "x": 538,
+      "y": 133,
+      "w": 10,
+      "h": 43,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-32",
+      "kind": "rect",
+      "id": "figure06_system-v2-036"
+    },
+    {
+      "x": 508.0,
+      "y": 217.0,
+      "w": 43,
+      "h": 43,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 0,
+      "sw": 1,
+      "dash": false,
+      "group": "component-36",
+      "kind": "rect",
+      "id": "figure06_system-v2-037"
+    },
+    {
+      "x": 504.0,
+      "y": 221.0,
+      "w": 43,
+      "h": 43,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 0,
+      "sw": 1,
+      "dash": false,
+      "group": "component-36",
+      "kind": "rect",
+      "id": "figure06_system-v2-038"
+    },
+    {
+      "x": 500.0,
+      "y": 225.0,
+      "w": 43,
+      "h": 43,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 0,
+      "sw": 1,
+      "dash": false,
+      "group": "component-36",
+      "kind": "rect",
+      "id": "figure06_system-v2-039"
+    },
+    {
+      "points": [
+        [
+          510.75,
+          225
+        ],
+        [
+          510.75,
+          268
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-040",
+      "group": "component-36"
+    },
+    {
+      "points": [
+        [
+          500,
+          235.75
+        ],
+        [
+          543,
+          235.75
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-041",
+      "group": "component-36"
+    },
+    {
+      "points": [
+        [
+          521.5,
+          225
+        ],
+        [
+          521.5,
+          268
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-042",
+      "group": "component-36"
+    },
+    {
+      "points": [
+        [
+          500,
+          246.5
+        ],
+        [
+          543,
+          246.5
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-043",
+      "group": "component-36"
+    },
+    {
+      "points": [
+        [
+          532.25,
+          225
+        ],
+        [
+          532.25,
+          268
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-044",
+      "group": "component-36"
+    },
+    {
+      "points": [
+        [
+          500,
+          257.25
+        ],
+        [
+          543,
+          257.25
+        ]
+      ],
+      "color": "#B3C2CD",
+      "dash": false,
+      "sw": 0.65,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-045",
+      "group": "component-36"
+    },
+    {
+      "x": 585,
+      "y": 125,
+      "w": 125,
+      "h": 60,
+      "fill": "#DDEFEA",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-45",
+      "kind": "rect",
+      "id": "figure06_system-v2-046"
+    },
+    {
+      "x": 647.5,
+      "y": 162.82,
+      "text": "GRU",
+      "size": 23,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-45",
+      "kind": "text",
+      "id": "figure06_system-v2-047"
+    },
+    {
+      "x": 585,
+      "y": 215,
+      "w": 125,
+      "h": 60,
+      "fill": "#DDEFEA",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-47",
+      "kind": "rect",
+      "id": "figure06_system-v2-048"
+    },
+    {
+      "x": 647.5,
+      "y": 251.46,
+      "text": "Transformer",
+      "size": 19,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-47",
+      "kind": "text",
+      "id": "figure06_system-v2-049"
+    },
+    {
+      "points": [
+        [
+          460,
+          155
+        ],
+        [
+          499,
+          155
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-050"
+    },
+    {
+      "points": [
+        [
+          551,
+          155
+        ],
+        [
+          585,
+          155
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-051"
+    },
+    {
+      "points": [
+        [
+          710,
+          155
+        ],
+        [
+          765,
+          155
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-052"
+    },
+    {
+      "points": [
+        [
+          460,
+          245
+        ],
+        [
+          499,
+          245
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-053"
+    },
+    {
+      "points": [
+        [
+          551,
+          245
+        ],
+        [
+          585,
+          245
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-054"
+    },
+    {
+      "points": [
+        [
+          710,
+          245
+        ],
+        [
+          765,
+          245
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-055"
+    },
+    {
+      "x": 765,
+      "y": 130,
+      "w": 185,
+      "h": 50,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-55",
+      "kind": "rect",
+      "id": "figure06_system-v2-056"
+    },
+    {
+      "x": 857.5,
+      "y": 162.14,
+      "text": "Caption A",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-55",
+      "kind": "text",
+      "id": "figure06_system-v2-057"
+    },
+    {
+      "x": 765,
+      "y": 220,
+      "w": 185,
+      "h": 50,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-57",
+      "kind": "rect",
+      "id": "figure06_system-v2-058"
+    },
+    {
+      "x": 857.5,
+      "y": 252.14,
+      "text": "Caption B",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-57",
+      "kind": "text",
+      "id": "figure06_system-v2-059"
+    },
+    {
+      "x": 665,
+      "y": 319.0,
+      "text": "A: ResNet + projection + GRU",
+      "size": 18,
+      "bold": false,
+      "color": "#AA7439",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-060"
+    },
+    {
+      "x": 355,
+      "y": 398,
+      "w": 215,
+      "h": 70,
+      "fill": "#DDEFEA",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-62",
+      "kind": "rect",
+      "id": "figure06_system-v2-061"
+    },
+    {
+      "x": 462.5,
+      "y": 428.0,
+      "text": "Transferred A",
+      "size": 20,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-62",
+      "kind": "text",
+      "id": "figure06_system-v2-062"
+    },
+    {
+      "x": 462.5,
+      "y": 451.6,
+      "text": "Ingredient sequence",
+      "size": 20,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-62",
+      "kind": "text",
+      "id": "figure06_system-v2-063"
+    },
+    {
+      "x": 613,
+      "y": 398,
+      "w": 105,
+      "h": 70,
+      "fill": "#E9E3F1",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-65",
+      "kind": "rect",
+      "id": "figure06_system-v2-064"
+    },
+    {
+      "x": 665.5,
+      "y": 428.0,
+      "text": "Weight",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-65",
+      "kind": "text",
+      "id": "figure06_system-v2-065"
+    },
+    {
+      "x": 665.5,
+      "y": 451.6,
+      "text": "+ totals",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-65",
+      "kind": "text",
+      "id": "figure06_system-v2-066"
+    },
+    {
+      "points": [
+        [
+          570,
+          433
+        ],
+        [
+          613,
+          433
+        ]
+      ],
+      "color": "#76618F",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-067"
+    },
+    {
+      "x": 355,
+      "y": 510,
+      "w": 340,
+      "h": 55,
+      "fill": "#F7E5CE",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-69",
+      "kind": "rect",
+      "id": "figure06_system-v2-068"
+    },
+    {
+      "x": 525.0,
+      "y": 544.3,
+      "text": "Qwen3-VL + LoRA / QLoRA",
+      "size": 20,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-69",
+      "kind": "text",
+      "id": "figure06_system-v2-069"
+    },
+    {
+      "x": 775,
+      "y": 435,
+      "w": 175,
+      "h": 87,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-71",
+      "kind": "rect",
+      "id": "figure06_system-v2-070"
+    },
+    {
+      "x": 862.5,
+      "y": 463.38,
+      "text": "JSON",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-71",
+      "kind": "text",
+      "id": "figure06_system-v2-071"
+    },
+    {
+      "x": 862.5,
+      "y": 484.62,
+      "text": "items + 5 totals",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-71",
+      "kind": "text",
+      "id": "figure06_system-v2-072"
+    },
+    {
+      "x": 862.5,
+      "y": 505.86,
+      "text": "Schema check",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-71",
+      "kind": "text",
+      "id": "figure06_system-v2-073"
+    },
+    {
+      "points": [
+        [
+          718,
+          433
+        ],
+        [
+          745,
+          433
+        ],
+        [
+          745,
+          461
+        ],
+        [
+          775,
+          461
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-074"
+    },
+    {
+      "points": [
+        [
+          695,
+          537
+        ],
+        [
+          745,
+          537
+        ],
+        [
+          745,
+          494
+        ],
+        [
+          775,
+          494
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-075"
+    },
+    {
+      "x": 26,
+      "y": 99,
+      "w": 245,
+      "h": 113,
+      "fill": "#FFFFFF",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": true,
+      "group": "",
+      "kind": "rect",
+      "id": "figure06_system-v2-076"
+    },
+    {
+      "x": 40,
+      "y": 124.0,
+      "text": "Optional experiments",
+      "size": 20,
+      "bold": true,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-077"
+    },
+    {
+      "x": 40,
+      "y": 153.0,
+      "text": "SCST: continue training A",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-078"
+    },
+    {
+      "x": 40,
+      "y": 174.24,
+      "text": "Judge: score captions",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-079"
+    },
+    {
+      "x": 40,
+      "y": 195.48,
+      "text": "Human agreement checks",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-080"
+    },
+    {
+      "x": 26,
+      "y": 624,
+      "w": 16,
+      "h": 16,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 1,
+      "sw": 1.4,
+      "dash": false,
+      "group": "",
+      "kind": "rect",
+      "id": "figure06_system-v2-081"
+    },
+    {
+      "x": 50,
+      "y": 638.0,
+      "text": "visual",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-082"
+    },
+    {
+      "x": 145,
+      "y": 624,
+      "w": 16,
+      "h": 16,
+      "fill": "#DDEFEA",
+      "stroke": "#3B7D71",
+      "r": 1,
+      "sw": 1.4,
+      "dash": false,
+      "group": "",
+      "kind": "rect",
+      "id": "figure06_system-v2-083"
+    },
+    {
+      "x": 169,
+      "y": 638.0,
+      "text": "sequence / attention",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-084"
+    },
+    {
+      "x": 380,
+      "y": 624,
+      "w": 16,
+      "h": 16,
+      "fill": "#E9E3F1",
+      "stroke": "#76618F",
+      "r": 1,
+      "sw": 1.4,
+      "dash": false,
+      "group": "",
+      "kind": "rect",
+      "id": "figure06_system-v2-085"
+    },
+    {
+      "x": 404,
+      "y": 638.0,
+      "text": "regression",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-086"
+    },
+    {
+      "points": [
+        [
+          580,
+          633
+        ],
+        [
+          620,
+          633
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-087"
+    },
+    {
+      "x": 630,
+      "y": 638.0,
+      "text": "transfer / supervision",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-088"
+    },
+    {
+      "points": [
+        [
+          647,
+          185
+        ],
+        [
+          647,
+          197
+        ],
+        [
+          321,
+          197
+        ],
+        [
+          321,
+          328
+        ],
+        [
+          315,
+          328
+        ],
+        [
+          315,
+          392
+        ],
+        [
+          460,
+          392
+        ],
+        [
+          460,
+          398
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-089"
+    },
+    {
+      "x": 321,
+      "y": 245,
+      "r": 4,
+      "fill": "#FFFFFF",
+      "stroke": "#FFFFFF",
+      "sw": 0,
+      "kind": "circle",
+      "id": "figure06_system-v2-090"
+    },
+    {
+      "points": [
+        [
+          314,
+          245
+        ],
+        [
+          328,
+          245
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-091"
+    },
+    {
+      "x": 26,
+      "y": 408,
+      "w": 245,
+      "h": 181,
+      "fill": "#F2F5F7",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "container",
+      "kind": "rect",
+      "id": "figure06_system-v2-092"
+    },
+    {
+      "x": 148,
+      "y": 437.0,
+      "text": "Unified evaluation",
+      "size": 20,
+      "bold": true,
+      "color": "#3C6B8C",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-093"
+    },
+    {
+      "x": 148,
+      "y": 468.0,
+      "text": "Caption metrics",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-094"
+    },
+    {
+      "x": 148,
+      "y": 489.24,
+      "text": "Ingredient F1",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-095"
+    },
+    {
+      "x": 148,
+      "y": 510.48,
+      "text": "Weight / nutrition errors",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-096"
+    },
+    {
+      "x": 148,
+      "y": 531.72,
+      "text": "JSON / Schema validity",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-097"
+    },
+    {
+      "x": 148,
+      "y": 552.96,
+      "text": "Judge-human agreement",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-098"
+    },
+    {
+      "points": [
+        [
+          950,
+          155
+        ],
+        [
+          988,
+          155
+        ],
+        [
+          988,
+          610
+        ],
+        [
+          282,
+          610
+        ],
+        [
+          282,
+          500
+        ],
+        [
+          271,
+          500
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-099"
+    },
+    {
+      "points": [
+        [
+          950,
+          245
+        ],
+        [
+          988,
+          245
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-100"
+    },
+    {
+      "points": [
+        [
+          950,
+          478
+        ],
+        [
+          988,
+          478
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-101"
+    },
+    {
+      "x": 988,
+      "y": 245,
+      "r": 2,
+      "fill": "#657C8C",
+      "stroke": "#657C8C",
+      "sw": 0,
+      "kind": "circle",
+      "id": "figure06_system-v2-102"
+    },
+    {
+      "x": 988,
+      "y": 478,
+      "r": 2,
+      "fill": "#657C8C",
+      "stroke": "#657C8C",
+      "sw": 0,
+      "kind": "circle",
+      "id": "figure06_system-v2-103"
+    },
+    {
+      "points": [
+        [
+          271,
+          143
+        ],
+        [
+          315,
+          143
+        ],
+        [
+          315,
+          110
+        ],
+        [
+          600,
+          110
+        ],
+        [
+          600,
+          125
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-104"
+    },
+    {
+      "points": [
+        [
+          26,
+          184
+        ],
+        [
+          10,
+          184
+        ],
+        [
+          10,
+          385
+        ],
+        [
+          148,
+          385
+        ],
+        [
+          148,
+          408
+        ]
+      ],
+      "color": "#3B7D71",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-105"
+    },
+    {
+      "points": [
+        [
+          988,
+          300
+        ],
+        [
+          998,
+          300
+        ],
+        [
+          998,
+          50
+        ],
+        [
+          148,
+          50
+        ],
+        [
+          148,
+          99
+        ]
+      ],
+      "color": "#3B7D71",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure06_system-v2-106"
+    },
+    {
+      "x": 988,
+      "y": 300,
+      "r": 2,
+      "fill": "#3B7D71",
+      "stroke": "#3B7D71",
+      "sw": 0,
+      "kind": "circle",
+      "id": "figure06_system-v2-107"
+    },
+    {
+      "x": 845,
+      "y": 43.0,
+      "text": "captions",
+      "size": 18,
+      "bold": false,
+      "color": "#3B7D71",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure06_system-v2-108"
+    }
+  ]
+}

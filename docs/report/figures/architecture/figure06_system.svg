@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="657" viewBox="0 0 1000 657" role="img" aria-label="FoodLens: task relationships and shared infrastructure">
+  <title>FoodLens: task relationships and shared infrastructure</title>
+  <rect width="1000" height="657" fill="white" />
+  <text id="figure06_system-v2-001" x="26" y="31.0" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#3C6B8C" text-anchor="start">FoodLens</text>
+  <rect id="figure06_system-v2-002" x="330" y="55" width="650" height="245" rx="3" fill="#FAFBFC" stroke="#B3C2CD" stroke-width="1.4" />
+  <text id="figure06_system-v2-003" x="348" y="86.0" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#3C6B8C" text-anchor="start">TASK 1  |  Image captioning</text>
+  <rect id="figure06_system-v2-004" x="330" y="345" width="650" height="250" rx="3" fill="#FAFBFC" stroke="#B3C2CD" stroke-width="1.4" />
+  <text id="figure06_system-v2-005" x="348" y="376.0" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#76618F" text-anchor="start">TASK 2  |  Structured meal records</text>
+  <g id="component-5" data-editable="true">
+    <rect id="figure06_system-v2-006" x="28" y="263" width="62" height="62" rx="1" fill="#F2F5F7" stroke="#B3C2CD" stroke-width="1.4" />
+    <circle id="figure06_system-v2-007" cx="59.0" cy="294.0" r="21.080000000000002" fill="#FFFFFF" stroke="#B3C2CD" stroke-width="1" />
+    <circle id="figure06_system-v2-008" cx="49.0" cy="291.0" r="9" fill="#F7E5CE" stroke="#F7E5CE" stroke-width="1" />
+    <circle id="figure06_system-v2-009" cx="67.0" cy="300.0" r="8" fill="#DDEFEA" stroke="#DDEFEA" stroke-width="1" />
+    <circle id="figure06_system-v2-010" cx="66.0" cy="283.0" r="6" fill="#DDEFEA" stroke="#DDEFEA" stroke-width="1" />
+    <circle id="figure06_system-v2-011" cx="51.0" cy="305.0" r="5" fill="#F7E5CE" stroke="#F7E5CE" stroke-width="1" />
+  </g>
+  <text id="figure06_system-v2-012" x="59" y="355.0" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#253747" text-anchor="middle">RGB</text>
+  <g id="component-12" data-editable="true">
+    <rect id="figure06_system-v2-013" x="125" y="257" width="130" height="75" rx="3" fill="#F2F5F7" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-014" x="190.0" y="290.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">Data version</text>
+    <text id="figure06_system-v2-015" x="190.0" y="311.24" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">Preprocess</text>
+  </g>
+  <polyline id="figure06_system-v2-016" points="90,294 125,294" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="125,294 117.0,290.7 117.0,297.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-017" points="255,294 300,294" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polyline id="figure06_system-v2-018" points="300,155 300,540" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polyline id="figure06_system-v2-019" points="300,155 355,155" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="355,155 347.0,151.7 347.0,158.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-020" points="300,245 355,245" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="355,245 347.0,241.7 347.0,248.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-021" points="300,433 355,433" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="355,433 347.0,429.7 347.0,436.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-022" points="300,537 355,537" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="355,537 347.0,533.7 347.0,540.3" fill="#657C8C" />
+  <g id="component-22" data-editable="true">
+    <rect id="figure06_system-v2-023" x="365" y="115" width="105" height="60" rx="3" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1.4" />
+    <rect id="figure06_system-v2-024" x="360" y="120" width="105" height="60" rx="3" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1.4" />
+    <rect id="figure06_system-v2-025" x="355" y="125" width="105" height="60" rx="3" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1.4" />
+    <text id="figure06_system-v2-026" x="407.5" y="161.46" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#253747" text-anchor="middle">ResNet-18</text>
+  </g>
+  <g id="component-26" data-editable="true">
+    <rect id="figure06_system-v2-027" x="365" y="205" width="105" height="60" rx="3" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1.4" />
+    <rect id="figure06_system-v2-028" x="360" y="210" width="105" height="60" rx="3" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1.4" />
+    <rect id="figure06_system-v2-029" x="355" y="215" width="105" height="60" rx="3" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1.4" />
+    <text id="figure06_system-v2-030" x="407.5" y="251.46" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#253747" text-anchor="middle">ResNet-18</text>
+  </g>
+  <text id="figure06_system-v2-031" x="335" y="143" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3C6B8C" text-anchor="start">A</text>
+  <text id="figure06_system-v2-032" x="335" y="233" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3C6B8C" text-anchor="start">B</text>
+  <g id="component-32" data-editable="true">
+    <rect id="figure06_system-v2-033" x="499" y="133" width="10" height="43" rx="0" fill="#DCEAF4" stroke="#FFFFFF" stroke-width="0.8" />
+    <rect id="figure06_system-v2-034" x="512" y="133" width="10" height="43" rx="0" fill="#DCEAF4" stroke="#FFFFFF" stroke-width="0.8" />
+    <rect id="figure06_system-v2-035" x="525" y="133" width="10" height="43" rx="0" fill="#DCEAF4" stroke="#FFFFFF" stroke-width="0.8" />
+    <rect id="figure06_system-v2-036" x="538" y="133" width="10" height="43" rx="0" fill="#DCEAF4" stroke="#FFFFFF" stroke-width="0.8" />
+  </g>
+  <g id="component-36" data-editable="true">
+    <rect id="figure06_system-v2-037" x="508.0" y="217.0" width="43" height="43" rx="0" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1" />
+    <rect id="figure06_system-v2-038" x="504.0" y="221.0" width="43" height="43" rx="0" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1" />
+    <rect id="figure06_system-v2-039" x="500.0" y="225.0" width="43" height="43" rx="0" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1" />
+    <polyline id="figure06_system-v2-040" points="510.75,225 510.75,268" fill="none" stroke="#B3C2CD" stroke-width="0.65" stroke-linejoin="round" />
+    <polyline id="figure06_system-v2-041" points="500,235.75 543,235.75" fill="none" stroke="#B3C2CD" stroke-width="0.65" stroke-linejoin="round" />
+    <polyline id="figure06_system-v2-042" points="521.5,225 521.5,268" fill="none" stroke="#B3C2CD" stroke-width="0.65" stroke-linejoin="round" />
+    <polyline id="figure06_system-v2-043" points="500,246.5 543,246.5" fill="none" stroke="#B3C2CD" stroke-width="0.65" stroke-linejoin="round" />
+    <polyline id="figure06_system-v2-044" points="532.25,225 532.25,268" fill="none" stroke="#B3C2CD" stroke-width="0.65" stroke-linejoin="round" />
+    <polyline id="figure06_system-v2-045" points="500,257.25 543,257.25" fill="none" stroke="#B3C2CD" stroke-width="0.65" stroke-linejoin="round" />
+  </g>
+  <g id="component-45" data-editable="true">
+    <rect id="figure06_system-v2-046" x="585" y="125" width="125" height="60" rx="3" fill="#DDEFEA" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-047" x="647.5" y="162.82" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#253747" text-anchor="middle">GRU</text>
+  </g>
+  <g id="component-47" data-editable="true">
+    <rect id="figure06_system-v2-048" x="585" y="215" width="125" height="60" rx="3" fill="#DDEFEA" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-049" x="647.5" y="251.46" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#253747" text-anchor="middle">Transformer</text>
+  </g>
+  <polyline id="figure06_system-v2-050" points="460,155 499,155" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="499,155 491.0,151.7 491.0,158.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-051" points="551,155 585,155" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="585,155 577.0,151.7 577.0,158.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-052" points="710,155 765,155" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="765,155 757.0,151.7 757.0,158.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-053" points="460,245 499,245" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="499,245 491.0,241.7 491.0,248.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-054" points="551,245 585,245" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="585,245 577.0,241.7 577.0,248.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-055" points="710,245 765,245" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="765,245 757.0,241.7 757.0,248.3" fill="#657C8C" />
+  <g id="component-55" data-editable="true">
+    <rect id="figure06_system-v2-056" x="765" y="130" width="185" height="50" rx="3" fill="#F2F5F7" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-057" x="857.5" y="162.14" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#253747" text-anchor="middle">Caption A</text>
+  </g>
+  <g id="component-57" data-editable="true">
+    <rect id="figure06_system-v2-058" x="765" y="220" width="185" height="50" rx="3" fill="#F2F5F7" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-059" x="857.5" y="252.14" font-family="Arial, sans-serif" font-size="21" font-weight="400" fill="#253747" text-anchor="middle">Caption B</text>
+  </g>
+  <text id="figure06_system-v2-060" x="665" y="319.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#AA7439" text-anchor="middle">A: ResNet + projection + GRU</text>
+  <g id="component-62" data-editable="true">
+    <rect id="figure06_system-v2-061" x="355" y="398" width="215" height="70" rx="3" fill="#DDEFEA" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-062" x="462.5" y="428.0" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#253747" text-anchor="middle">Transferred A</text>
+    <text id="figure06_system-v2-063" x="462.5" y="451.6" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#253747" text-anchor="middle">Ingredient sequence</text>
+  </g>
+  <g id="component-65" data-editable="true">
+    <rect id="figure06_system-v2-064" x="613" y="398" width="105" height="70" rx="3" fill="#E9E3F1" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-065" x="665.5" y="428.0" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#253747" text-anchor="middle">Weight</text>
+    <text id="figure06_system-v2-066" x="665.5" y="451.6" font-family="Arial, sans-serif" font-size="20" font-weight="400" fill="#253747" text-anchor="middle">+ totals</text>
+  </g>
+  <polyline id="figure06_system-v2-067" points="570,433 613,433" fill="none" stroke="#76618F" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="613,433 605.0,429.7 605.0,436.3" fill="#76618F" />
+  <g id="component-69" data-editable="true">
+    <rect id="figure06_system-v2-068" x="355" y="510" width="340" height="55" rx="3" fill="#F7E5CE" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-069" x="525.0" y="544.3" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#253747" text-anchor="middle">Qwen3-VL + LoRA / QLoRA</text>
+  </g>
+  <g id="component-71" data-editable="true">
+    <rect id="figure06_system-v2-070" x="775" y="435" width="175" height="87" rx="3" fill="#F2F5F7" stroke="#B3C2CD" stroke-width="1.4" />
+    <text id="figure06_system-v2-071" x="862.5" y="463.38" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">JSON</text>
+    <text id="figure06_system-v2-072" x="862.5" y="484.62" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">items + 5 totals</text>
+    <text id="figure06_system-v2-073" x="862.5" y="505.86" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">Schema check</text>
+  </g>
+  <polyline id="figure06_system-v2-074" points="718,433 745,433 745,461 775,461" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="775,461 767.0,457.7 767.0,464.3" fill="#657C8C" />
+  <polyline id="figure06_system-v2-075" points="695,537 745,537 745,494 775,494" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="775,494 767.0,490.7 767.0,497.3" fill="#657C8C" />
+  <rect id="figure06_system-v2-076" x="26" y="99" width="245" height="113" rx="3" fill="#FFFFFF" stroke="#B3C2CD" stroke-width="1.4" stroke-dasharray="6 4" />
+  <text id="figure06_system-v2-077" x="40" y="124.0" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#607382" text-anchor="start">Optional experiments</text>
+  <text id="figure06_system-v2-078" x="40" y="153.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#607382" text-anchor="start">SCST: continue training A</text>
+  <text id="figure06_system-v2-079" x="40" y="174.24" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#607382" text-anchor="start">Judge: score captions</text>
+  <text id="figure06_system-v2-080" x="40" y="195.48" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#607382" text-anchor="start">Human agreement checks</text>
+  <rect id="figure06_system-v2-081" x="26" y="624" width="16" height="16" rx="1" fill="#DCEAF4" stroke="#3C6B8C" stroke-width="1.4" />
+  <text id="figure06_system-v2-082" x="50" y="638.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#607382" text-anchor="start">visual</text>
+  <rect id="figure06_system-v2-083" x="145" y="624" width="16" height="16" rx="1" fill="#DDEFEA" stroke="#3B7D71" stroke-width="1.4" />
+  <text id="figure06_system-v2-084" x="169" y="638.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#607382" text-anchor="start">sequence / attention</text>
+  <rect id="figure06_system-v2-085" x="380" y="624" width="16" height="16" rx="1" fill="#E9E3F1" stroke="#76618F" stroke-width="1.4" />
+  <text id="figure06_system-v2-086" x="404" y="638.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#607382" text-anchor="start">regression</text>
+  <polyline id="figure06_system-v2-087" points="580,633 620,633" fill="none" stroke="#AA7439" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="6 4" />
+  <polygon points="620,633 612.0,629.7 612.0,636.3" fill="#AA7439" />
+  <text id="figure06_system-v2-088" x="630" y="638.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#607382" text-anchor="start">transfer / supervision</text>
+  <polyline id="figure06_system-v2-089" points="647,185 647,197 321,197 321,328 315,328 315,392 460,392 460,398" fill="none" stroke="#AA7439" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="6 4" />
+  <polygon points="460,398 463.3,390.0 456.7,390.0" fill="#AA7439" />
+  <circle id="figure06_system-v2-090" cx="321" cy="245" r="4" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0" />
+  <polyline id="figure06_system-v2-091" points="314,245 328,245" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <rect id="figure06_system-v2-092" x="26" y="408" width="245" height="181" rx="3" fill="#F2F5F7" stroke="#3C6B8C" stroke-width="1.4" />
+  <text id="figure06_system-v2-093" x="148" y="437.0" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#3C6B8C" text-anchor="middle">Unified evaluation</text>
+  <text id="figure06_system-v2-094" x="148" y="468.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">Caption metrics</text>
+  <text id="figure06_system-v2-095" x="148" y="489.24" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">Ingredient F1</text>
+  <text id="figure06_system-v2-096" x="148" y="510.48" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">Weight / nutrition errors</text>
+  <text id="figure06_system-v2-097" x="148" y="531.72" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">JSON / Schema validity</text>
+  <text id="figure06_system-v2-098" x="148" y="552.96" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#253747" text-anchor="middle">Judge-human agreement</text>
+  <polyline id="figure06_system-v2-099" points="950,155 988,155 988,610 282,610 282,500 271,500" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="271,500 279.0,503.3 279.0,496.7" fill="#657C8C" />
+  <polyline id="figure06_system-v2-100" points="950,245 988,245" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <polyline id="figure06_system-v2-101" points="950,478 988,478" fill="none" stroke="#657C8C" stroke-width="1.8" stroke-linejoin="round" />
+  <circle id="figure06_system-v2-102" cx="988" cy="245" r="2" fill="#657C8C" stroke="#657C8C" stroke-width="0" />
+  <circle id="figure06_system-v2-103" cx="988" cy="478" r="2" fill="#657C8C" stroke="#657C8C" stroke-width="0" />
+  <polyline id="figure06_system-v2-104" points="271,143 315,143 315,110 600,110 600,125" fill="none" stroke="#AA7439" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="6 4" />
+  <polygon points="600,125 603.3,117.0 596.7,117.0" fill="#AA7439" />
+  <polyline id="figure06_system-v2-105" points="26,184 10,184 10,385 148,385 148,408" fill="none" stroke="#3B7D71" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="148,408 151.3,400.0 144.7,400.0" fill="#3B7D71" />
+  <polyline id="figure06_system-v2-106" points="988,300 998,300 998,50 148,50 148,99" fill="none" stroke="#3B7D71" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="148,99 151.3,91.0 144.7,91.0" fill="#3B7D71" />
+  <circle id="figure06_system-v2-107" cx="988" cy="300" r="2" fill="#3B7D71" stroke="#3B7D71" stroke-width="0" />
+  <text id="figure06_system-v2-108" x="845" y="43.0" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#3B7D71" text-anchor="middle">captions</text>
+</svg>

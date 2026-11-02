@@ -1,0 +1,13 @@
+% Original Qwen3-VL Fig. 1 plus an explicitly marked enlargement.
+% Main network is unchanged. The video-example region is replaced by the inset.
+\begin{tikzpicture}
+ \node[inner sep=0,anchor=south west] (original) at (0,0)
+  {\includegraphics[width=\linewidth]{figures/literature/qwen3vl-fig1.jpg}};
+ \begin{scope}[x={(original.south east)},y={(original.north west)}]
+  \fill[white] (0.64,0) rectangle (1,0.415);
+  \node[anchor=south east,inner sep=0] at (0.998,0.005)
+   {\includegraphics[width=0.30\linewidth]{figures/literature/qwen3vl-deepstack-detail.png}};
+  \node[anchor=north,inner sep=0,font=\fontsize{8}{10}\selectfont\bfseries,text=FLBlue]
+   at (0.825,0.409) {DeepStack 局部放大};
+ \end{scope}
+\end{tikzpicture}

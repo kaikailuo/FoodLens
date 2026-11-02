@@ -1,0 +1,1746 @@
+{
+  "name": "figure09_qwen",
+  "width": 1000,
+  "height": 881,
+  "items": [
+    {
+      "x": 8,
+      "y": 8,
+      "w": 984,
+      "h": 553,
+      "fill": "#FFFFFF",
+      "stroke": "#B3C2CD",
+      "r": 0,
+      "sw": 1,
+      "dash": false,
+      "group": "",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-001"
+    },
+    {
+      "x": 8,
+      "y": 8,
+      "w": 5,
+      "h": 553,
+      "fill": "#AA7439",
+      "stroke": "#AA7439",
+      "r": 0,
+      "sw": 0,
+      "dash": false,
+      "group": "",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-002"
+    },
+    {
+      "x": 26,
+      "y": 36.0,
+      "text": "(a) Domain adaptation  |  Qwen3-VL-4B-Instruct",
+      "size": 24,
+      "bold": true,
+      "color": "#AA7439",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-003"
+    },
+    {
+      "x": 29,
+      "y": 84,
+      "w": 62,
+      "h": 62,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 1,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-3",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-004"
+    },
+    {
+      "x": 60.0,
+      "y": 115.0,
+      "r": 21.080000000000002,
+      "fill": "#FFFFFF",
+      "stroke": "#B3C2CD",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure09_qwen-v2-005",
+      "group": "component-3"
+    },
+    {
+      "x": 50.0,
+      "y": 112.0,
+      "r": 9,
+      "fill": "#F7E5CE",
+      "stroke": "#F7E5CE",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure09_qwen-v2-006",
+      "group": "component-3"
+    },
+    {
+      "x": 68.0,
+      "y": 121.0,
+      "r": 8,
+      "fill": "#DDEFEA",
+      "stroke": "#DDEFEA",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure09_qwen-v2-007",
+      "group": "component-3"
+    },
+    {
+      "x": 67.0,
+      "y": 104.0,
+      "r": 6,
+      "fill": "#DDEFEA",
+      "stroke": "#DDEFEA",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure09_qwen-v2-008",
+      "group": "component-3"
+    },
+    {
+      "x": 52.0,
+      "y": 126.0,
+      "r": 5,
+      "fill": "#F7E5CE",
+      "stroke": "#F7E5CE",
+      "sw": 1,
+      "kind": "circle",
+      "id": "figure09_qwen-v2-009",
+      "group": "component-3"
+    },
+    {
+      "x": 60,
+      "y": 177.0,
+      "text": "RGB",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-010"
+    },
+    {
+      "x": 135,
+      "y": 77,
+      "w": 168,
+      "h": 70,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-10",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-011"
+    },
+    {
+      "x": 219.0,
+      "y": 106.75,
+      "text": "Vision encoder",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-10",
+      "kind": "text",
+      "id": "figure09_qwen-v2-012"
+    },
+    {
+      "x": 219.0,
+      "y": 131.53,
+      "text": "FROZEN",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-10",
+      "kind": "text",
+      "id": "figure09_qwen-v2-013"
+    },
+    {
+      "x": 349,
+      "y": 77,
+      "w": 131,
+      "h": 70,
+      "fill": "#DCEAF4",
+      "stroke": "#3C6B8C",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-13",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-014"
+    },
+    {
+      "x": 414.5,
+      "y": 107.5,
+      "text": "Visual mapper",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-13",
+      "kind": "text",
+      "id": "figure09_qwen-v2-015"
+    },
+    {
+      "x": 414.5,
+      "y": 128.74,
+      "text": "FROZEN",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-13",
+      "kind": "text",
+      "id": "figure09_qwen-v2-016"
+    },
+    {
+      "x": 519,
+      "y": 89,
+      "w": 13,
+      "h": 51,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-16",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-017"
+    },
+    {
+      "x": 535,
+      "y": 89,
+      "w": 13,
+      "h": 51,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-16",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-018"
+    },
+    {
+      "x": 551,
+      "y": 89,
+      "w": 13,
+      "h": 51,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-16",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-019"
+    },
+    {
+      "x": 567,
+      "y": 89,
+      "w": 13,
+      "h": 51,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-16",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-020"
+    },
+    {
+      "x": 583,
+      "y": 89,
+      "w": 13,
+      "h": 51,
+      "fill": "#DCEAF4",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-16",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-021"
+    },
+    {
+      "x": 554,
+      "y": 178.0,
+      "text": "visual tokens",
+      "size": 18,
+      "bold": false,
+      "color": "#3C6B8C",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-022"
+    },
+    {
+      "points": [
+        [
+          91,
+          115
+        ],
+        [
+          135,
+          115
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-023"
+    },
+    {
+      "points": [
+        [
+          303,
+          115
+        ],
+        [
+          349,
+          115
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-024"
+    },
+    {
+      "points": [
+        [
+          480,
+          115
+        ],
+        [
+          519,
+          115
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-025"
+    },
+    {
+      "x": 29,
+      "y": 219,
+      "w": 77,
+      "h": 38,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-25",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-026"
+    },
+    {
+      "x": 67.5,
+      "y": 244.46,
+      "text": "prompt",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-25",
+      "kind": "text",
+      "id": "figure09_qwen-v2-027"
+    },
+    {
+      "x": 111,
+      "y": 219,
+      "w": 77,
+      "h": 38,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 1,
+      "sw": 1,
+      "dash": false,
+      "group": "component-25",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-028"
+    },
+    {
+      "x": 149.5,
+      "y": 244.46,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-25",
+      "kind": "math",
+      "id": "figure09_qwen-v2-029",
+      "tex": "\\cdots",
+      "original_text": "..."
+    },
+    {
+      "points": [
+        [
+          188,
+          238
+        ],
+        [
+          226,
+          238
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-030"
+    },
+    {
+      "x": 226,
+      "y": 208,
+      "w": 154,
+      "h": 62,
+      "fill": "#DDEFEA",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-30",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-031"
+    },
+    {
+      "x": 303.0,
+      "y": 234.25,
+      "text": "Tokenizer",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-30",
+      "kind": "text",
+      "id": "figure09_qwen-v2-032"
+    },
+    {
+      "x": 303.0,
+      "y": 256.67,
+      "text": "+ chat template",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-30",
+      "kind": "text",
+      "id": "figure09_qwen-v2-033"
+    },
+    {
+      "x": 421,
+      "y": 218,
+      "w": 13,
+      "h": 41,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-33",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-034"
+    },
+    {
+      "x": 437,
+      "y": 218,
+      "w": 13,
+      "h": 41,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-33",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-035"
+    },
+    {
+      "x": 453,
+      "y": 218,
+      "w": 13,
+      "h": 41,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-33",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-036"
+    },
+    {
+      "x": 469,
+      "y": 218,
+      "w": 13,
+      "h": 41,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-33",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-037"
+    },
+    {
+      "x": 485,
+      "y": 218,
+      "w": 13,
+      "h": 41,
+      "fill": "#DDEFEA",
+      "stroke": "#FFFFFF",
+      "r": 0,
+      "sw": 0.8,
+      "dash": false,
+      "group": "component-33",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-038"
+    },
+    {
+      "x": 461,
+      "y": 198.0,
+      "text": "text tokens",
+      "size": 18,
+      "bold": false,
+      "color": "#3B7D71",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-039"
+    },
+    {
+      "points": [
+        [
+          380,
+          238
+        ],
+        [
+          421,
+          238
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-040"
+    },
+    {
+      "x": 725,
+      "y": 77,
+      "w": 245,
+      "h": 189,
+      "fill": "#F2F5F7",
+      "stroke": "#657C8C",
+      "r": 4,
+      "sw": 1.4,
+      "dash": false,
+      "group": "container",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-041"
+    },
+    {
+      "x": 848,
+      "y": 112.0,
+      "text": "Qwen3 language model",
+      "size": 20,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-042"
+    },
+    {
+      "x": 848,
+      "y": 144.0,
+      "text": "Frozen base weights",
+      "size": 19,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-043"
+    },
+    {
+      "x": 748,
+      "y": 169,
+      "w": 198,
+      "h": 64,
+      "fill": "#F7E5CE",
+      "stroke": "#AA7439",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-43",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-044"
+    },
+    {
+      "x": 847.0,
+      "y": 196.5,
+      "text": "Attention Q / K / V / O",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-43",
+      "kind": "text",
+      "id": "figure09_qwen-v2-045"
+    },
+    {
+      "x": 847.0,
+      "y": 217.74,
+      "text": "+ trainable LoRA",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-43",
+      "kind": "text",
+      "id": "figure09_qwen-v2-046"
+    },
+    {
+      "points": [
+        [
+          596,
+          115
+        ],
+        [
+          640,
+          115
+        ],
+        [
+          640,
+          183
+        ],
+        [
+          725,
+          183
+        ]
+      ],
+      "color": "#3C6B8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-047"
+    },
+    {
+      "points": [
+        [
+          498,
+          238
+        ],
+        [
+          725,
+          238
+        ]
+      ],
+      "color": "#3B7D71",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-048"
+    },
+    {
+      "x": 638,
+      "y": 210.0,
+      "text": "fused inputs",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-049"
+    },
+    {
+      "x": 650,
+      "y": 305,
+      "w": 320,
+      "h": 152,
+      "fill": "#FAFBFC",
+      "stroke": "#AA7439",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "container",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-050"
+    },
+    {
+      "x": 666,
+      "y": 330.0,
+      "text": "Low-rank projection update",
+      "size": 19,
+      "bold": true,
+      "color": "#AA7439",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-051"
+    },
+    {
+      "x": 700,
+      "y": 347,
+      "w": 80,
+      "h": 38,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-51",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-052"
+    },
+    {
+      "x": 740.0,
+      "y": 372.8,
+      "size": 24,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-51",
+      "kind": "math",
+      "id": "figure09_qwen-v2-053",
+      "tex": "W_0",
+      "original_text": "W0"
+    },
+    {
+      "x": 740,
+      "y": 404.0,
+      "text": "frozen",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-054"
+    },
+    {
+      "x": 700,
+      "y": 416,
+      "w": 48,
+      "h": 30,
+      "fill": "#F7E5CE",
+      "stroke": "#AA7439",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-54",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-055"
+    },
+    {
+      "x": 724.0,
+      "y": 437.46,
+      "size": 24,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-54",
+      "kind": "math",
+      "id": "figure09_qwen-v2-056",
+      "tex": "A",
+      "original_text": "A"
+    },
+    {
+      "x": 789,
+      "y": 416,
+      "w": 48,
+      "h": 30,
+      "fill": "#F7E5CE",
+      "stroke": "#AA7439",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-56",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-057"
+    },
+    {
+      "x": 813.0,
+      "y": 437.46,
+      "size": 24,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-56",
+      "kind": "math",
+      "id": "figure09_qwen-v2-058",
+      "tex": "B",
+      "original_text": "B"
+    },
+    {
+      "x": 907,
+      "y": 366,
+      "r": 15,
+      "fill": "#FFFFFF",
+      "stroke": "#AA7439",
+      "sw": 1.4,
+      "kind": "circle",
+      "id": "figure09_qwen-v2-059"
+    },
+    {
+      "x": 907,
+      "y": 373.0,
+      "size": 24,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure09_qwen-v2-060",
+      "tex": "+",
+      "original_text": "+"
+    },
+    {
+      "points": [
+        [
+          670,
+          366
+        ],
+        [
+          700,
+          366
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-061"
+    },
+    {
+      "points": [
+        [
+          780,
+          366
+        ],
+        [
+          892,
+          366
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-062"
+    },
+    {
+      "points": [
+        [
+          682,
+          366
+        ],
+        [
+          682,
+          431
+        ],
+        [
+          700,
+          431
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-063"
+    },
+    {
+      "points": [
+        [
+          748,
+          431
+        ],
+        [
+          789,
+          431
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-064"
+    },
+    {
+      "points": [
+        [
+          837,
+          431
+        ],
+        [
+          907,
+          431
+        ],
+        [
+          907,
+          381
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-065"
+    },
+    {
+      "x": 866,
+      "y": 421.0,
+      "size": 24,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure09_qwen-v2-066",
+      "tex": "\\alpha/r",
+      "original_text": "α/r"
+    },
+    {
+      "points": [
+        [
+          922,
+          366
+        ],
+        [
+          951,
+          366
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-067"
+    },
+    {
+      "points": [
+        [
+          847,
+          233
+        ],
+        [
+          847,
+          285
+        ],
+        [
+          810,
+          285
+        ],
+        [
+          810,
+          305
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-068"
+    },
+    {
+      "x": 28,
+      "y": 325,
+      "w": 566,
+      "h": 119,
+      "fill": "#FAFBFC",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "container",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-069"
+    },
+    {
+      "x": 45,
+      "y": 353.0,
+      "text": "Supervision mask",
+      "size": 21,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-070"
+    },
+    {
+      "x": 45,
+      "y": 369,
+      "w": 220,
+      "h": 39,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-70",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-071"
+    },
+    {
+      "x": 155.0,
+      "y": 394.62,
+      "text": "image / user / PAD",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-70",
+      "kind": "text",
+      "id": "figure09_qwen-v2-072"
+    },
+    {
+      "x": 283,
+      "y": 369,
+      "w": 292,
+      "h": 39,
+      "fill": "#F7E5CE",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-72",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-073"
+    },
+    {
+      "x": 429.0,
+      "y": 395.3,
+      "text": "assistant JSON + EOS",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-72",
+      "kind": "text",
+      "id": "figure09_qwen-v2-074"
+    },
+    {
+      "x": 155,
+      "y": 433.0,
+      "size": 22,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure09_qwen-v2-075",
+      "tex": "\\mathrm{labels}=-100",
+      "original_text": "labels = -100"
+    },
+    {
+      "x": 430,
+      "y": 433.0,
+      "text": "supervised answer tokens",
+      "size": 18,
+      "bold": false,
+      "color": "#AA7439",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-076"
+    },
+    {
+      "points": [
+        [
+          429,
+          369
+        ],
+        [
+          429,
+          295
+        ],
+        [
+          670,
+          295
+        ],
+        [
+          670,
+          238
+        ],
+        [
+          725,
+          238
+        ]
+      ],
+      "color": "#3B7D71",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-077"
+    },
+    {
+      "x": 550,
+      "y": 285.0,
+      "text": "shifted answer prefix",
+      "size": 18,
+      "bold": false,
+      "color": "#3B7D71",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-078"
+    },
+    {
+      "x": 650,
+      "y": 486,
+      "w": 320,
+      "h": 55,
+      "fill": "#F7E5CE",
+      "stroke": "#AA7439",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-78",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-079"
+    },
+    {
+      "x": 810.0,
+      "y": 520.3,
+      "text": "Assistant-only cross-entropy",
+      "size": 20,
+      "bold": true,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-78",
+      "kind": "text",
+      "id": "figure09_qwen-v2-080"
+    },
+    {
+      "points": [
+        [
+          594,
+          390
+        ],
+        [
+          620,
+          390
+        ],
+        [
+          620,
+          513
+        ],
+        [
+          650,
+          513
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-081"
+    },
+    {
+      "points": [
+        [
+          970,
+          200
+        ],
+        [
+          985,
+          200
+        ],
+        [
+          985,
+          513
+        ],
+        [
+          970,
+          513
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-082"
+    },
+    {
+      "points": [
+        [
+          810,
+          486
+        ],
+        [
+          810,
+          446
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-083"
+    },
+    {
+      "points": [
+        [
+          810,
+          475
+        ],
+        [
+          724,
+          475
+        ],
+        [
+          724,
+          446
+        ]
+      ],
+      "color": "#AA7439",
+      "dash": true,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-084"
+    },
+    {
+      "x": 313,
+      "y": 493,
+      "size": 26,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "",
+      "kind": "math",
+      "id": "figure09_qwen-v2-085",
+      "tex": "W=W_0+\\frac{\\alpha}{r}BA",
+      "original_text": "LoRA update equation"
+    },
+    {
+      "x": 26,
+      "y": 550.0,
+      "text": "Optional QLoRA: NF4 frozen weights; higher-precision compute",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-086"
+    },
+    {
+      "x": 313,
+      "y": 525.0,
+      "text": "Only low-rank matrices are trainable; base weights stay frozen.",
+      "size": 18,
+      "bold": false,
+      "color": "#AA7439",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-087"
+    },
+    {
+      "x": 8,
+      "y": 580,
+      "w": 984,
+      "h": 255,
+      "fill": "#FFFFFF",
+      "stroke": "#B3C2CD",
+      "r": 0,
+      "sw": 1,
+      "dash": false,
+      "group": "",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-088"
+    },
+    {
+      "x": 8,
+      "y": 580,
+      "w": 5,
+      "h": 255,
+      "fill": "#3B7D71",
+      "stroke": "#3B7D71",
+      "r": 0,
+      "sw": 0,
+      "dash": false,
+      "group": "",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-089"
+    },
+    {
+      "x": 26,
+      "y": 608.0,
+      "text": "(b) Matched inference and evaluation",
+      "size": 24,
+      "bold": true,
+      "color": "#3B7D71",
+      "anchor": "start",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-090"
+    },
+    {
+      "x": 28,
+      "y": 665,
+      "w": 190,
+      "h": 65,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-90",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-091"
+    },
+    {
+      "x": 123.0,
+      "y": 692.25,
+      "text": "Image + fixed",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-90",
+      "kind": "text",
+      "id": "figure09_qwen-v2-092"
+    },
+    {
+      "x": 123.0,
+      "y": 717.03,
+      "text": "instruction",
+      "size": 21,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-90",
+      "kind": "text",
+      "id": "figure09_qwen-v2-093"
+    },
+    {
+      "points": [
+        [
+          218,
+          697
+        ],
+        [
+          244,
+          697
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": false,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-094"
+    },
+    {
+      "points": [
+        [
+          244,
+          697
+        ],
+        [
+          244,
+          657
+        ],
+        [
+          280,
+          657
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-095"
+    },
+    {
+      "points": [
+        [
+          244,
+          697
+        ],
+        [
+          244,
+          747
+        ],
+        [
+          280,
+          747
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-096"
+    },
+    {
+      "x": 280,
+      "y": 635,
+      "w": 220,
+      "h": 44,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-96",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-097"
+    },
+    {
+      "x": 390.0,
+      "y": 663.46,
+      "text": "Original Instruct model",
+      "size": 19,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-96",
+      "kind": "text",
+      "id": "figure09_qwen-v2-098"
+    },
+    {
+      "x": 280,
+      "y": 725,
+      "w": 220,
+      "h": 44,
+      "fill": "#F7E5CE",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-98",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-099"
+    },
+    {
+      "x": 390.0,
+      "y": 753.8,
+      "text": "Same base + adapter",
+      "size": 20,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-98",
+      "kind": "text",
+      "id": "figure09_qwen-v2-100"
+    },
+    {
+      "x": 642,
+      "y": 612.0,
+      "text": "JSON schema sketch",
+      "size": 19,
+      "bold": true,
+      "color": "#607382",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-101"
+    },
+    {
+      "points": [
+        [
+          500,
+          657
+        ],
+        [
+          537,
+          657
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-102"
+    },
+    {
+      "x": 537,
+      "y": 622,
+      "w": 211,
+      "h": 70,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-102",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-103"
+    },
+    {
+      "x": 642.5,
+      "y": 641.88,
+      "text": "items: [{name: str,",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-102",
+      "kind": "text",
+      "id": "figure09_qwen-v2-104"
+    },
+    {
+      "x": 642.5,
+      "y": 663.12,
+      "text": "weight_g: num}]",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-102",
+      "kind": "text",
+      "id": "figure09_qwen-v2-105"
+    },
+    {
+      "x": 642.5,
+      "y": 684.36,
+      "text": "+ 5 numeric totals",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-102",
+      "kind": "text",
+      "id": "figure09_qwen-v2-106"
+    },
+    {
+      "points": [
+        [
+          500,
+          747
+        ],
+        [
+          537,
+          747
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-107"
+    },
+    {
+      "x": 537,
+      "y": 712,
+      "w": 211,
+      "h": 70,
+      "fill": "#F2F5F7",
+      "stroke": "#B3C2CD",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-107",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-108"
+    },
+    {
+      "x": 642.5,
+      "y": 731.88,
+      "text": "items: [{name: str,",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-107",
+      "kind": "text",
+      "id": "figure09_qwen-v2-109"
+    },
+    {
+      "x": 642.5,
+      "y": 753.12,
+      "text": "weight_g: num}]",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-107",
+      "kind": "text",
+      "id": "figure09_qwen-v2-110"
+    },
+    {
+      "x": 642.5,
+      "y": 774.36,
+      "text": "+ 5 numeric totals",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-107",
+      "kind": "text",
+      "id": "figure09_qwen-v2-111"
+    },
+    {
+      "x": 795,
+      "y": 665,
+      "w": 175,
+      "h": 80,
+      "fill": "#DDEFEA",
+      "stroke": "#3B7D71",
+      "r": 3,
+      "sw": 1.4,
+      "dash": false,
+      "group": "component-111",
+      "kind": "rect",
+      "id": "figure09_qwen-v2-112"
+    },
+    {
+      "x": 882.5,
+      "y": 700.5,
+      "text": "JSON + Schema",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-111",
+      "kind": "text",
+      "id": "figure09_qwen-v2-113"
+    },
+    {
+      "x": 882.5,
+      "y": 721.74,
+      "text": "F1 / MAE / MSE",
+      "size": 18,
+      "bold": false,
+      "color": "#253747",
+      "anchor": "middle",
+      "group": "component-111",
+      "kind": "text",
+      "id": "figure09_qwen-v2-114"
+    },
+    {
+      "points": [
+        [
+          748,
+          657
+        ],
+        [
+          770,
+          657
+        ],
+        [
+          770,
+          686
+        ],
+        [
+          795,
+          686
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-115"
+    },
+    {
+      "points": [
+        [
+          748,
+          747
+        ],
+        [
+          770,
+          747
+        ],
+        [
+          770,
+          724
+        ],
+        [
+          795,
+          724
+        ]
+      ],
+      "color": "#657C8C",
+      "dash": false,
+      "sw": 1.8,
+      "head": true,
+      "tag": "",
+      "kind": "line",
+      "id": "figure09_qwen-v2-116"
+    },
+    {
+      "x": 500,
+      "y": 863.0,
+      "text": "Same base revision, images, prompts, generation limits and metric protocol",
+      "size": 18,
+      "bold": false,
+      "color": "#607382",
+      "anchor": "middle",
+      "group": "",
+      "kind": "text",
+      "id": "figure09_qwen-v2-117"
+    }
+  ]
+}

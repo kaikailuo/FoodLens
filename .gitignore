@@ -1,0 +1,52 @@
+# Local Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Local data: keep the setup contract, not datasets or nested repositories
+/data/*
+!/data/README.md
+!/data/sources.json
+
+# Experiments, checkpoints and local outputs
+/outputs/*
+!/outputs/.gitkeep
+artifacts/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+wandb/
+runs/
+
+# TeX build products; source figures and delivered PDFs remain eligible
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+
+# Report compilation and figure-generation intermediates
+/docs/report/build/
+
+# Local configuration and OS files
+/.agents/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+desktop.ini
+._*

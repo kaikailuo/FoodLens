@@ -1,0 +1,21 @@
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.ipynb text eol=lf
+*.tex text eol=lf
+*.bib text eol=lf
+*.bst text eol=lf
+*.ps1 text eol=lf
+*.cjs text eol=lf
+*.svg text eol=lf
+*.drawio text eol=lf
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.zip binary
+
+# Historical report manifests audit raw bytes; avoid normalizing these assets.
+docs/report/** -text !eol

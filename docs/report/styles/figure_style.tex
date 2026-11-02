@@ -1,0 +1,29 @@
+% Shared vector-diagram and report styles. Load once in the host preamble.
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage{booktabs,tabularx,array}
+\usepackage{caption}
+\usepackage{placeins}
+\definecolor{FLBlue}{HTML}{294E6B}
+\definecolor{FLMid}{HTML}{668299}
+\definecolor{FLLight}{HTML}{EDF3F7}
+\definecolor{FLGray}{HTML}{F2F3F4}
+\definecolor{FLLine}{HTML}{AAB9C5}
+\definecolor{FLText}{HTML}{25323C}
+\tikzset{
+ every node/.style={execute at begin node={\setlength{\parindent}{0pt}}},
+ flnode/.style={draw=FLLine,fill=FLGray,rounded corners=1.5pt,
+   align=center,inner xsep=4pt,inner ysep=5pt,text=FLText,
+   font=\fontsize{9}{11}\selectfont},
+ flaccent/.style={flnode,draw=FLMid,fill=FLLight},
+ fltrain/.style={flnode,draw=FLBlue,fill=FLLight,line width=0.8pt},
+ flarrow/.style={-{Stealth[length=1.7mm,width=1.2mm]},draw=FLMid,line width=0.65pt},
+ flsupervision/.style={flarrow,dashed},
+ fllabel/.style={font=\fontsize{9}{11}\selectfont\bfseries,text=FLBlue,align=left},
+ flnote/.style={font=\fontsize{8.5}{10.5}\selectfont,text=FLMid,align=center}
+}
+\captionsetup{font=small,labelfont={bf,color=FLBlue},labelsep=quad,
+ justification=justified,singlelinecheck=false,skip=5pt}
+\newcommand{\flfocus}[1]{\par\noindent{\color{FLBlue}\bfseries 研究主线}\quad #1\par\smallskip}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}

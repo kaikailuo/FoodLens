@@ -1,0 +1,626 @@
+{
+  "+": {
+    "id": "f_a318c24216de",
+    "tex": "+",
+    "width": 12.265,
+    "height": 7.837,
+    "baseline": 1.427975093399751,
+    "viewbox": [
+      -0.597764,
+      -6.409299,
+      12.265148,
+      7.837279
+    ],
+    "page": 1,
+    "svg": "math/f_a318c24216de.svg",
+    "pdf": "math/f_a318c24216de.pdf"
+  },
+  "224\\times224": {
+    "id": "f_5810945c73c6",
+    "tex": "224\\times224",
+    "width": 46.581,
+    "height": 8.446,
+    "baseline": 1.427975093399751,
+    "viewbox": [
+      -0.597764,
+      -7.018131,
+      46.580891,
+      8.44611
+    ],
+    "page": 2,
+    "svg": "math/f_5810945c73c6.svg",
+    "pdf": "math/f_5810945c73c6.pdf"
+  },
+  "49\\;\\text{spatial tokens}": {
+    "id": "f_ef40a1e7b077",
+    "tex": "49\\;\\text{spatial tokens}",
+    "width": 77.133,
+    "height": 10.051,
+    "baseline": 2.53493399750934,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      77.133068,
+      10.051206
+    ],
+    "page": 3,
+    "svg": "math/f_ef40a1e7b077.svg",
+    "pdf": "math/f_ef40a1e7b077.pdf"
+  },
+  "512\\times7\\times7": {
+    "id": "f_69a5dbf9b445",
+    "tex": "512\\times7\\times7",
+    "width": 53.776,
+    "height": 8.446,
+    "baseline": 1.427975093399751,
+    "viewbox": [
+      -0.597764,
+      -7.018131,
+      53.776032,
+      8.44611
+    ],
+    "page": 4,
+    "svg": "math/f_69a5dbf9b445.svg",
+    "pdf": "math/f_69a5dbf9b445.pdf"
+  },
+  "768": {
+    "id": "f_f7b856c054de",
+    "tex": "768",
+    "width": 19.46,
+    "height": 7.616,
+    "baseline": 0.5977584059775841,
+    "viewbox": [
+      -0.597764,
+      -7.018131,
+      19.46041,
+      7.615895
+    ],
+    "page": 5,
+    "svg": "math/f_f7b856c054de.svg",
+    "pdf": "math/f_f7b856c054de.pdf"
+  },
+  "A": {
+    "id": "f_559aead08264",
+    "tex": "A",
+    "width": 11.988,
+    "height": 8.003,
+    "baseline": 0.5977584059775841,
+    "viewbox": [
+      -0.597764,
+      -7.405548,
+      11.988399,
+      8.003313
+    ],
+    "page": 6,
+    "svg": "math/f_559aead08264.svg",
+    "pdf": "math/f_559aead08264.pdf"
+  },
+  "B": {
+    "id": "f_df7e70e50215",
+    "tex": "B",
+    "width": 12.573,
+    "height": 8.003,
+    "baseline": 0.5977584059775841,
+    "viewbox": [
+      -0.597764,
+      -7.405548,
+      12.572999,
+      8.003313
+    ],
+    "page": 7,
+    "svg": "math/f_df7e70e50215.svg",
+    "pdf": "math/f_df7e70e50215.pdf"
+  },
+  "F\\in\\mathbb{R}^{512\\times7\\times7}": {
+    "id": "f_d156cb845b5c",
+    "tex": "F\\in\\mathbb{R}^{512\\times7\\times7}",
+    "width": 64.486,
+    "height": 10.193,
+    "baseline": 0.9872777085927772,
+    "viewbox": [
+      -0.597764,
+      -9.205515,
+      64.485991,
+      10.192795
+    ],
+    "page": 8,
+    "svg": "math/f_d156cb845b5c.svg",
+    "pdf": "math/f_d156cb845b5c.pdf"
+  },
+  "K,V": {
+    "id": "f_cc1bea2c36f7",
+    "tex": "K,V",
+    "width": 25.59,
+    "height": 9.94,
+    "baseline": 2.53493399750934,
+    "viewbox": [
+      -0.597764,
+      -7.405548,
+      25.590118,
+      9.940491
+    ],
+    "page": 9,
+    "svg": "math/f_cc1bea2c36f7.svg",
+    "pdf": "math/f_cc1bea2c36f7.pdf"
+  },
+  "M\\in\\mathbb{R}^{49\\times256}": {
+    "id": "f_e0d801e74588",
+    "tex": "M\\in\\mathbb{R}^{49\\times256}",
+    "width": 61.22,
+    "height": 10.193,
+    "baseline": 0.9872777085927772,
+    "viewbox": [
+      -0.597764,
+      -9.205515,
+      61.22042,
+      10.192795
+    ],
+    "page": 10,
+    "svg": "math/f_e0d801e74588.svg",
+    "pdf": "math/f_e0d801e74588.pdf"
+  },
+  "Q": {
+    "id": "f_4ae81572f06e",
+    "tex": "Q",
+    "width": 12.392,
+    "height": 9.94,
+    "baseline": 2.53493399750934,
+    "viewbox": [
+      -0.597764,
+      -7.405548,
+      12.392417,
+      9.940491
+    ],
+    "page": 11,
+    "svg": "math/f_4ae81572f06e.svg",
+    "pdf": "math/f_4ae81572f06e.pdf"
+  },
+  "S_{t-1}": {
+    "id": "f_9049496dbf91",
+    "tex": "S_{t-1}",
+    "width": 24.331,
+    "height": 10.328,
+    "baseline": 2.9223711083437114,
+    "viewbox": [
+      -0.597764,
+      -7.405548,
+      24.33103,
+      10.327924
+    ],
+    "page": 12,
+    "svg": "math/f_9049496dbf91.svg",
+    "pdf": "math/f_9049496dbf91.pdf"
+  },
+  "W=W_0+\\frac{\\alpha}{r}BA": {
+    "id": "f_87df383688d0",
+    "tex": "W=W_0+\\frac{\\alpha}{r}BA",
+    "width": 78.977,
+    "height": 19.059,
+    "baseline": 7.4316413449564145,
+    "viewbox": [
+      -0.597764,
+      -11.627022,
+      78.977303,
+      19.058672
+    ],
+    "page": 13,
+    "svg": "math/f_87df383688d0.svg",
+    "pdf": "math/f_87df383688d0.pdf"
+  },
+  "W_0": {
+    "id": "f_b9d7c18b6334",
+    "tex": "W_0",
+    "width": 18.395,
+    "height": 9.498,
+    "baseline": 2.0921344956413455,
+    "viewbox": [
+      -0.597764,
+      -7.405548,
+      18.394932,
+      9.497694
+    ],
+    "page": 14,
+    "svg": "math/f_b9d7c18b6334.svg",
+    "pdf": "math/f_b9d7c18b6334.pdf"
+  },
+  "[h_{b_k};z]\\in\\mathbb{R}^{512}": {
+    "id": "f_6940ec25f9ba",
+    "tex": "[h_{b_k};z]\\in\\mathbb{R}^{512}",
+    "width": 65.431,
+    "height": 12.355,
+    "baseline": 3.1492901618929023,
+    "viewbox": [
+      -0.597764,
+      -9.205515,
+      65.430797,
+      12.354808
+    ],
+    "page": 15,
+    "svg": "math/f_6940ec25f9ba.svg",
+    "pdf": "math/f_6940ec25f9ba.pdf"
+  },
+  "\\Vert": {
+    "id": "f_50ce1a62663b",
+    "tex": "\\Vert",
+    "width": 9.498,
+    "height": 11.158,
+    "baseline": 3.0884184308841847,
+    "viewbox": [
+      -0.597764,
+      -8.069745,
+      9.497739,
+      11.158169
+    ],
+    "page": 16,
+    "svg": "math/f_50ce1a62663b.svg",
+    "pdf": "math/f_50ce1a62663b.pdf"
+  },
+  "\\alpha/r": {
+    "id": "f_712be0efad23",
+    "tex": "\\alpha/r",
+    "width": 20.679,
+    "height": 11.158,
+    "baseline": 3.0884184308841847,
+    "viewbox": [
+      -0.597764,
+      -8.069745,
+      20.679213,
+      11.158169
+    ],
+    "page": 17,
+    "svg": "math/f_712be0efad23.svg",
+    "pdf": "math/f_712be0efad23.pdf"
+  },
+  "\\cdots": {
+    "id": "f_4f3867cf1346",
+    "tex": "\\cdots",
+    "width": 17.8,
+    "height": 5.623,
+    "baseline": 0.5977584059775841,
+    "viewbox": [
+      -0.597764,
+      -5.025603,
+      17.799828,
+      5.623367
+    ],
+    "page": 18,
+    "svg": "math/f_4f3867cf1346.svg",
+    "pdf": "math/f_4f3867cf1346.pdf"
+  },
+  "\\mathcal{L}=\\lambda_{\\mathrm{ing}}\\mathcal{L}_{\\mathrm{ing}}+\\lambda_w\\mathcal{L}_w+\\lambda_q\\mathcal{L}_q": {
+    "id": "f_25fc4f702c2d",
+    "tex": "\\mathcal{L}=\\lambda_{\\mathrm{ing}}\\mathcal{L}_{\\mathrm{ing}}+\\lambda_w\\mathcal{L}_w+\\lambda_q\\mathcal{L}_q",
+    "width": 131.236,
+    "height": 10.964,
+    "baseline": 3.4481494396014947,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      131.235923,
+      10.964422
+    ],
+    "page": 19,
+    "svg": "math/f_25fc4f702c2d.svg",
+    "pdf": "math/f_25fc4f702c2d.pdf"
+  },
+  "\\mathrm{concat}:512": {
+    "id": "f_b2b05ae51286",
+    "tex": "\\mathrm{concat}:512",
+    "width": 55.99,
+    "height": 7.616,
+    "baseline": 0.5977584059775841,
+    "viewbox": [
+      -0.597764,
+      -7.018131,
+      55.990019,
+      7.615895
+    ],
+    "page": 20,
+    "svg": "math/f_b2b05ae51286.svg",
+    "pdf": "math/f_b2b05ae51286.pdf"
+  },
+  "\\mathrm{labels}=-100": {
+    "id": "f_b124b5fc263d",
+    "tex": "\\mathrm{labels}=-100",
+    "width": 65.178,
+    "height": 8.944,
+    "baseline": 1.427975093399751,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      65.177824,
+      8.944242
+    ],
+    "page": 21,
+    "svg": "math/f_b124b5fc263d.svg",
+    "pdf": "math/f_b124b5fc263d.pdf"
+  },
+  "\\text{\\sffamily\\bfseries Decoder}\\;\\times2": {
+    "id": "f_646819204718",
+    "tex": "\\text{\\sffamily\\bfseries Decoder}\\;\\times2",
+    "width": 62.493,
+    "height": 8.944,
+    "baseline": 1.427975093399751,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      62.493478,
+      8.944242
+    ],
+    "page": 22,
+    "svg": "math/f_646819204718.svg",
+    "pdf": "math/f_646819204718.pdf"
+  },
+  "\\text{\\sffamily\\bfseries Encoder}\\;\\times2": {
+    "id": "f_253c74c1e279",
+    "tex": "\\text{\\sffamily\\bfseries Encoder}\\;\\times2",
+    "width": 61.47,
+    "height": 8.944,
+    "baseline": 1.427975093399751,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      61.469532,
+      8.944242
+    ],
+    "page": 23,
+    "svg": "math/f_253c74c1e279.svg",
+    "pdf": "math/f_253c74c1e279.pdf"
+  },
+  "\\widehat{\\boldsymbol q}\\in\\mathbb{R}_{\\geq0}^{5}": {
+    "id": "f_d6b3341ee1dc",
+    "tex": "\\widehat{\\boldsymbol q}\\in\\mathbb{R}_{\\geq0}^{5}",
+    "width": 40.354,
+    "height": 13.56,
+    "baseline": 4.354122042341221,
+    "viewbox": [
+      -0.597764,
+      -9.205515,
+      40.354135,
+      13.55964
+    ],
+    "page": 24,
+    "svg": "math/f_d6b3341ee1dc.svg",
+    "pdf": "math/f_d6b3341ee1dc.pdf"
+  },
+  "\\widehat{w}_1,\\widehat{w}_2,\\ldots\\;[\\mathrm{g}]": {
+    "id": "f_f6bbe93306a4",
+    "tex": "\\widehat{w}_1,\\widehat{w}_2,\\ldots\\;[\\mathrm{g}]",
+    "width": 63.143,
+    "height": 11.158,
+    "baseline": 3.0884184308841847,
+    "viewbox": [
+      -0.597764,
+      -8.069745,
+      63.142503,
+      11.158169
+    ],
+    "page": 25,
+    "svg": "math/f_f6bbe93306a4.svg",
+    "pdf": "math/f_f6bbe93306a4.pdf"
+  },
+  "\\widehat{w}_k=\\operatorname{softplus}\\!\\left(f_w([h_{b_k};z])\\right)": {
+    "id": "f_01c7e73f1a31",
+    "tex": "\\widehat{w}_k=\\operatorname{softplus}\\!\\left(f_w([h_{b_k};z])\\right)",
+    "width": 119.385,
+    "height": 11.219,
+    "baseline": 3.1492901618929023,
+    "viewbox": [
+      -0.597764,
+      -8.069745,
+      119.385465,
+      11.219037
+    ],
+    "page": 26,
+    "svg": "math/f_01c7e73f1a31.svg",
+    "pdf": "math/f_01c7e73f1a31.pdf"
+  },
+  "h_0=z": {
+    "id": "f_70fcb0a7ccca",
+    "tex": "h_0=z",
+    "width": 33.081,
+    "height": 9.608,
+    "baseline": 2.0921344956413455,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      33.080523,
+      9.608408
+    ],
+    "page": 27,
+    "svg": "math/f_70fcb0a7ccca.svg",
+    "pdf": "math/f_70fcb0a7ccca.pdf"
+  },
+  "h_{b_1}": {
+    "id": "f_4e5bef1c58f8",
+    "tex": "h_{b_1}",
+    "width": 18.146,
+    "height": 10.605,
+    "baseline": 3.0883985056039855,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      18.146368,
+      10.604672
+    ],
+    "page": 28,
+    "svg": "math/f_4e5bef1c58f8.svg",
+    "pdf": "math/f_4e5bef1c58f8.pdf"
+  },
+  "h_{b_2}": {
+    "id": "f_7f04d220df81",
+    "tex": "h_{b_2}",
+    "width": 18.146,
+    "height": 10.605,
+    "baseline": 3.0883985056039855,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      18.146368,
+      10.604672
+    ],
+    "page": 29,
+    "svg": "math/f_7f04d220df81.svg",
+    "pdf": "math/f_7f04d220df81.pdf"
+  },
+  "h_{b_k}": {
+    "id": "f_d09e4c4c4826",
+    "tex": "h_{b_k}",
+    "width": 18.613,
+    "height": 10.666,
+    "baseline": 3.1492901618929023,
+    "viewbox": [
+      -0.597764,
+      -7.516263,
+      18.613351,
+      10.665555
+    ],
+    "page": 30,
+    "svg": "math/f_d09e4c4c4826.svg",
+    "pdf": "math/f_d09e4c4c4826.pdf"
+  },
+  "h_{b_k}\\longrightarrow\\operatorname{logits}(\\mathrm{SEP})": {
+    "id": "f_3217205da5c8",
+    "tex": "h_{b_k}\\longrightarrow\\operatorname{logits}(\\mathrm{SEP})",
+    "width": 90.344,
+    "height": 11.219,
+    "baseline": 3.1492901618929023,
+    "viewbox": [
+      -0.597764,
+      -8.069745,
+      90.344436,
+      11.219037
+    ],
+    "page": 31,
+    "svg": "math/f_3217205da5c8.svg",
+    "pdf": "math/f_3217205da5c8.pdf"
+  },
+  "n_1": {
+    "id": "f_583292a11ba2",
+    "tex": "n_1",
+    "width": 14.966,
+    "height": 6.979,
+    "baseline": 2.0921344956413455,
+    "viewbox": [
+      -0.597764,
+      -4.887221,
+      14.965699,
+      6.979366
+    ],
+    "page": 32,
+    "svg": "math/f_583292a11ba2.svg",
+    "pdf": "math/f_583292a11ba2.pdf"
+  },
+  "n_{2,1}": {
+    "id": "f_b7d131c6af05",
+    "tex": "n_{2,1}",
+    "width": 21.303,
+    "height": 8.335,
+    "baseline": 3.4481494396014947,
+    "viewbox": [
+      -0.597764,
+      -4.887221,
+      21.303063,
+      8.335381
+    ],
+    "page": 33,
+    "svg": "math/f_b7d131c6af05.svg",
+    "pdf": "math/f_b7d131c6af05.pdf"
+  },
+  "n_{2,2}": {
+    "id": "f_5128e6c34166",
+    "tex": "n_{2,2}",
+    "width": 21.303,
+    "height": 8.335,
+    "baseline": 3.4481494396014947,
+    "viewbox": [
+      -0.597764,
+      -4.887221,
+      21.303063,
+      8.335381
+    ],
+    "page": 34,
+    "svg": "math/f_5128e6c34166.svg",
+    "pdf": "math/f_5128e6c34166.pdf"
+  },
+  "v\\in\\mathbb{R}^{512}": {
+    "id": "f_57ae154743fc",
+    "tex": "v\\in\\mathbb{R}^{512}",
+    "width": 41.487,
+    "height": 10.193,
+    "baseline": 0.9872777085927772,
+    "viewbox": [
+      -0.597764,
+      -9.205515,
+      41.4865,
+      10.192795
+    ],
+    "page": 35,
+    "svg": "math/f_57ae154743fc.svg",
+    "pdf": "math/f_57ae154743fc.pdf"
+  },
+  "y_1": {
+    "id": "f_c887b3828dd4",
+    "tex": "y_1",
+    "width": 13.87,
+    "height": 7.422,
+    "baseline": 2.53493399750934,
+    "viewbox": [
+      -0.597764,
+      -4.887221,
+      13.870273,
+      7.422164
+    ],
+    "page": 36,
+    "svg": "math/f_c887b3828dd4.svg",
+    "pdf": "math/f_c887b3828dd4.pdf"
+  },
+  "y_t": {
+    "id": "f_1ecb58e66eed",
+    "tex": "y_t",
+    "width": 12.909,
+    "height": 7.422,
+    "baseline": 2.53493399750934,
+    "viewbox": [
+      -0.597764,
+      -4.887221,
+      12.908594,
+      7.422164
+    ],
+    "page": 37,
+    "svg": "math/f_1ecb58e66eed.svg",
+    "pdf": "math/f_1ecb58e66eed.pdf"
+  },
+  "y_{t-1}": {
+    "id": "f_9821a09737f3",
+    "tex": "y_{t-1}",
+    "width": 23.106,
+    "height": 7.81,
+    "baseline": 2.9223711083437114,
+    "viewbox": [
+      -0.597764,
+      -4.887221,
+      23.106496,
+      7.809596
+    ],
+    "page": 38,
+    "svg": "math/f_9821a09737f3.svg",
+    "pdf": "math/f_9821a09737f3.pdf"
+  },
+  "z\\in\\mathbb{R}^{256}": {
+    "id": "f_5b2a1d7ef111",
+    "tex": "z\\in\\mathbb{R}^{256}",
+    "width": 41.371,
+    "height": 10.193,
+    "baseline": 0.9872777085927772,
+    "viewbox": [
+      -0.597764,
+      -9.205515,
+      41.371225,
+      10.192795
+    ],
+    "page": 39,
+    "svg": "math/f_5b2a1d7ef111.svg",
+    "pdf": "math/f_5b2a1d7ef111.pdf"
+  }
+}
