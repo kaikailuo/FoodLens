@@ -1,0 +1,25 @@
+\section{开发环境}
+\label{sec:development-environment}
+项目开发与训练在云端 GPU 实例与本地开发机协同完成，主要软件环境如表\ref{tab:development-environment} 所示。具体环境版本与 GPU 型号将在实际租用环境验证后确定并固定，连同随机种子、数据版本哈希与训练配置一并记录，以保证实验可复现。
+
+\begin{table}[!htbp]
+\caption{开发环境配置}
+\label{tab:development-environment}\centering\small
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}P{2.35cm}Y@{}}\toprule
+\textbf{类别} & \textbf{配置}\\\midrule
+计算硬件 & 云端 GPU 实例，单卡 24 GB 显存（型号以租用为准）；本地 CPU 用于数据审计与预处理\\
+算力预算 & 约 300 元，按必选任务、任选实验的顺序安排训练\\
+操作系统 & Ubuntu 22.04 LTS\\
+编程语言 & Python 3.10 及以上\\
+深度学习框架 & PyTorch + Torchvision（自主模型）；HuggingFace Transformers + PEFT（多模态模型微调）\\
+训练加速 & BF16 混合精度、梯度累积、梯度检查点；显存紧张时采用 bitsandbytes 的 4-bit NF4 量化（QLoRA）\\
+评价工具 & BLEU / METEOR / ROUGE-L / CIDEr-D 统一实现（固定 Tokenizer 与语料级统计口径），JSON Schema 校验程序，pandas / NumPy 用于误差与一致性统计\\
+实验数据 & Food-500 Cap 官方标注及社区镜像图像；教学云 nutrition5k-student-v1 结构化膳食数据（Train 2,338 / Validation 414 / Test 506，共 3,258 条）\\
+版本与协作 & Git 代码托管与分支协作；实验记录统一管理配置、Checkpoint 与逐样本预测文件\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+预训练权重（ImageNet 预训练 ResNet-18、Qwen3-VL-4B-Instruct）固定 revision 后下载缓存，训练过程不联网更新。所有第三方库在环境定型时锁定版本并写入依赖清单，确保三名组员的运行环境一致。
+\FloatBarrier

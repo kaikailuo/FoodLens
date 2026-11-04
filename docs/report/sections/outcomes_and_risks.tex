@@ -1,0 +1,43 @@
+\section{预期成果与风险控制}
+\label{sec:outcomes-risks}
+\subsection{预期成果}
+项目预计最终提交以下成果：
+
+\begin{enumerate}
+\item 两种自主实现的食物图像描述模型（ResNet-18 + GRU、ResNet-18 网格特征 + Transformer），含训练与推理代码、模型权重及固定测试集上的四项指标结果；
+\item 结构化膳食记录生成的两条技术路线：自主混合预测架构与 Qwen3-VL 参数高效微调方案，含原始/微调/自主三方对照实验结果；
+\item 任选任务对照实验：模型 A 交叉熵与 SCST 优化的配对比较，以及 VLM-as-Judge 与人工评分的一致性分析；
+\item 统一的数据处理、训练、推理与评价代码库，附数据 manifest、配置记录与可复现的运行说明；
+\item FoodLens 基础演示系统，支持图像上传、描述生成与膳食记录可视化；
+\item 实验分析报告，覆盖食材误判、未见名称、长列表、大份量与疑似同餐样本等误差分层；
+\item 符合课程要求的结题报告及展示材料。
+\end{enumerate}
+
+\subsection{风险识别与控制}
+项目实施过程中的主要风险及对应控制措施如表\ref{tab:project-risks} 所示。
+
+\begingroup\small
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\setlength{\LTleft}{0pt plus 1fill}\setlength{\LTright}{0pt plus 1fill}
+\begin{longtable}{@{}P{3.9cm}P{2.0cm}P{\dimexpr\textwidth-5.9cm-4\tabcolsep\relax}@{}}
+\caption{主要风险与控制措施}\label{tab:project-risks}\\
+\toprule\textbf{风险} & \textbf{影响} & \textbf{控制措施}\\\midrule
+\endfirsthead
+\caption[]{主要风险与控制措施（续）}\\
+\toprule\textbf{风险} & \textbf{影响} & \textbf{控制措施}\\\midrule
+\endhead
+\midrule\multicolumn{3}{r}{\small 续下页}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Food-500 Cap 标注与镜像图像不完全一致，存在缺失与跨划分重复 & 图文错配、评测泄漏 & 以官方 filename 与镜像索引建立显式映射，无法唯一确认的样本排除并记录；跨划分重复测试优先、训练侧移除，固定文件哈希与最终样本清单\\\addlinespace[4pt]
+算力预算（约 300 元、单卡 24 GB）不足以支撑全部实验 & 训练中断、实验缩水 & 冻结视觉骨干、LoRA/QLoRA 参数高效微调、梯度累积与检查点；先做小批量显存试跑确定批量与步数，任选实验复用已训模型\\\addlinespace[4pt]
+多模态模型微调不稳定或量化算子不兼容 & 适配失败、结果不可比 & 常规 BF16 LoRA 优先，空间不足再切 QLoRA；若 4B 无法稳定运行，成对切换到同系 2B 基础模型重新比较并单独报告规模差异\\\addlinespace[4pt]
+自主混合架构难以收敛 & 任务二路线一受阻 & 验证早停与全样本指标监控；备选方案为共享 ResNet 的多标签食材预测加数值回归，保证任务二的完整交付\\\addlinespace[4pt]
+单张 RGB 图像缺乏尺度参照，重量与营养估计误差大 & 数值指标不理想 & 分别预测食材重量与整餐总量，不设守恒约束；通过误差分层分析定位主要误差来源，给出量化结果与改进方向\\\addlinespace[4pt]
+训练监督与自由生成的分布差异 & 推理阶段性能下降 & 重量监督采用真实名称条件、最终评价采用自由生成结果，差异纳入误差传播分析；评价协议与失败计入方式预先固定\\\addlinespace[4pt]
+三人协作中的接口不兼容与进度偏差 & 集成延期 & 统一数据与推理接口约定，分阶段设置检查点验收，阶段成果由组长统一审核后提交\\\addlinespace[4pt]
+\end{longtable}
+\endgroup\thispagestyle{fancy}
+
+实施上先完成可复现的完整推理与评价链路，再逐步增加局部增强，确保各阶段均有可交付成果。
