@@ -1,0 +1,58 @@
+% Weekly task windows; final evaluation dependencies are expanded below.
+\begin{tikzpicture}[x=1.24cm,y=-1cm,font=\fontsize{8}{10}\selectfont]
+\foreach \x/\lab in {0/11.04,1/11.09,2/11.16,3/11.23,4/11.30,5/12.07,6/12.14,7/12.21,8/12.28,9/01.04,10/01.11}{
+ \node[text=FLBlue,font=\fontsize{7.5}{9}\selectfont] at (\x+.5,0) {\lab};
+ \draw[FLLine!45] (\x,.23) -- (\x,4.7);}
+\draw[FLLine!45] (11,.23)--(11,4.7);
+\foreach \y/\lab/\clr in {.8/罗开炜/FLBlue,1.85/郝天乐/FLTeal,2.9/张嘉荣/FLAmber,3.95/GPU/FLMid}{
+ \fill[\clr!4] (0,\y-.44) rectangle (11,\y+.44);
+ \node[anchor=east,text=\clr,font=\small\bfseries] at (-.12,\y){\lab};}
+\def\slot#1#2#3#4#5{\filldraw[rounded corners=1.7pt,draw=#4!70,fill=#4!10] (#1+.035,#3-.34) rectangle (#2-.035,#3+.34);
+\node[text=FLText,align=center] at ({(#1+#2)/2},#3){#5};}
+\slot{0}{2}{.8}{FLBlue}{方案与接口}
+\slot{2}{4.45}{.8}{FLBlue}{训练器与模型联调}
+\slot{4.45}{6.43}{.8}{FLBlue}{迁移开发\\适配复核}
+\slot{6.43}{7}{.8}{FLBlue}{\fontsize{7}{9}\selectfont SCST}
+\slot{7}{8}{.8}{FLBlue}{分歧\\复核}
+\slot{8}{11}{.8}{FLBlue}{复现检查与技术整合}
+\slot{0}{3}{1.85}{FLTeal}{数据审计、指标与试跑}
+\slot{3}{5.57}{1.85}{FLTeal}{Caption 与迁移评测}
+\slot{5.57}{7}{1.85}{FLTeal}{Qwen\\统一评测}
+\slot{7}{8}{1.85}{FLTeal}{盲评\\复算}
+\slot{8}{11}{1.85}{FLTeal}{误差分层与独立复算}
+\slot{0}{2}{2.9}{FLAmber}{调研与开题}
+\slot{2}{5}{2.9}{FLAmber}{分析工具、案例与中期材料}
+\slot{5}{7}{2.9}{FLAmber}{Judge 接入\\人评校准}
+\slot{7}{8}{2.9}{FLAmber}{盲评\\统计}
+\slot{8}{11}{2.9}{FLAmber}{统计分析、展示与报告}
+\slot{2.4}{3}{3.95}{FLMid}{\fontsize{7}{9}\selectfont 试跑}
+\slot{3}{4.45}{3.95}{FLMid}{A/B\\含消融}
+\slot{4.45}{5.57}{3.95}{FLMid}{Hybrid}
+\slot{5.57}{6.43}{3.95}{FLMid}{Qwen}
+\slot{6.43}{7}{3.95}{FLMid}{\fontsize{7}{9}\selectfont SCST\\\fontsize{7}{9}\selectfont +CE}
+\slot{7}{8}{3.95}{FLMid}{测试生成\\Judge}
+\node[flnote,text width=3.4cm,font=\fontsize{7.5}{9}\selectfont] at (9.5,3.95)
+ {冻结配置下按需复跑\\离线分析不持续占用 GPU};
+\foreach \x/\lab in {2/开题,5/中期,7/冻结,11/结题}{
+ \fill[FLBlue] (\x,4.54)--(\x+.065,4.63)--(\x,4.72)--(\x-.065,4.63)--cycle;
+ \node[anchor=north,text=FLBlue,font=\fontsize{7.5}{9}\selectfont] at (\x,4.75) {\lab};}
+
+\node[fllabel,anchor=west] at (-1.12,5.5) {正式评价与汇报的先后关系};
+\node[flnode,text width=2.55cm,minimum height=1.05cm] (freeze) at (.12,6.4)
+ {\textbf{12/20}\\冻结模型与协议};
+\node[flaccent,text width=2.55cm,minimum height=1.05cm] (generate) at (2.55,6.4)
+ {\textbf{12/21 起}\\测试生成、Judge};
+\node[flaccent,text width=2.55cm,minimum height=1.05cm] (human) at (4.98,6.4)
+ {\textbf{12/22--24}\\双人独立盲评};
+\node[fltrain,text width=2.55cm,minimum height=1.05cm] (merge) at (7.41,6.4)
+ {\textbf{12/25}\\统计复核与合并};
+\node[flnode,text width=2.55cm,minimum height=1.05cm] (present) at (9.84,6.4)
+ {\textbf{12/26--28}\\演练与预留汇报};
+\draw[flarrow] (freeze.east)--(generate.west);
+\draw[flarrow] (generate.east)--(human.west);
+\draw[flarrow] (human.east)--(merge.west);
+\draw[flarrow] (merge.east)--(present.west);
+\node[flnote,anchor=west,font=\fontsize{8}{10}\selectfont] at (-1.12,7.2)
+ {盲评仅使用匿名候选；Judge 结果对评分者隐藏。图示为初始排期，依 GPU 试跑修订。};
+\end{tikzpicture}
+
