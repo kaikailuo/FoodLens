@@ -1,6 +1,8 @@
 # FoodLens 报告
 
-**看报告：** 打开 [research_proposal.pdf](research_proposal.pdf)。这是当前唯一的最终报告，包含第四章综述与第五章技术方案，共 16 页。
+**看报告：** 打开 [research_proposal.pdf](research_proposal.pdf)。这是第四章综述与第五章技术方案的合稿，共 16 页。
+
+**第三、六、九部分：** 打开 [sections_3_6_9.pdf](sections_3_6_9.pdf)，这是按原稿编号独立编译的 4 页章节稿，涵盖项目预期目标、开发环境、预期成果与风险控制，沿用本目录报告的字体、页边距、标题、页眉与图表样式。源文件入口为 [sections_3_6_9.tex](sections_3_6_9.tex)，正文分别位于 [project_goals.tex](sections/project_goals.tex)、[development_environment.tex](sections/development_environment.tex)、[outcomes_and_risks.tex](sections/outcomes_and_risks.tex)。
 
 **改正文：** 修改 [sections/related_work.tex](sections/related_work.tex) 或 [sections/technical_plan.tex](sections/technical_plan.tex)。
 
@@ -43,3 +45,24 @@ docs/report/
 构建验收：脚本退出码为 0，生成的 `docs/report/research_proposal.pdf` 可打开，目录、图表、公式和参考文献无缺失；当前交付参考为 16 页，正文修改后页数可能变化。检查 PDF 后再提交源文件及 PDF。TeX 与绘图依赖独立于 Python CPU 环境，运行模型测试不需要安装它们；其他操作系统的字体适配尚未验证。
 
 `literature/` 中的原论文图片保留作者署名、来源与许可记录。旧版目录名 `redesign/round2/` 已移除，后续版本通过 Git 管理。
+
+## 编译第三、六、九部分
+
+在项目根目录启动 PowerShell，确认 `xelatex` 已加入 PATH（字体要求同上），然后执行：
+
+```powershell
+Push-Location docs/report
+try {
+    New-Item -ItemType Directory -Path build/sections -Force | Out-Null
+    1..2 | ForEach-Object {
+        xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=build/sections sections_3_6_9.tex
+        if ($LASTEXITCODE -ne 0) { throw 'XeLaTeX compilation failed' }
+    }
+    Copy-Item build/sections/sections_3_6_9.pdf sections_3_6_9.pdf -Force
+} finally {
+    Pop-Location
+}
+```
+
+该章节稿保留原文内容和表 5、表 6 编号，修正了一处开引号方向，并将表号改为交叉引用；风险表使用可跨页的三线表与重复表头。此入口不引用参考文献，无须 BibTeX。编译验收为两次 XeLaTeX 均退出 0、生成 4 页 PDF、无未定义引用及缺字或溢出警告。已在 Windows / TeX Live 2026 上实际编译并逐页检查。
+
