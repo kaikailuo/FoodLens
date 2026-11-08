@@ -187,10 +187,10 @@ Food500 官方 JSON 是列表，其记录字段为 cat/filename/caption。本地
 2. 保持训练集锁定的标点规则，审查开放名称的标点空格与UNK失败；验证未见全名/组成词分层。不在解码时查训练全名白名单。
 3. 接入正式Caption数据collator/训练器、版本固定的BLEU-4/METEOR/ROUGE-L/CIDEr-D实现及单位，按验证CIDEr-D选A/B；当前只有指标协议接口，不能声称Caption分数已实现。
 4. 加载明确版本的ImageNet ResNet18权重，先冻结再视验证解冻layer4；实现参数组低学习率、早停、混合精度/梯度累积、CUDA随机状态复现、恢复训练命令。当前CLI仅tiny CPU工程smoke，不是完整GPU训练器。
-5. 跑A/B/B-global相同贪心协议。任务二从最佳A按旧ID和字符串迁移，比较仅视觉与视觉+GRU；按MicroF1、五维标准化MAE、有效率的固定规则选模型。训练/自由生成分别留追踪。
+5. 跑A/B/B-global相同贪心协议。任务二设置 Hybrid A0（无任务一迁移，使用相同 ImageNet 预训练初始化）、A1（仅视觉迁移）、A2（视觉与 GRU 迁移），A2 按旧 ID 和 Token 字符串复制兼容词行；三组初始化及训练对照遵循第五章；按MicroF1、五维标准化MAE、有效率的固定规则选模型。训练/自由生成分别留追踪。
 6. 固定任务二长度/项数上限并报告训练标签截断覆盖率；分层统计未见名称、长列表、大份量、疑似同餐及重量不守恒标记，标记不作输入。
 7. Qwen固定4B revision/Processor/Chat Template、语言Q/K/V/O实际路径和可训练清单；单样本检查assistant-only loss及结束标记；先BF16 LoRA显存试跑，必要时NF4。4B不合则同一2B成对重跑。模型及配套依赖尚未下载。
-8. 在 Linux GPU 服务器实测显存、吞吐、参数量与训练配置；24GB 单卡是方案的起始配置参考，按实际硬件验证。约300元为早期估算，不作为实施预算上限，不以费用为由省略必选任务或当前选择的 SCST/Judge；不得从CPU smoke推断GPU资源或效果。
+8. 在 Linux GPU 服务器实测显存、吞吐、参数量与训练配置；当前方案计划使用 RTX 5090（32 GB 显存），配置以实际硬件试跑验证为准。约300元为早期估算，不作为实施预算上限，不以费用为由省略必选任务或当前选择的 SCST/Judge；不得从CPU smoke推断GPU资源或效果。
 9. SCST固定训练参考CIDEr-D DF、EOS概率/PAD mask、采样/贪心一致模式及stop-gradient，另跑等步数CE对照。Judge锁定原始冻结revision、匿名协议、约60图像ID及双人评分/Bootstrap；目前均仅接口。
 
 课程范围见[原始要求整理稿](../docs/COURSE_REQUIREMENTS.md)，小组运行平台与交付约定见[项目 README](../README.md)。选做为三选二，现有方案选择 SCST 和 Judge；两者均属计划交付。任务二还须补齐任务一的文本评测指标，固定 JSON/食材文本的序列化、Tokenizer、指标版本与单位，同时保留名称 F1、数值 MSE 和全样本结构评价，文本指标不替代这些结构化指标。
