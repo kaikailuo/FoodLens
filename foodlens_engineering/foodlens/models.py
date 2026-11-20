@@ -166,12 +166,16 @@ class Hybrid(CaptionA):
                 "totals": self.total_head(torch.cat((v, z), -1))}
 
 
-def transfer_caption_a(source, source_vocab, target, target_vocab):
+def transfer_caption_a(source, source_vocab, target, target_vocab, *, mode="visual_gru"):
     if target_vocab.tokens[:len(source_vocab)] != source_vocab.tokens:
         raise ValueError("task2 vocabulary must retain every task1 ID")
     if asdict(source.config) != asdict(target.config):
         raise ValueError("transfer requires identical encoder/GRU configurations")
     target.visual.load_state_dict(source.visual.state_dict())
+    if mode == "visual":
+        return {"copied_tokens": 0, "modules": ["visual"], "mode": mode}
+    if mode != "visual_gru":
+        raise ValueError("transfer mode must be visual or visual_gru")
     target.gru.load_state_dict(source.gru.state_dict())
     with torch.no_grad():
         for token, old_id in source_vocab.index.items():

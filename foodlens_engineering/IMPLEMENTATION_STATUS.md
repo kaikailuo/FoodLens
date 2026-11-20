@@ -2,6 +2,8 @@
 
 本文保存 2026-11-01 的历史验证范围与结果，文中的耗时、loss 和本地产物位置仅指该次运行。当前复现步骤以[工程 README](README.md)为准，实现状态变化后应另追加带日期的记录，不把历史验证等同于新环境已通过。
 
+**当前状态请同时阅读文末 2026-11-20 代码建设记录。** 下列 11-01/11-02 的结果及未完成项保留为历史，不能据此判断新代码仍只有旧 CLI。
+
 工程位于仓库的 `foodlens_engineering/`。该次未修改报告、原始 data 或已有审计文件。Python 3.12 隔离venv安装CPU torch 2.9.1+cpu / torchvision 0.24.1+cpu；无预训练权重下载，无GPU训练。
 
 文中 `artifacts/` 均相对工程目录，日志、checkpoint、原始 freeze 不随 Git 交付，干净克隆不存在这些文件；它们是历史证据位置，不是复现输入。可提交的依赖锁定文件是 `requirements-lock-cpu.txt`，新运行按 README 生成自己的 manifest 和产物。
@@ -68,3 +70,62 @@
 - Markdown 本地文件/目录链接检查通过；外部论文链接未在本次重新核验。正式 PDF 和报告正文未修改，也未重新编译。
 
 本次仍是工程复核，名称 F1 为 0、4 条生成均截断，不产生模型质量结论。复核输出只保留本地；新成员仍按 README 自行生成。
+
+## 代码建设与合成工程验收（2026-11-20）
+
+工作基于提交 a60c248693b99ba05da8f05677a4b31cc0cac98e，改动保留在工作区，FoodLens 版本为 0.2.0。执行前已有根 README、报告 README/PDF、context README 及学生资源包修改；这些已有内容未撤销或覆盖，报告/PDF 本次未编辑。根 README 仅同步本次工程入口。运行元数据另存实际 Python 源码树 SHA256，父提交不代表本次未提交代码的完整版本。
+
+本次范围是可运行代码、必要测试和交接，不获取/整理真实数据，不下载大模型，不运行正式长训练或付费服务。基于 Git `a60c248693b99ba05da8f05677a4b31cc0cac98e` 的未提交工作区，工程版本为 0.2.0；run.json 记录实际 Python 源码 SHA256、Git revision、tracked diff SHA256 和依赖。用户原有 README/报告/PDF/资源包修改予以保留，本次未编译或改写报告/PDF。
+
+### 已实现并接通
+
+- 公共配置、CPU/CUDA/精度控制、随机种子、可选依赖预检查、实验日志；v2 自主 checkpoint 保存模型/优化器/调度器/scaler/epoch/update/选模及 Python、NumPy、Torch、CUDA RNG。支持完整 epoch 恢复，不支持中途 batch/未更新梯度恢复。
+- Caption A/B/B-global 的 collator、右移监督、长度/截断/UNK 审计、正式训练入口、骨干冻结/按配置解冻 layer4、低学习率组、累积/裁剪/混合精度、验证早停、best/last 和独立 RGB 推理。
+- BLEU-4/METEOR/ROUGE-L 标准后端及固定 CIDEr-D scorer，版本、word_v1 分词、原始单位、离线 DF 与训练奖励 DF 协议明确区分；正式 Caption CIDEr-D 选模不降级。METEOR 连接代码已实现，Java 实际评分未执行。
+- Hybrid 两种迁移、仅训练文本扩词且保留旧 ID、SEP 原状态重量回归、五维整餐回归、自由生成和严格 JSON 组装；完整标签超长拒绝截断。统一任务二文本/名称 F1/数值误差/结构有效率及全样本失败分母。
+- Qwen3-VL 模型/Processor revision、显式 fast/slow、模板/Tokenizer/图像配置指纹、assistant-only collator、真实语言 Q/K/V/O LoRA、训练/恢复/保存和原始/微调配对推理。不可变 epoch bundle + SHA256 指针避免半写 checkpoint；基础权重外置。本地 Qwen 不需要 API Key。
+- SCST 真实采样与贪心基线、固定训练 DF、stop-gradient advantage、EOS/PAD log probability、CE 混合及奖励/梯度追踪；等步数 CE 继续训练为独立配置。
+- Judge 冻结本地 VLM 与独立环境变量 API 后端、严格四维评分/证据解析、原始响应/失败/截断记录、稳定匿名 ID、候选随机化、双人人评导入导出、Spearman、按图像 Bootstrap 和 quadratic weighted Cohen kappa。每种相关性用其自身完整配对并报告样本覆盖，不填失败评分。
+
+来源固定版本及许可见 [THIRD_PARTY.md](THIRD_PARTY.md)。自主架构和研究对照仍按第五章，工程优化不构成准确率/显存/吞吐收益结论。
+
+### 本次实际环境及结果
+
+Windows 11、Python 3.12.14、Torch 2.9.1+cpu、Torchvision 0.24.1+cpu、NumPy 2.2.6、Pillow 11.3.0、SciPy 1.15.3、pycocoevalcap 1.2、Transformers 4.57.1、PEFT 0.17.1、Accelerate 1.10.1；CUDA 不可用。完整安装快照为 requirements-lock-test-cpu.txt。
+
+最初默认 Anaconda/Python 3.13.5 环境出现 OpenMP 重复运行库错误；没有采用 KMP_DUPLICATE_LIB_OK 绕过。改在本次独立 Python 3.12 venv 安装 CPU 依赖，pip check 无冲突。只下载了代码依赖及指标包，没有下载真实数据或预训练模型。
+
+| 验证 | 实际结果 | 本地日志/产物（均被忽略，不是复现输入） |
+| --- | --- | --- |
+| 新增 tests/test_engineering.py | 16/16 通过，无 skip；约 9 秒，导入启动时间另计 | 根 outputs/goal-20261120/engineering-final.log |
+| 既有 ModelTests | 7/7 通过 | 根 outputs/goal-20261120/model-final.log |
+| 既有 test_baseline.py 全组 | 19 通过、2 项因缺 data/annotations/train.jsonl 报 FileNotFoundError，退出码 1 | 根 outputs/goal-20261120/baseline-final.log |
+| 独立 CLI 合成验收 | 24 条命令全部成功 | 工程 artifacts/goal-20261120/cli-final/commands.json、acceptance.json；根 outputs/goal-20261120/cli-final.log |
+| 依赖及静态检查 | pip check、compileall、Git whitespace 检查通过；文档链接/配置检查另存检查日志 | 根 outputs/goal-20261120/ |
+
+从工程目录运行的实际测试命令（本次解释器位于 artifacts/goal-20261120/venv/Scripts/python.exe）：
+
+```powershell
+& artifacts/goal-20261120/venv/Scripts/python.exe -m unittest discover -s tests -p test_engineering.py -v
+& artifacts/goal-20261120/venv/Scripts/python.exe -m unittest discover -s tests -p test_baseline.py -k ModelTests -v
+& artifacts/goal-20261120/venv/Scripts/python.exe -m unittest discover -s tests -p test_baseline.py -v
+& artifacts/goal-20261120/venv/Scripts/python.exe -m scripts.synthetic_acceptance --out artifacts/goal-20261120/cli-final
+```
+
+Qwen 测试启用 HF_HUB_OFFLINE=1：构造随机 tiny Qwen、合成 byte-level 词表和真实 Processor，保存为本地小型 HF 文件，再通过实际 load_qwen 重新加载。验证图像前向/反向、语言 LoRA 梯度/视觉冻结、assistant/EOS/PAD mask、完整训练与中断恢复后的 adapter 权重完全相同、实际原始/微调配对推理及冻结 Judge 解析失败的保留。适配器指针还测试了文件损坏拒绝加载。这不是 Qwen3-VL-4B 官方权重或能力验证。
+
+其他新增测试实际检查了全窗口 token 分母、Caption 右移截断、CPU 恢复模型/优化器/调度器及 RNG 一致性、视觉迁移对照、真实 CIDEr-D 奖励及与 pycocoevalcap 等价、SCST 奖励差/梯度方向/EOS 后 PAD、匿名人评往返、缺失服务配置不返回默认分、逐图 Bootstrap 和加权 kappa。只有外部服务的响应边界使用明确标记的测试后端，不替代奖励、梯度或统计算法。
+
+CLI 合成 manifest SHA256 为 `2a0af8cb19a1adbda65f3b9ca7ff2856ec2e042ea0de67d98950e36c8c2d3b44`，共 8 张程序生成 RGB、train/val/test=4/2/2。推理清单另有一条故意缺图项，全部 3 个 ID 保留输出。A/B/B-global、两种 Hybrid、CE 继续/SCST、恢复、三文本指标及匿名工具均通过公共 CLI 调用。原始 fixture、模型与结果均在独立 artifacts 子目录，明确标为 SYNTHETIC_ONLY，不能当作课程测试集或模型效果。
+
+原有两项数据检查没有伪造真实输入或改为成功。合成数据只在测试/验收专用目录生成，不写入 data/。本次没有训练集/验证集/测试集真实效果报告。
+
+### 尚未验证及接收人需要的资源
+
+1. 真实 Food500 图文映射、来源 revision、哈希、近重复组/划分，以及学校任务二数据；执行 README 的 audit 再训练，不依赖历史本机文件。
+2. ImageNet ResNet18 和固定 revision 的 Qwen3-VL-4B-Instruct/Processor 本地权重；Qwen 默认 local_files_only=true。完整官方权重、原始 Chat Template 与真实图像 Token 分布仍需实测，tiny 不代表 4B 兼容性已验证。
+3. Linux CUDA 机器：BF16 LoRA、可选 NF4/bitsandbytes、实际批量/显存/吞吐/确定性和正式训练均未运行。取得后先短试跑并记录资源，再执行完整配置。
+4. Java METEOR 运行环境：本次只验证标准 BLEU-4、ROUGE-L、CIDEr-D 和 Java 缺失时的清晰错误。正式四指标不得省略或静默替代 METEOR。
+5. 真实冻结 Judge（本地权重或兼容 API 的 Key/地址/模型固定版本）及两名独立人评；API 环境变量可空，尚无真实 Judge 分数/人评一致性结论。
+
+各方法的具体安装、训练、恢复、推理及评价命令均在 [README](README.md)，例配置位于 configs/，无密钥示例为 .env.example。报告/PDF、正式实验、可视化结果和课程提交材料不属于本次代码验收结果。

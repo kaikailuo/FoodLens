@@ -1,0 +1,5 @@
+# Install a hardware-compatible PyTorch/torchvision first; no CPU wheel override here.
+transformers==4.57.1
+peft==0.17.1
+accelerate==1.10.1
+# QLoRA only: install a compatible bitsandbytes separately on the target CUDA host.

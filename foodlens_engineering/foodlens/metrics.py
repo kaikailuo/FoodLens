@@ -69,6 +69,12 @@ def evaluate_records(truth_by_id, prediction_by_id, *, _include_subset=True):
                            "tp": sample_tp, "fp": sample_fp, "fn": sample_fn})
     n = len(truth_by_id)
     result = {"samples": n, "prediction_extras": sorted(set(prediction_by_id)-set(truth_by_id)),
+              "missing_predictions": len(set(truth_by_id)-set(prediction_by_id)),
+              "prediction_coverage": len(set(truth_by_id) & set(prediction_by_id))/n if n else None,
+              "parse_failed": sum(row["status"] == "parse_failed" for row in per_sample),
+              "schema_failed": sum(row["status"] == "schema_failed" for row in per_sample),
+              "inference_failed": sum(bool(prediction_by_id.get(i, {}).get("inference_error")) or
+                  prediction_by_id.get(i, {}).get("status") == "inference_failed" for i in truth_by_id),
               "name_micro_f1": 2*tp/(2*tp+fp+fn) if 2*tp+fp+fn else 1.0,
               "name_macro_f1": _mean(macro), "tp": tp, "fp": fp, "fn": fn,
               "weight_matched": _errors(matched), "weight_union": _errors(union),

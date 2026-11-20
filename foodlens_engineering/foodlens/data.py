@@ -21,6 +21,8 @@ def sha256(path):
 
 def safe_image_path(root, relative):
     root = Path(root).resolve()
+    if not isinstance(relative, str) or not relative.strip() or Path(relative).is_absolute():
+        raise ValueError("image must be a nonempty path relative to data root")
     path = (root / relative).resolve()
     if not path.is_relative_to(root):
         raise ValueError("image path escapes data root")
@@ -38,6 +40,10 @@ def image_transform(train=False):
 class NutritionDataset(Dataset):
     def __init__(self, annotation, data_root, *, split, limit=None, train_transform=False):
         self.rows = read_jsonl(annotation)
+        if any(not isinstance(row.get("dish_id"), str) or not row["dish_id"].strip() for row in self.rows):
+            raise ValueError("nutrition IDs must be nonempty strings")
+        if len({row["dish_id"] for row in self.rows}) != len(self.rows):
+            raise ValueError("duplicate nutrition IDs")
         self.root = Path(data_root)
         if any(row.get("split") != split for row in self.rows):
             raise ValueError("annotation split mismatch")
@@ -65,6 +71,8 @@ class RGBManifestDataset(Dataset):
         self.rows = read_jsonl(manifest)
         if any(set(row) != {"id", "image"} for row in self.rows):
             raise ValueError("RGB inference manifest must contain only id and image")
+        if any(not isinstance(row["id"], str) or not row["id"].strip() for row in self.rows):
+            raise ValueError("RGB manifest IDs must be nonempty strings")
         if len({row["id"] for row in self.rows}) != len(self.rows):
             raise ValueError("duplicate RGB manifest IDs")
         self.rows = self.rows[:limit] if limit else self.rows
@@ -138,7 +146,9 @@ class TrainStatistics:
 class CaptionManifestDataset(Dataset):
     """Requires an explicit verified mapping; never joins parquet and captions by row."""
     def __init__(self, manifest, data_root, *, split):
-        self.rows = [row for row in read_jsonl(manifest) if row["split"] == split]
+        all_rows = read_jsonl(manifest)
+        audit_caption_rows(all_rows)
+        self.rows = [row for row in all_rows if row["split"] == split]
         self.root = data_root
         self.transform = image_transform(split == "train")
         ids = set()
@@ -169,3 +179,56 @@ def validate_manifest_splits(rows):
             previous = groups.setdefault(identifier, row["split"])
             if previous != row["split"]:
                 raise ValueError(f"cross-split duplicate: {identifier}")
+
+
+def audit_caption_rows(rows):
+    if not rows:
+        raise ValueError("empty caption manifest")
+    required = {"id", "image", "caption", "official_filename", "sha256", "duplicate_group", "split"}
+    for row in rows:
+        if not required <= row.keys() or row["split"] not in {"train", "val", "test"}:
+            raise ValueError("caption manifest lacks provenance or valid split")
+        if any(not isinstance(row[key], str) or not row[key].strip() for key in required):
+            raise ValueError("caption provenance fields must be nonempty strings")
+        if len(row["sha256"]) != 64 or any(c not in "0123456789abcdef" for c in row["sha256"]):
+            raise ValueError("invalid image SHA256")
+    if len({r["id"] for r in rows}) != len(rows):
+        raise ValueError("duplicate caption IDs across splits")
+    validate_manifest_splits(rows)
+    return {split: sum(r["split"] == split for r in rows) for split in ("train", "val", "test")}
+
+
+def collate_caption(samples, vocab, max_tokens=64):
+    if not samples or max_tokens < 2:
+        raise ValueError("nonempty caption batch and max_tokens>=2 required")
+    encoded = [vocab.encode(sample["caption"]) for sample in samples]
+    sequences = [[1] + ids[:max_tokens-1] + [2] for ids in encoded]
+    length = max(len(seq)-1 for seq in sequences)
+    inputs = torch.zeros(len(samples), length, dtype=torch.long)
+    targets = torch.zeros_like(inputs)
+    for i, seq in enumerate(sequences):
+        inputs[i, :len(seq)-1] = torch.tensor(seq[:-1])
+        targets[i, :len(seq)-1] = torch.tensor(seq[1:])
+    return {"ids": [s["id"] for s in samples], "images": torch.stack([s["image"] for s in samples]),
+            "inputs": inputs, "targets": targets, "original_lengths": [len(x)+1 for x in encoded],
+            "truncated": [len(x)+1 > max_tokens for x in encoded],
+            "references": [[s["caption"]] for s in samples]}
+
+
+def collate_hybrid(samples, vocab, max_tokens=128):
+    batch = collate_nutrition(samples, vocab)
+    if batch["targets"].shape[1] > max_tokens:
+        raise ValueError("hybrid supervision exceeds max_tokens; increase limit after length audit")
+    return batch
+
+
+def length_audit(texts, vocab, max_tokens):
+    encoded = [vocab.encode(text) for text in texts]
+    lengths = [len(ids)+1 for ids in encoded]
+    return {"samples": len(lengths), "max_length": max(lengths, default=0),
+            "over_limit": sum(n > max_tokens for n in lengths),
+            "over_limit_rate": sum(n > max_tokens for n in lengths)/len(lengths) if lengths else None,
+            "max_tokens": max_tokens, "includes_eos": True,
+            "mean_length": sum(lengths)/len(lengths) if lengths else None,
+            "unknown_tokens": sum(ids.count(3) for ids in encoded),
+            "content_tokens": sum(len(ids) for ids in encoded)}

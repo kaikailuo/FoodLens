@@ -31,6 +31,8 @@ def predict_hybrid(model, images, vocab, config=None):
         closures, ended = 0, False
         for _ in range(config.max_tokens):
             logits, states, hidden = model.decode(torch.tensor([[previous]], device=images.device), z, hidden)
+            if not torch.isfinite(logits).all():
+                raise RuntimeError("nonfinite Hybrid generation logits")
             scores = logits[0, 0].clone()
             scores[0] = scores[1] = -torch.inf
             if not name_tokens:
@@ -46,7 +48,7 @@ def predict_hybrid(model, images, vocab, config=None):
                 # Exactly the state that produced SEP logits, never next-step state.
                 weight = float(model.weight_head(torch.cat((states[:, 0], z), -1)).item())
                 name = detokenize([vocab.tokens[j] for j in name_tokens])
-                if 3 in name_tokens or not name or not math.isfinite(weight):
+                if 3 in name_tokens or not name or not math.isfinite(weight) or weight < 0:
                     failures.append({"reason": "unk_empty_or_nonfinite", "raw_name": name,
                                      "weight_g": weight if math.isfinite(weight) else None})
                 else:
@@ -82,6 +84,8 @@ def predict_caption(model, images, *, max_tokens=64):
         step = lambda prefix: model.decode(prefix, z)[0]
     for _ in range(max_tokens):
         logits = step(sequences)[:, -1].clone()
+        if not torch.isfinite(logits).all():
+            raise RuntimeError("nonfinite Caption generation logits")
         logits[:, :2] = -torch.inf
         token = logits.argmax(-1).masked_fill(finished, 0)
         sequences = torch.cat((sequences, token[:, None]), 1)
