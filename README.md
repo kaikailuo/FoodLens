@@ -2,7 +2,7 @@
 
 深度学习课程项目：食物图像描述生成，以及食材、重量与整餐营养信息的结构化预测。
 
-目前已接通 Caption A/B/B-global、Hybrid、Qwen3-VL LoRA、SCST 与 Judge 的训练/推理/评价入口，并完成 Windows CPU 合成工程验证；真实数据实验、正式训练及 Linux/GPU 验证尚未执行。合成样例和 tiny smoke 不能代表模型效果。
+目前已接通 Caption A/B/B-global、Hybrid、Qwen3-VL LoRA、SCST 与 Judge 的训练/推理/评价入口，并完成 Windows CPU 合成工程验证；真实数据实验、正式训练及 Linux/GPU 验证尚未执行。合成样例和 tiny smoke 不能代表模型效果。2026-11-23 自主任务二已切换为 [Hybrid V2 类别级 Transformer](foodlens_engineering/HYBRID_V2.md)，本轮验证范围与兼容性见[实现状态](foodlens_engineering/IMPLEMENTATION_STATUS.md)。
 
 **给同学和 agent：** 先读 [AGENTS.md](AGENTS.md)，再按[工程 README](foodlens_engineering/README.md)复现。统一 CLI 已提供 `train`、`predict`、`evaluate-caption`、`qwen-train`、`qwen-pair` 和 Judge/人评工具，保留旧 smoke。复现不需要原作者的虚拟环境、历史产物或本地 `.agents/` 技能。
 

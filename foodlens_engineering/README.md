@@ -34,11 +34,11 @@ python3.12 -m venv .venv
 
 正式 Linux/CUDA 先按硬件安装兼容的 PyTorch/Torchvision，再装可选依赖并保存 freeze；不要把 CPU 锁定文件覆盖到 GPU 环境。BF16、FP16、NF4、CUDA 确定性及显存/吞吐均须目标机器试跑。METEOR 另需 PATH 上的 Java 和 pycocoevalcap 自带 jar/英文 paraphrase 资源；缺项明确报错，没有替代分数。Linux/CUDA、Java METEOR 未在本次实测。
 
-完整 `python -m unittest discover -s tests -v` 还包含依赖真实课程数据的旧测试。当前缺少 data/annotations/train.jsonl，旧测试 19 项通过、2 项因缺数据报错；不能称全量通过。
+完整 `python -m unittest discover -s tests -v` 还包含依赖真实课程数据的旧测试。2026-11-20 曾因缺数据报错；2026-11-23 本机已有课程数据，本轮结果见 IMPLEMENTATION_STATUS。新增 V2 检查：`python -m unittest discover -s tests -p test_hybrid_v2.py -v`，无数据时仅跳过 RealDataTests。
 
 ## 数据契约与审计
 
-本次不获取或配置真实数据。取得资源后按 [data/README.md](../data/README.md) 归档。
+不修改原始数据。取得资源后按 [data/README.md](../data/README.md) 归档。
 
 - Caption manifest JSONL：每行 `id/image/caption/official_filename/sha256/duplicate_group/split`，可附来源 revision。image 相对 data 根；split 为 train/val/test，ID 全局唯一，哈希与重复组不跨划分。先完成可追溯映射、排除清单和官方测试优先的划分，禁止按行号拼接。
 - Nutrition JSONL：`dish_id/image/split/target`，保留学校原划分，target 符合严格 Schema。target_text/metadata 不进入推理。
@@ -77,9 +77,13 @@ python -m foodlens.cli predict --checkpoint artifacts/hybrid/best.pt --manifest 
 python -m foodlens.cli evaluate --annotations ../data/annotations/test.jsonl --predictions artifacts/hybrid/test.jsonl --text-metrics BLEU-4 METEOR ROUGE-L CIDEr-D --out artifacts/hybrid/test_metrics.json
 ```
 
-主配置 transfer=visual_gru 复制视觉/投影/GRU 及旧词行；复制配置改为 transfer=visual、另选 out 完成仅视觉对照。保留所有旧词 ID，仅以训练文本追加词和 SEP。完整食材监督超长直接报错，不能截断重量配对。训练和自由生成都在产生 SEP logits 的状态回归重量；空项不回归。追踪空名/UNK/非有限值，丢弃未闭合项，合并重复名称，一位小数组装及严格校验 JSON，不约束食材重量之和等于整餐重量。
+2026-11-23 起新训练采用 [Hybrid V2](HYBRID_V2.md)：ResNet-18 的 49 个网格直接投影到 256 维，接 2 层、4 头、FFN 1024、Dropout 0.1 的 Transformer Decoder，无视觉 Transformer Encoder。Train 全名类别按规范化名称排序，独立于 Caption 词表。先合并同名重量，再成对排序；输入 BOS,c1,…,cK，目标 c1,…,cK,EOS。重量取已消费类别的 h1,…,hK，PAD 不监督。完整监督超长直接报错，不能截断重量配对。
 
-Hybrid/Qwen 正式验证按 Micro F1 选模，容差内比较五维 `mean(MAE_j/train_std_j)`，再比较 Schema 有效率；默认容差 1e-6。五维依次为总重量(g)、热量(kcal)、蛋白质(g)、脂肪(g)、碳水(g)。
+`--initialize` 可省略，此时使用配置中的 ImageNet ResNet-18 初始化。提供 Caption A 时，`transfer=visual` 只复制 `visual.features.*`，具体参数名记录在 run.json/Checkpoint；全局投影、网格投影、Transformer、类别 Embedding、输出层和回归头均重新初始化，回归输出偏置用 Train 均值初始化。不支持 visual_gru。旧 Hybrid Checkpoint 由 `restore_model()` 显式构建 LegacyHybrid，可推理但不能作为 V2 恢复点；旧 smoke 保留原 SEP 链路。Caption A/B 架构与权重加载不变。
+
+自由生成仅允许大于前一类别的 ID 或 EOS，允许空集合。选出类别后先消费并回归重量，再预测下一类；达到 Token/项数上限仍保留最后完整项并记录截断。非有限 logits/重量保留失败记录，非法整餐值用 null 标记 Schema 失败；JSON 组装保留一位小数，不约束食材重量和等于整餐重量。
+
+Hybrid V2 正式验证依次比较 Micro F1（大优）、食材 Weight Union MAE（g，小优）、五维 `mean(MAE_j/train_std_j)`（小优）、Schema 有效率（大优）；逐级容差均为 1e-6。选模只用 Validation。Qwen 保留原三项优先级，不在本轮改变。五维依次为总重量(g)、热量(kcal)、蛋白质(g)、脂肪(g)、碳水(g)。
 
 任务二文本固定为规范化、重复合并、字典序排序的食材名，用 ` ; ` 连接，不含数字；Schema 无效预测为空文本。除四文本指标外，报告精确名称 Micro F1、逐图 Macro F1、匹配/并集重量 MAE/MSE、五维 MAE/MSE、JSON/Schema 有效率及缺失/失败/截断。缺失侧重量置零，无匹配项误差为 null；完全解析失败为空食材/五维零预测；Schema 失败保留可读字段。非法名称及 Hybrid 清理失败仍计 FP。有效子集另报覆盖率，不能替代全样本结果。旧 evaluate 不带 text-metrics 时只运行结构评价，正式评价必须传四项。
 

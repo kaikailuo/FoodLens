@@ -64,9 +64,9 @@ def main():
         assert len((out/(family+"-pred.jsonl")).read_text().splitlines()) == 3
     write_json(out/"A.json", asdict(replace(config, epochs=2)))
     run("train", "--config", out/"A.json", "--manifest", out/"caption.jsonl", "--data-root", out, "--out", out/"A", "--resume", out/"A/last.pt")
-    for mode in ("visual", "visual_gru"):
+    for mode in ("visual",):
         name = "hybrid-"+mode
-        write_json(out/(name+".json"), asdict(replace(config, task="hybrid", family="hybrid", transfer=mode)))
+        write_json(out/(name+".json"), asdict(replace(config, task="hybrid", family="hybrid", transfer=mode, model={**config.model, "layers": 2})))
         run("train", "--config", out/(name+".json"), "--train-annotations", out/"train.jsonl", "--val-annotations", out/"val.jsonl",
             "--data-root", out, "--initialize", out/"A/best.pt", "--out", out/name)
         run("predict", "--checkpoint", out/name/"best.pt", "--manifest", out/"rgb.jsonl", "--data-root", out, "--out", out/(name+"-pred.jsonl"))

@@ -19,7 +19,7 @@ from foodlens.judge import (DIMENSIONS, JudgeConfig, export_human, import_human,
     parse_scores, prepare_candidates, run_judge, stable_id)
 from foodlens.judge_stats import analyze_judge, cluster_bootstrap, spearman, weighted_kappa
 from foodlens.losses import token_loss
-from foodlens.models import CaptionA, Hybrid, ModelConfig, transfer_caption_a
+from foodlens.models import CaptionA, Hybrid, ModelConfig, transfer_visual_backbone
 from foodlens.qwen import QwenConfig, answer_labels, generate_qwen, inject_lora, lora_targets, QwenCollator
 from foodlens.runtime import runtime, write_jsonl, reject_secrets
 from foodlens.schema import TOTAL_FIELDS
@@ -148,14 +148,14 @@ class PublicFoundationTests(unittest.TestCase):
             self.assertEqual(result["step"], 2)
             source, old, _ = restore_model(root/"a/best.pt")
             model, new, ckpt = restore_model(root/"h/last.pt")
-            self.assertEqual(new.tokens[:len(old)], old.tokens)
-            self.assertEqual(ckpt["metadata"]["transfer"]["copied_tokens"], len(old))
+            self.assertEqual(new.tokens[4:], ["brown rice"])
+            self.assertEqual(ckpt["metadata"]["transfer"]["copied_tokens"], 0)
             random_target = Hybrid(len(new), tiny())
-            before = random_target.gru.weight_ih_l0.detach().clone()
-            transfer_caption_a(source, old, random_target, new, mode="visual")
-            self.assertTrue(torch.equal(before, random_target.gru.weight_ih_l0))
-            self.assertTrue(torch.equal(source.visual.projection.weight, random_target.visual.projection.weight))
-            self.assertTrue(is_better([.5, 1., .9], [.5, 2., 1.], "hybrid", 1e-6))
+            before = random_target.decoder.layers[0].self_attn.in_proj_weight.detach().clone()
+            transfer_visual_backbone(source, random_target)
+            self.assertTrue(torch.equal(before, random_target.decoder.layers[0].self_attn.in_proj_weight))
+            self.assertTrue(torch.equal(source.visual.features[0].weight, random_target.visual.features[0].weight))
+            self.assertTrue(is_better([.5, 1., 1., .9], [.5, 2., 1., 1.], "hybrid", 1e-6))
 
     def test_accumulation_uses_global_token_denominator(self):
         from foodlens.training import train_epoch

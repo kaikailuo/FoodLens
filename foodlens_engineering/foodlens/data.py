@@ -88,6 +88,9 @@ class RGBManifestDataset(Dataset):
 
 
 def serialize_items(record, vocab):
+    from .ingredients import IngredientVocabulary, serialize_ingredients
+    if isinstance(vocab, IngredientVocabulary):
+        return serialize_ingredients(record, vocab)
     items = canonical_items(record["items"])
     sequence, boundaries, weights = [1], [], []
     sep = vocab.index["<SEP>"]
@@ -113,6 +116,9 @@ def collate_nutrition(samples, vocab):
     for i, (sequence, positions, values) in enumerate(serialized):
         inputs[i, :len(sequence)-1] = torch.tensor(sequence[:-1])
         targets[i, :len(sequence)-1] = torch.tensor(sequence[1:])
+        from .ingredients import IngredientVocabulary
+        if isinstance(vocab, IngredientVocabulary):
+            targets[i].masked_fill_(targets[i].eq(3), 0)
         boundaries[i, :len(positions)] = torch.tensor(positions, dtype=torch.long)
         weights[i, :len(values)] = torch.tensor(values)
         item_mask[i, :len(values)] = True

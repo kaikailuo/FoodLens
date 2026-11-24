@@ -75,6 +75,8 @@ def evaluate_records(truth_by_id, prediction_by_id, *, _include_subset=True):
               "schema_failed": sum(row["status"] == "schema_failed" for row in per_sample),
               "inference_failed": sum(bool(prediction_by_id.get(i, {}).get("inference_error")) or
                   prediction_by_id.get(i, {}).get("status") == "inference_failed" for i in truth_by_id),
+              "name_micro_precision": tp/(tp+fp) if tp+fp else (1.0 if not fn else 0.0),
+              "name_micro_recall": tp/(tp+fn) if tp+fn else 1.0,
               "name_micro_f1": 2*tp/(2*tp+fp+fn) if 2*tp+fp+fn else 1.0,
               "name_macro_f1": _mean(macro), "tp": tp, "fp": fp, "fn": fn,
               "weight_matched": _errors(matched), "weight_union": _errors(union),

@@ -2,7 +2,7 @@
 
 本文保存 2026-11-01 的历史验证范围与结果，文中的耗时、loss 和本地产物位置仅指该次运行。当前复现步骤以[工程 README](README.md)为准，实现状态变化后应另追加带日期的记录，不把历史验证等同于新环境已通过。
 
-**当前状态请同时阅读文末 2026-11-20 代码建设记录。** 下列 11-01/11-02 的结果及未完成项保留为历史，不能据此判断新代码仍只有旧 CLI。
+**当前状态请阅读文末 2026-11-24 Hybrid V2 实施记录；11-20 Hybrid 为旧 GRU/SEP 实现。** 下列 11-01/11-02 的结果及未完成项保留为历史，不能据此判断新代码仍只有旧 CLI。
 
 工程位于仓库的 `foodlens_engineering/`。该次未修改报告、原始 data 或已有审计文件。Python 3.12 隔离venv安装CPU torch 2.9.1+cpu / torchvision 0.24.1+cpu；无预训练权重下载，无GPU训练。
 
@@ -129,3 +129,43 @@ CLI 合成 manifest SHA256 为 `2a0af8cb19a1adbda65f3b9ca7ff2856ec2e042ea0de67d9
 5. 真实冻结 Judge（本地权重或兼容 API 的 Key/地址/模型固定版本）及两名独立人评；API 环境变量可空，尚无真实 Judge 分数/人评一致性结论。
 
 各方法的具体安装、训练、恢复、推理及评价命令均在 [README](README.md)，例配置位于 configs/，无密钥示例为 .env.example。报告/PDF、正式实验、可视化结果和课程提交材料不属于本次代码验收结果。
+
+
+## 2026-11-24：Hybrid V2 实施与 CPU 验收
+
+基准分支 `htl_1120`，HEAD `ebde49a35b77be285d6343343e0efa96dc74712a`，本轮改动尚未提交。需求及审查始于 11-23，产物目录沿用 `hybrid-v2-20261123`。原始数据、划分、历史审查报告及历史产物未修改；没有提交、推送或合并。架构与协议见 [HYBRID_V2.md](HYBRID_V2.md)，它替代第五章旧 Hybrid 的 GRU/SEP 方案；报告 PDF/旧图件未在本轮重制。
+
+### 实现范围与静态检查
+
+- `models.py:Hybrid` 独立于 Caption A，使用 49 网格投影和 2 层类别级 Transformer Decoder，没有视觉 Transformer Encoder。正式维度 256、4 头、FFN 1024、Dropout 0.1；保留原紧凑 Weight/Total Head、Softplus 和 Train 统计标准化 Smooth L1。
+- 新增 `ingredients.py:IngredientVocabulary`、`serialize_ingredients`；Train 全名映射、规则版本及 SHA-256 随 run.json 和 Checkpoint 保存。同名重量确定性求和，类别/重量成对排序。`data.py` 兼容旧序列化，新权重 gather 使用输入位置 1…K。未知类别仅用于验证诊断占位，不参与类别 CE，评价仍用未经改变的原始全名实体。
+- `decode.py:predict_hybrid_v2` 消费每个生成类别后回归重量，最后一项不因 EOS 或预算边界丢失；约束 ID 严格递增，允许首步 EOS，保存截断、失败与 Schema 检查结果。
+- `training.py` 不再强制 GRU 初始化；可直接预训练 ResNet-18 初始化，或从 Caption A 严格迁移 `visual.features.*`。`transfer_visual_backbone` 记录所有复制键，不复制投影/GRU/词表行/新头。V2 选模增加 Union 重量 MAE，优先级为 F1→重量→标准化五项 MAE→Schema。Qwen 维持原选优。
+- `checkpoint.py` 保存架构标记与完整类别映射。V2 epoch 恢复核对数据、配置、类别映射；旧 Hybrid 显式走 LegacyHybrid 推理，禁止作为 V2 恢复点。旧 smoke 显式保留 LegacyHybrid；Caption A/B 代码未改变。
+- `metrics.py` 补充 Micro Precision/Recall，保持原有名称键匹配、Matched/Union、全样本数值与失败分母。`losses.py` 无须修改，继续使用原三个损失；不新增 TF-set、SCST 或重量和约束。
+- 更新 `configs/train_hybrid.json`、`scripts/synthetic_acceptance.py`、`tests/test_baseline.py`、`tests/test_engineering.py`，新增 `tests/test_hybrid_v2.py`。根 README、工程 README、本记录及 HYBRID_V2.md 同步说明。`git diff --check` 无错误；无模型静态阻断项。
+
+### 实际命令与结果
+
+工作目录为 `foodlens_engineering/`。PowerShell 在调用前设置 `$env:GIT_CONFIG_COUNT='0'`，避免执行环境中不完整的 Git 配置计数导致版本采集失败；不修改仓库 Git 配置。
+
+```powershell
+.venv/Scripts/python.exe -m unittest discover -s tests -v
+.venv/Scripts/python.exe -m unittest discover -s tests -p test_hybrid_v2.py -v
+.venv/Scripts/python.exe -m scripts.synthetic_acceptance --out artifacts/hybrid-v2-20261123-cli
+```
+
+- 全量：47 项，45 通过、2 跳过、0 失败，40.175 秒；两个跳过项需要本机未安装的 Transformers/PEFT（Qwen），不将其称为通过。日志 `artifacts/hybrid-v2-tests.log`。
+- V2 专项：10 项全部通过、0 失败、0 跳过，33.905 秒；覆盖稳定映射/同名合并/顺序置换/输入目标移位、首末重量及 PAD/BOS mask、因果与 padding、网格 Cross-Attention、各头梯度、Teacher Forcing/自回归状态一致、EOS/重复/截断/非法回归、未知类全样本评价、选优、保存加载/逐张量一致的 epoch 恢复、旧模型兼容及真实数据。日志 `artifacts/hybrid-v2-focused.log`。
+- CLI 合成端到端：21 条公共 CLI 命令均退出 0，涵盖 A/B/B-global、V2 仅视觉迁移训练/推理/评价、Caption 恢复及原 CE/SCST/匿名人评工具回归。日志 `artifacts/hybrid-v2-cli.log`，逐命令 stdout/stderr 为 `artifacts/hybrid-v2-20261123-cli/commands.json`，环境与摘要为该目录 `acceptance.json`。V2 合成配置为 2 层、16 维、4 头、FFN 32、随机 tiny；不是正式 ResNet 效果。
+- 正式尺寸另用随机 ResNet-18（不下载权重）确认 49×256 Memory、2 层/4 头/1024 FFN、Weight 512→256→1 和 Total 768→256→5。没有以此证明预训练效果。
+
+### 真实数据预处理
+
+本机确有真实课程数据。逐项复核摘要保存于根 `outputs/hybrid_v2_20261124/preprocessing.json`，仅为本次本地产物，不是复现输入。Train 映射 SHA-256 为 `00fe7d8fac7b5436abd8265afe2460f8faec854649bfcae6901b6c7c86dda5c0`。三份 JSONL SHA-256 均与 data/sources.json 一致。Train 2338 条、151 类、8368 项；全部食材及重量 ID→名称往返一致、反序后序列/重量完全一致。Validation 414 条含 5 个未见类；Test 506 条含 3 个未见类。它们未扩充类别表，未作为 UNK 真值合并计分。三个划分共 3258 张 RGB 均通过既有读取与 224×224 预处理，无缺图/解码失败。本项不训练、不选模、不改变原划分。
+
+### 环境、限制与后续训练风险
+
+包内 Python 源码摘要为 `8b66c8f31ccad0c953f38bd801927d72b82feec7968df01886d45391b413feb5`，实际依赖快照为 `artifacts/hybrid-v2-freeze.txt`。实际为 Windows 11 / Python 3.12.14 / torch 2.9.1+cpu / torchvision 0.24.1+cpu / NumPy 2.4.6 / Pillow 13.0.0 / scipy 1.15.3 / pycocoevalcap 1.2，CUDA 不可用；与 11-20 锁定环境不同。只补装了仓库已有声明的 six、标准指标和 scipy 依赖，没有引入新依赖。最初的依赖缺失已修复后重跑；不覆盖历史结果。
+
+尚未验证真实 ImageNet 权重迁移后的收敛、真实数据训练与模型效果、Linux/CUDA/BF16 显存及吞吐、Java METEOR。闭集对未见食材必然漏检；长尾重量（如 2991g）、RGB 份量歧义、训练真实前缀与自由生成的差异以及既有同餐跨划分疑点仍会影响实验可信度。正式实验前需按仓库约定固定权重、数据、指标与资源试跑；本轮不修改异常标签，不扩展模型研究范围。

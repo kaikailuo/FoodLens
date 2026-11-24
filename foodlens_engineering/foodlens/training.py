@@ -15,7 +15,8 @@ from .data import (CaptionManifestDataset, NutritionDataset, TrainStatistics, co
 from .decode import GenerationConfig, predict_caption, predict_hybrid
 from .losses import token_loss, hybrid_loss
 from .metrics import evaluate_records
-from .models import CaptionA, CaptionB, Hybrid, ModelConfig, transfer_caption_a
+from .models import CaptionA, CaptionB, Hybrid, LegacyHybrid, ModelConfig, transfer_visual_backbone
+from .ingredients import IngredientVocabulary
 from .runtime import append_log, autocast, environment, reject_secrets, runtime, to_device, write_json, write_jsonl
 from .scst import captions_from_tokens, scst_loss
 from .text import Vocabulary
@@ -51,7 +52,7 @@ class TrainConfig:
     metrics: list = field(default_factory=lambda: ["BLEU-4", "METEOR", "ROUGE-L", "CIDEr-D"])
     method: str = "ce"
     scst_weight: float = 0.5
-    transfer: str = "visual_gru"
+    transfer: str = "visual"
     engineering: bool = False
     updates_per_epoch: int | None = None
 
@@ -88,6 +89,11 @@ class TrainConfig:
         if self.unfreeze_layer4_epoch is not None and (type(self.unfreeze_layer4_epoch) is not int or self.unfreeze_layer4_epoch < 0 or self.model.get("backbone", "resnet18") != "resnet18"):
             raise ValueError("layer4 epoch requires ResNet18 and nonnegative epoch")
         m = ModelConfig(**self.model)
+        if self.backend == "native" and self.task == "hybrid":
+            if self.transfer != "visual":
+                raise ValueError("Hybrid V2 supports visual backbone transfer only")
+            if not self.engineering and (m.hidden, m.layers, m.heads, m.feedforward, m.dropout) != (256, 2, 4, 1024, 0.1):
+                raise ValueError("formal Hybrid V2 requires 256/2/4/1024/0.1 decoder")
         if type(m.pretrained) is not bool or type(m.frozen_backbone) is not bool:
             raise ValueError("model pretrained/frozen_backbone must be boolean")
         if m.backbone not in {"resnet18", "tiny"} or any(type(x) is not int or x < 1 for x in (m.hidden, m.embedding, m.heads, m.layers, m.feedforward)):
@@ -132,8 +138,21 @@ def build_model(family, vocab_size, config, *, loading=False):
 def restore_model(path, device="cpu"):
     checkpoint = torch.load(path, map_location="cpu", weights_only=False)
     family = checkpoint["metadata"].get("model_family", "hybrid")
-    vocab = Vocabulary(checkpoint["vocab"])
-    model = build_model(family, len(vocab), checkpoint["model_config"], loading=True).to(device)
+    if family == "hybrid" and checkpoint.get("architecture_version") == "hybrid_v2":
+        vocab = IngredientVocabulary.restore(checkpoint["ingredient_vocabulary"])
+        if vocab.tokens != checkpoint["vocab"]:
+            raise ValueError("checkpoint vocabulary mismatch")
+        model = build_model(family, len(vocab), checkpoint["model_config"], loading=True).to(device)
+    elif family == "hybrid":
+        if checkpoint.get("architecture_version") is not None:
+            raise ValueError("unsupported Hybrid architecture version")
+        vocab = Vocabulary(checkpoint["vocab"])
+        original = ModelConfig(**checkpoint["model_config"])
+        model = LegacyHybrid(len(vocab), replace(original, pretrained=False)).to(device)
+        model.config = original
+    else:
+        vocab = Vocabulary(checkpoint["vocab"])
+        model = build_model(family, len(vocab), checkpoint["model_config"], loading=True).to(device)
     model.load_state_dict(checkpoint["model"])
     return model, vocab, checkpoint
 
@@ -150,7 +169,8 @@ def is_better(candidate, best, monitor, tolerance):
     if best is None:
         return True
     if monitor == "hybrid":
-        for new, old, direction in zip(candidate, best, (1, -1, 1), strict=True):
+        directions = (1, -1, -1, 1) if len(candidate) == 4 else (1, -1, 1)  # existing Qwen protocol
+        for new, old, direction in zip(candidate, best, directions, strict=True):
             if abs(new-old) > tolerance:
                 return direction*(new-old) > 0
         return False
@@ -268,7 +288,7 @@ def selection_value(result, config, statistics):
     from .schema import TOTAL_FIELDS
     normalized = sum(metrics["totals"][key]["mae"] / max(scale, 1e-6)
                      for key, scale in zip(TOTAL_FIELDS, statistics.total_std, strict=True))/5
-    return [metrics["name_micro_f1"], normalized, metrics["schema_valid_rate"]]
+    return [metrics["name_micro_f1"], metrics["weight_union"]["mae"] or 0., normalized, metrics["schema_valid_rate"]]
 
 
 def run_training(config, *, data_root, out, manifest=None, train_annotations=None, val_annotations=None,
@@ -280,8 +300,6 @@ def run_training(config, *, data_root, out, manifest=None, train_annotations=Non
         raise ValueError("resume and initialize are mutually exclusive")
     if config.method != "ce" and not (resume or initialize):
         raise ValueError("SCST/CE continuation requires a selected CE checkpoint")
-    if config.task == "hybrid" and not config.engineering and not (resume or initialize):
-        raise ValueError("formal Hybrid training requires a selected Caption A checkpoint")
     torch.set_num_threads(config.threads)
     seed_everything(config.seed)
     device, scaler = runtime(config.device, config.precision, config.deterministic)
@@ -321,6 +339,8 @@ def run_training(config, *, data_root, out, manifest=None, train_annotations=Non
         hashes["initial_checkpoint"] = sha256(initialize)
     saved = torch.load(resume, map_location="cpu", weights_only=False) if resume else None
     if saved:
+        if config.task == "hybrid" and saved.get("architecture_version") != "hybrid_v2":
+            raise ValueError("legacy Hybrid cannot resume as V2; use Caption A visual initialization or a new run")
         if saved.get("format_version") != 2 or not saved.get("progress"):
             raise ValueError("training resume requires format v2 epoch checkpoint")
         original_config = dict(saved["metadata"]["train_config"])
@@ -334,20 +354,21 @@ def run_training(config, *, data_root, out, manifest=None, train_annotations=Non
         if current_data != saved_data:
             raise ValueError("resume data hash mismatch")
         hashes = saved["metadata"]["input_hashes"]
-        vocab = Vocabulary(saved["vocab"])
+        vocab = IngredientVocabulary.restore(saved["ingredient_vocabulary"]) if config.task == "hybrid" else Vocabulary(saved["vocab"])
+        if config.task == "hybrid" and vocab.metadata() != IngredientVocabulary.fit(train.rows).metadata():
+            raise ValueError("resume ingredient mapping differs from Train")
+    elif config.task == "hybrid":
+        vocab = IngredientVocabulary.fit(train.rows)
     else:
         vocab = Vocabulary(source_vocab.tokens if source_vocab is not None else None)
-        texts = [r["caption"] for r in train.rows] if config.task == "caption" else [i["name"] for r in train.rows for i in r["target"]["items"]]
-        if source is None or config.task == "hybrid":
-            vocab.extend_training(texts, split="train")
-        if config.task == "hybrid":
-            vocab.add_sep()
+        if source is None:
+            vocab.extend_training([r["caption"] for r in train.rows], split="train")
     statistics = TrainStatistics.fit(train.rows) if config.task == "hybrid" else None
     model = build_model(config.family, len(vocab), config.model, loading=bool(saved or source))
     transfer = saved["metadata"].get("transfer") if saved else None
     if source is not None:
         if config.task == "hybrid":
-            transfer = transfer_caption_a(source, source_vocab, model, vocab, mode=config.transfer)
+            transfer = transfer_visual_backbone(source, model)
         else:
             if source.config != model.config or source_vocab.tokens != vocab.tokens:
                 raise ValueError("CE/SCST initialization architecture/vocab mismatch")
@@ -381,7 +402,10 @@ def run_training(config, *, data_root, out, manifest=None, train_annotations=Non
                 "transfer": transfer, "length_audit": audit, "environment": environment(),
                 "resume_granularity": "completed epoch, num_workers=0, same device/software; no mid-epoch continuation",
                 "df_cache_sha256": sha256(df_cache) if df_cache else None,
-                "generation_config": asdict(GenerationConfig(config.max_tokens, config.max_items))}
+                "generation_config": asdict(GenerationConfig(config.max_tokens, config.max_items)),
+                "architecture_version": getattr(model, "architecture_version", None),
+                "ingredient_vocabulary": vocab.metadata() if isinstance(vocab, IngredientVocabulary) else None,
+                "selection_order": ["name_micro_f1:max", "weight_union.mae_g:min", "normalized_total_mae:min", "schema_valid_rate:max"] if config.task == "hybrid" else None}
     write_json(destination / "run.json", {**metadata, "vocab": vocab.tokens, "statistics": asdict(statistics) if statistics else None})
     if progress["bad_epochs"] >= config.patience:
         raise ValueError("checkpoint already early-stopped; initialize a new run for continuation")

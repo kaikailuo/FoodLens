@@ -11,7 +11,7 @@ from .data import NutritionDataset, RGBManifestDataset, TrainStatistics, collate
 from .decode import GenerationConfig, predict_hybrid
 from .losses import hybrid_loss
 from .metrics import evaluate_records
-from .models import Hybrid, ModelConfig
+from .models import LegacyHybrid as Hybrid, ModelConfig
 from .text import Vocabulary, detokenize, tokenize
 from .commands import add_commands
 

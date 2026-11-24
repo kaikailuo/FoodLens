@@ -46,7 +46,7 @@
   ],
   "method": "ce",
   "scst_weight": 0.5,
-  "transfer": "visual_gru",
+  "transfer": "visual",
   "engineering": false,
   "updates_per_epoch": null
 }
