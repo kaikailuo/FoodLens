@@ -240,7 +240,7 @@ class MetricTests(unittest.TestCase):
         from pycocoevalcap.cider.cider import Cider
         reference_score, individual = Cider().compute_score(refs, {"x": [preds["x"]], "y": [""]})
         self.assertAlmostEqual(result["scores"]["CIDEr-D"], reference_score)
-        self.assertEqual(record_text(record()), "brown rice")
+        self.assertEqual(json.loads(record_text(record())), record())
         with patch("shutil.which", return_value=None):
             with self.assertRaisesRegex(RuntimeError, "Java"):
                 score_captions(refs, preds, metrics=["METEOR"])
@@ -264,6 +264,9 @@ class QwenProtocolTests(unittest.TestCase):
             self.assertTrue((labels[batch["input_ids"].eq(image_id)] == -100).all())
             self.assertTrue((labels[batch["attention_mask"].eq(0)] == -100).all())
             self.assertEqual(int(labels.eq(processor.tokenizer.eos_token_id).sum()), 2)
+            for index, sample in enumerate(samples):
+                supervised = processor.tokenizer.decode(labels[index][labels[index].ne(-100)], skip_special_tokens=False)
+                self.assertEqual(supervised, json.dumps(sample["target"], ensure_ascii=False, separators=(",", ":")) + "<|im_end|>")
             self.assertGreater(batch["pixel_values"].numel(), 0)
             with self.assertRaisesRegex(ValueError, "never truncated"):
                 QwenCollator(processor, max_length=10)(samples)
@@ -286,9 +289,10 @@ class QwenProtocolTests(unittest.TestCase):
             self.assertEqual(full.keys(), resumed.keys())
             for key in full:
                 self.assertTrue(torch.equal(full[key], resumed[key]), key)
-            a = torch.load(full_path/"training_state.pt", weights_only=False)
-            b = torch.load(resumed_path/"training_state.pt", weights_only=False)
-            self.assertEqual(a["progress"], b["progress"])
+            a = json.loads((full_path/"trainer_state.json").read_text())
+            b = json.loads((resumed_path/"trainer_state.json").read_text())
+            self.assertEqual(a["global_step"], b["global_step"])
+            self.assertEqual(a["stateful_callbacks"], b["stateful_callbacks"])
             # Exercise paired inference and the frozen Judge using actual local tiny HF files.
             from types import SimpleNamespace
             from foodlens.commands import qwen_pair
@@ -314,10 +318,10 @@ class QwenProtocolTests(unittest.TestCase):
             output = read_jsonl(root/"tiny-judge.jsonl")[0]
             self.assertIsNotNone(output["raw"])
             self.assertIsNone(output["scores"])
-            with (full_path/"adapter_model.safetensors").open("ab") as stream:
-                stream.write(b"synthetic_corruption_test")
-            with self.assertRaisesRegex(ValueError, "incomplete or changed"):
-                resolve_adapter(root/"full/last.json")
+            # Trainer owns checkpoint integrity/loading; aliases only resolve paths.
+            with self.assertRaisesRegex(ValueError, "escapes"):
+                (root/"escape.json").write_text(json.dumps({"checkpoint": "../outside"}))
+                resolve_adapter(root/"escape.json")
 
     def test_answer_mask_exact_prefix_padding_and_end(self):
         ids = torch.tensor([[0, 0, 10, 60, 11, 12, 40, 41, 2], [10, 60, 60, 11, 12, 40, 2, 0, 0]])

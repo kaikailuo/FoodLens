@@ -1,7 +1,8 @@
 """Qwen3-VL local loading, strict answer masks and language-only PEFT adapters."""
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import torch
@@ -50,6 +51,64 @@ class QwenConfig:
             raise ValueError("invalid Qwen pixel range/LoRA dropout")
         if self.quantization == "nf4" and not self.device.startswith("cuda"):
             raise ValueError("NF4 path requires CUDA")
+
+
+
+@dataclass
+class QwenTrainConfig:
+    seed: int = 42
+    device: str = "cuda"
+    precision: str = "bf16"
+    deterministic: bool = True
+    threads: int = 2
+    epochs: int = 3
+    batch_size: int = 1
+    accumulation: int = 16
+    lr: float = 2e-4
+    weight_decay: float = .01
+    gradient_clip: float = 1.
+    patience: int = 5
+    tolerance: float = 1e-6
+    monitor: str = "hybrid"
+    metrics: list = field(default_factory=lambda: ["BLEU-4", "METEOR", "ROUGE-L", "CIDEr-D"])
+    engineering: bool = False
+
+    def __post_init__(self):
+        for key in ("threads", "epochs", "batch_size", "accumulation", "patience"):
+            if type(getattr(self, key)) is not int or getattr(self, key) < 1:
+                raise ValueError(f"invalid Qwen {key}")
+        if type(self.seed) is not int or self.seed < 0:
+            raise ValueError("invalid Qwen seed")
+        for key in ("lr", "gradient_clip", "weight_decay", "tolerance"):
+            value = getattr(self, key)
+            if type(value) not in (int, float) or not math.isfinite(value) or value < 0:
+                raise ValueError(f"invalid Qwen {key}")
+        if self.lr == 0 or self.gradient_clip == 0:
+            raise ValueError("positive learning rate and clip required")
+        if type(self.engineering) is not bool or type(self.deterministic) is not bool:
+            raise ValueError("boolean Qwen engineering/deterministic required")
+        if self.monitor != "hybrid" and not (self.engineering and self.monitor == "val_loss"):
+            raise ValueError("formal Qwen selection requires hybrid")
+        if set(self.metrics) - {"BLEU-4", "METEOR", "ROUGE-L", "CIDEr-D"} or (not self.engineering and
+                set(self.metrics) != {"BLEU-4", "METEOR", "ROUGE-L", "CIDEr-D"}):
+            raise ValueError("formal Qwen evaluation requires four text metrics")
+
+
+def training_config(value):
+    # Backward compatibility for callers supplying the old shared TrainConfig.
+    data = dict(value) if isinstance(value, dict) else asdict(value)
+    if "backend" in data:
+        if (data["backend"], data["task"], data["method"]) != ("qwen", "hybrid", "ce"):
+            raise ValueError("Qwen requires backend=qwen/task=hybrid/method=ce")
+        if data.get("updates_per_epoch") is not None:
+            raise ValueError("Qwen updates_per_epoch removed; use complete Trainer epochs")
+        data = {key: data[key] for key in QwenTrainConfig.__dataclass_fields__ if key in data}
+    return QwenTrainConfig(**data)
+
+
+def load_qwen_train_config(path):
+    return training_config(json.loads(Path(path).read_text(encoding="utf-8")))
+
 
 
 def load_qwen_config(path):
@@ -122,7 +181,8 @@ def inject_lora(model, config):
     targets = lora_targets(model)
     model.requires_grad_(False)
     if config.quantization == "nf4":
-        model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=config.gradient_checkpointing)
+        model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=config.gradient_checkpointing,
+            gradient_checkpointing_kwargs={"use_reentrant": False})
     # Regex matches full paths, unlike PEFT's suffix-list matching.
     exact = "^(?:" + "|".join(re.escape(path) for path in targets) + ")$"
     model = get_peft_model(model, LoraConfig(r=config.r, lora_alpha=config.alpha, lora_dropout=config.dropout,
@@ -193,7 +253,16 @@ class QwenCollator:
             raise ValueError("Qwen assistant end token unavailable")
         batch["labels"] = answer_labels(batch["input_ids"], batch["attention_mask"], prefixes,
                                          end_id=end_id, forbidden_ids=[x for x in forbidden if x is not None])
-        return dict(batch)
+        return model_inputs(batch)
+
+
+def model_inputs(batch):
+    """RGB-only Qwen3-VL input contract; never forward tokenizer token_type_ids."""
+    allowed = {"input_ids", "attention_mask", "pixel_values", "image_grid_thw", "labels"}
+    unexpected = set(batch) - allowed - {"token_type_ids"}
+    if unexpected:
+        raise ValueError(f"unexpected Qwen processor fields: {sorted(unexpected)}")
+    return {key: value for key, value in batch.items() if key in allowed}
 
 
 class QwenDataset(Dataset):
@@ -238,7 +307,7 @@ def generate_qwen(model, processor, rgb_images, config, *, instruction=None):
         processor.tokenizer.padding_side = original_padding
     if int(inputs["attention_mask"].sum(1).max()) > config.max_length:
         raise ValueError("Qwen image/prompt exceeds max_length")
-    inputs = {key: value.to(model.device) for key, value in inputs.items()}
+    inputs = {key: value.to(model.device) for key, value in model_inputs(inputs).items()}
     output = model.generate(**inputs, max_new_tokens=config.max_new_tokens, do_sample=False, num_beams=1,
                             use_cache=True, eos_token_id=processor.tokenizer.convert_tokens_to_ids("<|im_end|>"),
                             pad_token_id=processor.tokenizer.pad_token_id)

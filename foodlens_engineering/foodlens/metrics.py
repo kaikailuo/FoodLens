@@ -19,7 +19,10 @@ def evaluate_records(truth_by_id, prediction_by_id, *, _include_subset=True):
         if validate_record(truth):
             raise ValueError(f"invalid ground truth: {sample_id}")
         prediction = prediction_by_id.get(sample_id, {"raw": ""})
-        raw = prediction.get("raw", json.dumps(prediction.get("record")))
+        # A failure row with neither raw nor record has no JSON output. Do not
+        # manufacture the syntactically valid literal "null" for its syntax rate.
+        raw = prediction["raw"] if "raw" in prediction else (
+            json.dumps(prediction["record"]) if "record" in prediction else "")
         status, errors = "parse_failed", []
         try:
             record = strict_loads(raw)
@@ -86,6 +89,10 @@ def evaluate_records(truth_by_id, prediction_by_id, *, _include_subset=True):
               "schema_valid_rate": schema_valid/n if n else None,
               "truncation_rate": truncated/n if n else None,
               "valid_subset_coverage": len(valid_ids)/n if n else None,
+              "protocol": {"failure_totals": "unparseable/missing: zero vector; Schema failure: readable finite nonnegative fields retained, other fields zero",
+                           "failure_items": "unparseable/missing: empty; readable names/weights retained; invalid names are FP",
+                           "valid_subset": "Schema-valid JSON, including truncated but complete JSON; coverage uses all truth IDs",
+                           "all_sample_mse": "end-to-end error including failure handling, not conditional numeric precision"},
               "per_sample": per_sample}
     if _include_subset:
         result["valid_subset"] = evaluate_records({i: truth_by_id[i] for i in valid_ids},

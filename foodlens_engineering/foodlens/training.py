@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 import torch
 from torch.utils.data import DataLoader
-from .caption_metrics import CiderDReward, record_text, score_captions, check_metric_dependencies
+from .caption_metrics import CiderDReward, score_record_texts, score_captions, check_metric_dependencies
 from .checkpoint import load_checkpoint, save_checkpoint, seed_everything
 from .data import (CaptionManifestDataset, NutritionDataset, TrainStatistics, collate_caption,
                    collate_hybrid, length_audit, sha256, serialize_items)
@@ -264,8 +264,7 @@ def validate(model, dataset, collator, config, vocab, statistics, device):
         truth_records = {r["dish_id"]: r["target"] for r in dataset.rows}
         result["structured"] = evaluate_records(truth_records, predictions)
         if config.metrics:
-            result["text"] = score_captions({i: [record_text(r)] or [""] for i, r in truth_records.items()},
-                {i: record_text(p["record"]) for i, p in predictions.items()}, metrics=config.metrics)
+            result["text"] = score_record_texts(truth_records, predictions, metrics=config.metrics)
     return result, predictions
 
 

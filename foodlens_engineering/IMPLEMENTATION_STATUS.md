@@ -2,7 +2,7 @@
 
 本文保存 2026-11-01 的历史验证范围与结果，文中的耗时、loss 和本地产物位置仅指该次运行。当前复现步骤以[工程 README](README.md)为准，实现状态变化后应另追加带日期的记录，不把历史验证等同于新环境已通过。
 
-**当前状态请阅读文末 2026-11-24 Hybrid V2 实施记录；11-20 Hybrid 为旧 GRU/SEP 实现。** 下列 11-01/11-02 的结果及未完成项保留为历史，不能据此判断新代码仍只有旧 CLI。
+**当前状态请结合文末 2026-11-24 Hybrid V2 实施记录及 [Qwen 第三轮整改记录](QWEN_ROUND3.md)；11-20 Hybrid 为旧 GRU/SEP 实现，Qwen 为旧自主训练器，旧任务二文本仅含名称。** 下列历史结果及未完成项保留，不能据此判断新代码能力。
 
 工程位于仓库的 `foodlens_engineering/`。该次未修改报告、原始 data 或已有审计文件。Python 3.12 隔离venv安装CPU torch 2.9.1+cpu / torchvision 0.24.1+cpu；无预训练权重下载，无GPU训练。
 
@@ -169,3 +169,12 @@ CLI 合成 manifest SHA256 为 `2a0af8cb19a1adbda65f3b9ca7ff2856ec2e042ea0de67d9
 包内 Python 源码摘要为 `8b66c8f31ccad0c953f38bd801927d72b82feec7968df01886d45391b413feb5`，实际依赖快照为 `artifacts/hybrid-v2-freeze.txt`。实际为 Windows 11 / Python 3.12.14 / torch 2.9.1+cpu / torchvision 0.24.1+cpu / NumPy 2.4.6 / Pillow 13.0.0 / scipy 1.15.3 / pycocoevalcap 1.2，CUDA 不可用；与 11-20 锁定环境不同。只补装了仓库已有声明的 six、标准指标和 scipy 依赖，没有引入新依赖。最初的依赖缺失已修复后重跑；不覆盖历史结果。
 
 尚未验证真实 ImageNet 权重迁移后的收敛、真实数据训练与模型效果、Linux/CUDA/BF16 显存及吞吐、Java METEOR。闭集对未见食材必然漏检；长尾重量（如 2991g）、RGB 份量歧义、训练真实前缀与自由生成的差异以及既有同餐跨划分疑点仍会影响实验可信度。正式实验前需按仓库约定固定权重、数据、指标与资源试跑；本轮不修改异常标签，不扩展模型研究范围。
+
+
+## 2026-11-24：Qwen 第三轮 Trainer 与 JSON 评价整改
+
+起点 htl_1120 / f5a2014，保留已合入的 Hybrid V2。详情、文件清单、官方参考、协议变化及命令见 [QWEN_ROUND3.md](QWEN_ROUND3.md)。Qwen 训练基础设施改用 HF Trainer，保留 Assistant-only Token 分母、语言 LoRA、全量验证三层选模；原生 checkpoint/Callback 状态恢复替代自主管理训练状态。任务二统一完整规范化 JSON 四文本指标；失败数值惩罚保持，修复没有 raw/record 的失败行被人造 null 计入 JSON 合法率的边界。
+
+最终 Windows CPU 全量 58 项通过、0 失败、0 跳过（70.858 秒，artifacts/qwen-round3-complete.log）；公共 CLI 21 条、tiny Qwen CLI 5 条退出 0。真实课程 3258 张 RGB 通过 QwenDataset 读取，最长目标经合成 tiny Processor 完整编码。Java METEOR、官方 Processor/4B、Linux/CUDA/BF16/NF4 与正式效果均未验证。模块仅在静态与 CPU 工程边界暂时冻结。
+
+GPU Issue #3 已核对，但补充发布被自动审批拒绝，远端未修改；拟发布正文在本地 outputs/qwen_round3/issue3_appendix.md。无需因该外部发布阻塞继续阅读本地验收和代码。

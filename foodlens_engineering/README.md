@@ -85,7 +85,7 @@ python -m foodlens.cli evaluate --annotations ../data/annotations/test.jsonl --p
 
 Hybrid V2 正式验证依次比较 Micro F1（大优）、食材 Weight Union MAE（g，小优）、五维 `mean(MAE_j/train_std_j)`（小优）、Schema 有效率（大优）；逐级容差均为 1e-6。选模只用 Validation。Qwen 保留原三项优先级，不在本轮改变。五维依次为总重量(g)、热量(kcal)、蛋白质(g)、脂肪(g)、碳水(g)。
 
-任务二文本固定为规范化、重复合并、字典序排序的食材名，用 ` ; ` 连接，不含数字；Schema 无效预测为空文本。除四文本指标外，报告精确名称 Micro F1、逐图 Macro F1、匹配/并集重量 MAE/MSE、五维 MAE/MSE、JSON/Schema 有效率及缺失/失败/截断。缺失侧重量置零，无匹配项误差为 null；完全解析失败为空食材/五维零预测；Schema 失败保留可读字段。非法名称及 Hybrid 清理失败仍计 FP。有效子集另报覆盖率，不能替代全样本结果。旧 evaluate 不带 text-metrics 时只运行结构评价，正式评价必须传四项。
+任务二正式四项文本指标统一使用**规范化完整 JSON**：名称 NFKC/小写/合并空白，同名重量求和，按名称字典序排序；字段固定为 items 及 TOTAL_FIELDS 顺序，项字段为 name、weight_g；全部数值一位小数，紧凑 JSON 序列化。名称、重量和整餐数值均参与文本评分；Schema 无效预测为空文本，保留全量参考与分母。结构 MAE/MSE 仍使用交付值，不以文本取整改变数值评价。除四文本指标外，报告精确名称 Micro F1、逐图 Macro F1、匹配/并集重量 MAE/MSE、五维 MAE/MSE、JSON/Schema 有效率及缺失/失败/截断。缺失侧重量置零，无匹配项误差为 null；完全解析失败为空食材/五维零预测；Schema 失败保留可读字段。非法名称及 Hybrid 清理失败仍计 FP。有效子集另报覆盖率，不能替代全样本结果。旧 evaluate 不带 text-metrics 时只运行结构评价，正式评价必须传四项。
 
 ## 公共训练与恢复边界
 
@@ -95,7 +95,7 @@ Hybrid V2 正式验证依次比较 Micro F1（大优）、食材 Weight Union MA
 
 ## Qwen3-VL：本地 LoRA 与原始/微调配对
 
-train_qwen.json 复用公共训练与任务二选模配置；模型、LoRA 和图像处理参数以 qwen.json 为准，公共配置中的自主 model/transfer/layer4 字段不参与 Qwen 构建。
+本模块已迁移到 Hugging Face `Trainer`，参见[第三轮整改记录](QWEN_ROUND3.md)。train_qwen.json 使用独立 QwenTrainConfig，只含生效的训练和选模参数；模型、LoRA 和图像参数以 qwen.json 为准。兼容读取旧公共 TrainConfig，忽略自主模型字段；非空 updates_per_epoch 显式拒绝。
 
 configs/qwen.json 固定 Qwen3-VL-4B-Instruct 模型及 Processor revision `ebb281ec70b05090aa6165b016eac8ec08e71b17`。默认 local_files_only=true，不自动下载大模型。组员先准备该 revision 的本地 HF cache，或把 model_id 指向已准备目录并保留 revision 和文件校验记录。本地 Qwen 无需 API Key。
 
@@ -109,11 +109,21 @@ python -m foodlens.cli evaluate --annotations ../data/annotations/test.jsonl --p
 
 独立 qwen-predict 参数相同，省略 adapter 为原始模型。配对固定同一配置/manifest/指令/贪心协议，保留原始文本和全部失败，不重试或修复答案。collator 检查图像展开后完整对话与 generation prefix 严格一致，再只监督 assistant 回答和 im_end；图像/user/header/PAD/尾部换行不监督。超长要求减少像素或增大限制，不截断 JSON。
 
-LoRA 只匹配 `model.language_model.layers.N.self_attn.{q,k,v,o}_proj` 实际完整路径，输出 scope.json/可训练参数清单并校验无视觉层。默认 BF16 LoRA；独立配置 quantization=nf4 才启用 QLoRA，还需目标 CUDA 环境 bitsandbytes。真实 4B/Processor、NF4 算子及显存均未实测。
+LoRA 只匹配 `model.language_model.layers.N.self_attn.{q,k,v,o}_proj` 实际完整路径，在 run.json 保存 scope/可训练参数清单并校验无视觉层。默认 BF16 LoRA；独立配置 quantization=nf4 才启用 QLoRA，还需目标 CUDA 环境 bitsandbytes。真实 4B/Processor、NF4 算子及显存均未实测。
 
 processor_use_fast 在配置中显式固定，避免框架默认值变更；协议保存 Chat Template、Tokenizer 与图像 Processor 配置哈希，加载适配器时校验这些指纹。
 
-Qwen 先写不可变 epoch 子目录，再原子更新 best.json/last.json 指针。指针验证 adapter/训练状态 SHA256，避免半更新恢复；子目录保存 adapter、Processor、模板哈希、协议、优化器/调度器/scaler/RNG/进度，基础权重外置。可传指针或 epoch 目录，协议不一致拒绝加载；旧 epoch 保留供归档复核。恢复粒度同自主模型。
+Qwen 使用 Trainer 原生 `checkpoint-<global_step>`，每个完整 epoch 验证并保存 Adapter、Processor、优化器、Scheduler、AMP（启用时）、RNG 和 trainer_state.json。run.json/protocol.json 补充数据哈希、统计、版本、参数范围及生成协议；best.json/last.json 只保存相对路径，不再维护额外训练状态和重复权重哈希。恢复通过 resume_from_checkpoint，同一输出目录，只有总 epochs 可增加；数据、配置、处理协议及环境/源码须一致。旧自定义 epoch 包不能作为 Trainer 恢复点，旧 Adapter 可通过 epoch 目录推理。只加载可信本地产物。
+
+Trainer 管理 AdamW、常数学习率、AMP、梯度累计、裁剪和日志。原 StepLR 显式替换为常数调度，不声称与旧优化过程位级等价。公开 compute_loss_func 使用移位 Assistant CE 总和除以累计窗口监督 Token 总数，不再额外除以 accumulation；末个短窗口同样归一化。Gradient Checkpointing 使用 use_reentrant=false。
+
+每 epoch 全量 Validation 生成，按 Micro F1 → 五维 mean(MAE/train_std) → Schema 有效率逐级比较（1e-6 容差），std 仅从训练集拟合。StructuredSelection 的最优值/步数/早停计数由 Trainer 原生 Callback 状态保存与恢复；原生标量 EarlyStoppingCallback 无法表达此规则，因此保留轻量回调。load_best_model_at_end=false，训练结束的内存模型为 last，**配对推理显式传 best.json**。不使用测试集选模。工程模式可显式选择 val_loss。保留全部 checkpoint 供 best 路径和审计使用。
+
+当前仅支持单进程单卡；多卡机器先用 CUDA_VISIBLE_DEVICES 选择一张卡。CPU 验证固定 Transformers 4.57.1 / PEFT 0.17.1 / Accelerate 1.10.1，完整快照为 requirements-lock-qwen-cpu.txt；不是最新版本声明，也不是 GPU 依赖锁。无权重/无 GPU 时运行：`python -m unittest discover -s tests -p test_qwen_round3.py -v`。未安装 Qwen 可选依赖时对应测试显式跳过。
+
+CIDEr-D 离线评价（含 Validation）从**本次完整参考语料**计算 DF。比较模型时必须使用同一划分、样本 ID、完整 JSON 参考、Tokenizer 和 scorer 版本，不随预测成功率筛选语料。不把测试 DF 用于训练、奖励或选模；SCST 仍单独使用训练缓存。历史名称文本分数不能与整改后 JSON 分数直接比较。
+
+全样本 MSE 包含失败处理，不能解释为成功输出时的纯数值精度：缺失/解析失败为五维零预测；Schema 失败保留有限非负的可读字段，其余字段置零。valid_subset 只要求 JSON 通过 Schema；合法但标记截断的 JSON 仍在子集中，截断率单列。inference_failed 与 parse_failed 可重叠，不能相加为失败总数；缺失也计入 parse_failed。空子集误差为 null，子集始终报告覆盖率。详见整改记录及输出 protocol。
 
 ## SCST 与等步数 CE 对照
 
