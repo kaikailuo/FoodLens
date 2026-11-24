@@ -1,7 +1,7 @@
 \section{组员分工及检查点}
 \label{sec:team}
 \subsection{模块责任与协作方式}
-三人分别承担自主模型、数据与适配实验、评价与分析，交付可运行模块及验证记录。罗开炜统筹集成，各模块由负责人实施、另一成员复核。
+三人分别承担主模型与集成、数据与适配实验、消融与评价分析，交付可运行模块及验证记录。罗开炜统筹集成，各模块由负责人实施、另一成员复核。
 
 \begin{table}[!ht]
 \caption{模块负责人、独立成果与交叉复核}
@@ -9,9 +9,9 @@
 \setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.13}
 \begin{tabularx}{\linewidth}{@{}P{1.35cm}YP{4.35cm}@{}}\toprule
 \rowcolor{FLBlue!8}\textbf{成员} & \textbf{主责与独立技术成果} & \textbf{交叉复核}\\\midrule
-\textbf{\color{FLBlue}罗开炜} & A/B/B-global、自主训练器、Hybrid 迁移与 SCST；训练恢复、推理接口及技术集成。 & 郝天乐复跑命令；张嘉荣核对模型图和对照。\\\addlinespace
-\textbf{\color{FLTeal}郝天乐} & 数据审计、manifest、统一指标、GPU 排期；Qwen 数据处理、LoRA 训练与配对评测。 & 罗开炜审查监督掩码与适配范围；张嘉荣复算结果表。\\\addlinespace
-\textbf{\color{FLAmber}张嘉荣} & 文献调研、Judge 接入与解析、人评协议、统计分析 Notebook；图表、报告与展示。 & 郝天乐复核统计输入与结果；罗开炜协助模型接入。\\\bottomrule
+\textbf{\color{FLBlue}罗开炜} & A/B 主模型、公共训练器、Hybrid 迁移与 SCST；训练恢复、推理接口及整体集成。 & 郝天乐复跑命令；张嘉荣核对模型图和对照。\\\addlinespace
+\textbf{\color{FLTeal}郝天乐} & 数据审计、manifest、统一指标、GPU 排期；Qwen 数据处理、LoRA 微调与配对实验。 & 罗开炜审查监督掩码与适配范围；张嘉荣复算结果表。\\\addlinespace
+\textbf{\color{FLAmber}张嘉荣} & B-global 分支代码与消融实验、Judge 接入与统计分析；文献调研、图表、报告与展示。 & 郝天乐复核统计输入与结果；罗开炜协助模型接入。\\\bottomrule
 \end{tabularx}
 \end{table}
 
@@ -25,9 +25,9 @@
 \setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.13}
 \begin{tabularx}{\linewidth}{@{}P{2.15cm}YYY@{}}\toprule
 \rowcolor{FLBlue!8}\textbf{检查点} & \textbf{\color{FLBlue}罗开炜} & \textbf{\color{FLTeal}郝天乐} & \textbf{\color{FLAmber}张嘉荣}\\\midrule
-\textbf{开题}\newline 11 月 15 日 & 模型与接口表，明确输入、输出、迁移范围及选模依据。 & 数据来源与计数核验，图文映射、重复组及排除项审计办法。 & 文献与研究问题对应表，开题稿及课程任务覆盖核对。\\\addlinespace
-\textbf{中期}\newline 12 月 6 日 & A/B 训练推理与 Hybrid 原型；郝天乐加载 A 权重复跑真实样本。 & manifest、哈希、GPU 试跑及四指标；预测 ID 与清单逐项对应。 & 独立复算指定指标并核对总表；同图案例、中期材料及人评草案。\\\addlinespace
-\textbf{实验合并}\newline 12 月 25 日 & 迁移、SCST/等步数 CE 权重与验证记录；冻结测试版本。 & Qwen 配对结果和失败统计；罗开炜复跑适配器并核验监督范围。 & Judge、双人原始评分与统计 Notebook；郝天乐复算一致性及相关性。\\\addlinespace
+\textbf{开题}\newline 11 月 15 日 & 模型与接口表，明确输入、输出、迁移范围及选模依据。 & 数据来源与计数核验，图文映射、重复组及排除项审计办法。 & B-global 对照设计、文献对应表，开题稿及课程任务覆盖核对。\\\addlinespace
+\textbf{中期}\newline 12 月 6 日 & A/B、公共训练器与 Hybrid 原型；郝天乐加载 A 权重复跑真实样本。 & manifest、哈希、GPU 试跑及四指标；预测 ID 与清单逐项对应。 & B-global 代码、消融权重与四指标；同图案例、中期资料及人评草案。\\\addlinespace
+\textbf{实验合并}\newline 12 月 25 日 & 迁移、SCST/等步数 CE 权重与验证记录；冻结测试版本。 & Qwen 配对结果和失败统计；罗开炜复跑适配器并核验监督范围。 & 消融表、Judge、双人评分与统计 Notebook；郝天乐复算一致性及相关性。\\\addlinespace
 \textbf{结题}\newline 1 月 17 日 & 核对代码、权重及配置；审查复现记录，统一提交。 & 全量预测、指标与资源记录；配合跨成员复算并解释差异。 & 报告及幻灯片或视频；独立运行演示，核对图表出处。\\\bottomrule
 \end{tabularx}
 \end{table}
