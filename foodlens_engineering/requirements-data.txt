@@ -1,0 +1,4 @@
+# Offline Food500 build only; separate from model/training requirements.
+pyarrow==26.0.1
+Pillow==13.0.0
+Unidecode==1.4.0

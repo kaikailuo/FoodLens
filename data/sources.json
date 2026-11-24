@@ -35,10 +35,47 @@
         "sha256": "8218b582f4fbbadcff0566ada5ea6e807a86c404ab9cdf89166035b335e9cfe8"
       }
     ],
-    "note": "本地训练19880条，与上游README的19760不一致；尚未确认原因，图片唯一映射manifest未完成。"
+    "note": "官方JSON快照为19880/4940（README训练计数19760不一致）；社区固定版本为19877/4938。24815条均已按唯一文件标识、类别、完整Caption精确或固定Unidecode等价映射；5条缺图与126条Test优先冲突训练记录仅在派生清单排除。正式Caption保留官方文本。",
+    "local_snapshot_note": "evaluation_data.json的本地排版与Git a32dfe9 blob不同，但本轮逐对象JSON比较完全相同；sha256继续锁定本地实际字节，不修改原文件。"
   },
   "food500_images": {
     "local_path": "Food500-Cap/Food500Cap-HF/data",
-    "source": "本地社区parquet副本，尚未记录可核实的仓库revision；正式训练前补全。"
+    "repository": "advancedcv/Food500Cap",
+    "revision": "1b2e0cb098ef3d58584f80bde015207c5a3d00c7",
+    "source_lock": "../foodlens_engineering/scripts/food500_source_lock.json",
+    "source_lock_sha256": "44db3d91638a805887ccdfdfaa32aeb99f1557a2117d4fa2763583d71626ccdf",
+    "verified_on": "2026-11-24",
+    "source": "公开HF固定revision API的九个分片大小和LFS SHA-256与本地一致；社区未发布历史转换脚本，逐条文本/标识等价作为映射证据。",
+    "export_root": "caption_images/sha256",
+    "export_bytes_unchanged": true
+  },
+  "food500_manifest": {
+    "path": "caption_manifest.jsonl",
+    "sha256": "9d85e824a84a87e3c790dec34e8df8064586d1d368b3dc6d8a0ffc7d8d417485",
+    "records": 24689,
+    "splits": {
+      "test": {
+        "captions": 4938,
+        "duplicate_groups": 4938,
+        "images": 4938
+      },
+      "train": {
+        "captions": 17758,
+        "duplicate_groups": 17747,
+        "images": 17747
+      },
+      "val": {
+        "captions": 1993,
+        "duplicate_groups": 1990,
+        "images": 1990
+      }
+    },
+    "seed": 42,
+    "builder": "../foodlens_engineering/scripts/build_food500_manifest.py",
+    "evidence": "../outputs/food500_manifest_build",
+    "status": "FROZEN_DATA_AUDIT_PASSED",
+    "lock": "caption_data_lock.json",
+    "checksums": "caption_sha256sums.txt",
+    "image_inventory_sha256": "03992c031ab5c81ac61ce856175fdfd2c9cc92ab3859463ee89a570e26c89a77"
   }
 }

@@ -54,6 +54,8 @@ python -m foodlens.cli audit --kind nutrition --inputs ../data/annotations/train
 
 不传 check-images 时只检查标注/ID/划分/重复组及路径契约；传入后验证图片解码和 Caption SHA256。失败退出码非零并保存 ID。它不自动解决近重复图、同餐关系或来源不明的映射。
 
+Food500 的离线 Manifest 构建入口为 `python -m scripts.build_food500_manifest`，来源锁为 `scripts/food500_source_lock.json`，数据工具依赖单列在 `requirements-data.txt`。它保留官方 Caption 和原始图片 bytes，以唯一文件标识与完整文本核对映射，再按确定性重复组隔离 Test 并划 Val；完整命令和上传清单见 [data/README](../data/README.md#离线构建与上传)。构建后再运行上述现有 CLI 以及 `python -m scripts.verify_food500_manifest`，后者独立进行全量 RGB 解码、来源标注与排除账本核对及真实 Dataset/Collator 检查，不加载模型。实际状态与数量见 [Food500 最终验收](../docs/reviews/FOOD500_MANIFEST_FINAL_20261124.md)。
+
 ## Caption：A/B/B-global
 
 A 使用 ResNet18 全局条件 GRU，B 使用 49 网格、二维位置编码和 Transformer Encoder/Decoder，B-global 保留 B 配置但只有一个全局视觉 Token。正式配置使用 ImageNet 权重；资源应先在目标环境准备。工程配置 `configs/engineering_cpu.json` 明确使用随机 tiny 和 val_loss，不静默降级正式配置。
@@ -180,6 +182,6 @@ python -m foodlens.cli judge-analyze --candidates artifacts/judge/blind/candidat
 
 ## 资源与交接
 
-还需：锁定 Caption manifest/课程任务二数据、ImageNet 和固定 Qwen 权重、Linux CUDA 机器、Java METEOR、真实 Judge 后端及两名人评。取得后按审计 → Caption → Hybrid → Qwen → SCST → Judge 的顺序验收，记录批量/精度/显存/吞吐、数据及代码哈希。CPU 合成通过不表示真实资源验证通过。
+本地 Caption 冻结数据与上传清单见 [Food500 最终验收](../docs/reviews/FOOD500_MANIFEST_FINAL_20261124.md)，任务二基础数据结果见 [数据验收](../docs/reviews/DATA_MANIFEST_ACCEPTANCE_20261124.md)。干净检出仍需自行取得这些数据资产。后续还需 ImageNet 和固定 Qwen 权重、Linux CUDA 机器、Java METEOR、真实 Judge 后端及两名人评；按审计 → Caption → Hybrid → Qwen → SCST → Judge 的顺序验收，记录批量/精度/显存/吞吐、数据及代码哈希。数据和 CPU 检查通过不表示训练或 GPU 资源验证通过。
 
 旧 smoke 仍可用：`python -m foodlens.cli smoke --config configs/baseline.json --data-root ../data --out artifacts/new-smoke`，它依赖真实任务二训练图片，不属于本次无数据测试。不要覆盖历史 artifacts；新输出用独立子目录，检查日志放根 outputs，均默认不提交。报告/PDF 和原始数据不被本次实现修改。

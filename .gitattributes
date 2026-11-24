@@ -21,4 +21,4 @@
 docs/report/** -text !eol
 
 # Frozen Food500 provenance uses the SHA-256 of these exact source-lock bytes.
-foodlens_engineering/scripts/food500_source_lock.json -text !eol
+foodlens_engineering/scripts/food500_source_lock.json -text !eol whitespace=trailing-space,space-before-tab,cr-at-eol

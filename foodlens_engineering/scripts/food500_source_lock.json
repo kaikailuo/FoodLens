@@ -1,0 +1,79 @@
+{
+  "format": "foodlens.food500.source.v1",
+  "repository": "advancedcv/Food500Cap",
+  "revision": "1b2e0cb098ef3d58584f80bde015207c5a3d00c7",
+  "api_url": "https://huggingface.co/api/datasets/advancedcv/Food500Cap/revision/1b2e0cb098ef3d58584f80bde015207c5a3d00c7?blobs=true",
+  "official_repository": "https://github.com/aaronma2020/Food500-Cap",
+  "official_revision": "a32dfe90c01801231aad92c59f6bebe8a8e0dfe6",
+  "official_files": {
+    "finetune_data.json": {
+      "split": "train",
+      "records": 19880,
+      "sha256": "b69439dfdca82b2d930c6da3d23a9538351459ac6fd85b18c510aaa7cef712e2",
+      "canonical_records_sha256": "0c3d660f7009f56ee222c758c91661cd35a4da61465d680e1d7a025396e9ca66"
+    },
+    "evaluation_data.json": {
+      "split": "test",
+      "records": 4940,
+      "sha256": "8218b582f4fbbadcff0566ada5ea6e807a86c404ab9cdf89166035b335e9cfe8",
+      "canonical_records_sha256": "e8ebb9e91766b28bc8137ca8ca52f3b2d6212206787f8f0aff7998871ecabba3",
+      "also_accepted_git_sha256": [
+        "401b615984ec06c2da431d12c44e1ad5f9efd220f92f7fe4e2b19ca3f6e02e63"
+      ]
+    }
+  },
+  "shards": {
+    "test-00000-of-00002-032e07b311d1db77.parquet": {
+      "size": 295757170,
+      "sha256": "4dd72492866388f1937d7a0f8e202a82b7f93188507aa5cfd47a48d070f4a3a5",
+      "split": "test"
+    },
+    "test-00001-of-00002-d55c6542fe70f451.parquet": {
+      "size": 293856844,
+      "sha256": "4ca6368721c84e2516d07c9477ce4ed88969241a3a22a3132908b955ce74d2fa",
+      "split": "test"
+    },
+    "train-00000-of-00007-9de56bcdafdee2d8.parquet": {
+      "size": 398641250,
+      "sha256": "c797764dd18ff7b2293e346541a5852797746f5b8bb04b90654679501b22c8ad",
+      "split": "train"
+    },
+    "train-00001-of-00007-d4acaf169b202bde.parquet": {
+      "size": 371182555,
+      "sha256": "72a0b647e2ee6e988dcb261df6383d99047a6e761d70c18f18875f6d63d8a015",
+      "split": "train"
+    },
+    "train-00002-of-00007-3eeb547f5ee2bc77.parquet": {
+      "size": 337133702,
+      "sha256": "d79073169ef4654d218c5da4a80c75744e9c4a01c3e402fe9e3d37522adf43f2",
+      "split": "train"
+    },
+    "train-00003-of-00007-db06d49ad5d281c2.parquet": {
+      "size": 357558494,
+      "sha256": "7217dc6f2abdec2c382116462dfef82cb16d49a3f01acaad3a528b76d370266f",
+      "split": "train"
+    },
+    "train-00004-of-00007-34cdb0916951598d.parquet": {
+      "size": 290325153,
+      "sha256": "1fdec820cd981fce3d285041a9934ce7821c3b2cc38eb124418c81f4fd95d831",
+      "split": "train"
+    },
+    "train-00005-of-00007-25f227541c143e60.parquet": {
+      "size": 317233056,
+      "sha256": "bfe697b66f20ebe5992053e55dde30c3ee060a34ba94d233a8ba579f44a3eabd",
+      "split": "train"
+    },
+    "train-00006-of-00007-84404baa7f02576e.parquet": {
+      "size": 339022377,
+      "sha256": "d57f80438949f1a8d965cadc708f18e39521bc1fb70514a472bc3d48fead892c",
+      "split": "train"
+    }
+  },
+  "mapping": {
+    "version": "official-path-category-full-caption-v1",
+    "unidecode": "1.4.0",
+    "rule": "Require a unique same-original-split Unidecode+casefold filename key, equivalent category, and exact full caption after Unidecode. Prefer fully exact triples. Preserve original official caption in manifest.",
+    "historical_conversion_script": "Not published by upstream; equivalence is verified per record, not a claim about the original implementation."
+  },
+  "official_serialization_note": "The local evaluation JSON is formatted differently from its pinned Git blob. Both known byte digests are accepted only with the same canonical JSON records digest. No source file is rewritten."
+}
