@@ -13,6 +13,19 @@ __pycache__/
 !/data/README.md
 !/data/sources.json
 
+# Original classroom bundles are local inputs, never project source.
+/学生资源包*
+/数据应急包*
+__MACOSX/
+
+# Alternative local resource locations and download caches.
+/models/
+/Models/
+/datasets/
+/checkpoints/
+.cache/
+*.incomplete
+
 # Experiments, checkpoints and local outputs
 /outputs/*
 !/outputs/.gitkeep
@@ -46,6 +59,17 @@ runs/
 .env
 .env.*
 !.env.example
+.envrc
+/.aws/
+/.codex/
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+credentials.json
+service-account*.json
 .DS_Store
 Thumbs.db
 desktop.ini
