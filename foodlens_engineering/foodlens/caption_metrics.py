@@ -136,8 +136,23 @@ def score_captions(references, predictions, *, metrics=("BLEU-4", "METEOR", "ROU
 
 
 def record_text(record):
-    """Task2 auxiliary text: normalized, merged, lexically sorted names; no numbers."""
-    from .schema import canonical_items, validate_record
+    """Formal task2 text: complete canonical JSON, or empty for invalid output."""
+    from .schema import canonical_record_text, validate_record
     if validate_record(record):
         return ""
-    return " ; ".join(item["name"] for item in canonical_items(record["items"]))
+    return canonical_record_text(record)
+
+
+def score_record_texts(truth, predictions, *, metrics):
+    """One formal JSON-text protocol for offline, Hybrid and both Qwen models."""
+    from .schema import strict_loads
+    def text(prediction):
+        try:
+            return record_text(strict_loads(prediction["raw"]) if "raw" in prediction else prediction.get("record"))
+        except (ValueError, TypeError):
+            return ""
+    result = score_captions({i: [record_text(r)] for i, r in truth.items()},
+        {i: text(p) for i, p in predictions.items()}, metrics=metrics)
+    result["protocol"]["task2_serialization"] = "foodlens.complete_json.v1: NFKC/lower/merged/sorted names; items then TOTAL_FIELDS; compact JSON; one decimal"
+    result["protocol"]["invalid_prediction"] = "empty hypothesis, full reference denominator and DF retained"
+    return result

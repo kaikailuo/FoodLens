@@ -11,7 +11,7 @@ from .data import NutritionDataset, RGBManifestDataset, TrainStatistics, collate
 from .decode import GenerationConfig, predict_hybrid
 from .losses import hybrid_loss
 from .metrics import evaluate_records
-from .models import Hybrid, ModelConfig
+from .models import LegacyHybrid as Hybrid, ModelConfig
 from .text import Vocabulary, detokenize, tokenize
 from .commands import add_commands
 from .generation import (add_cache_arguments, checkpoint_generation, override_cache_options,
@@ -141,15 +141,8 @@ def evaluate(args):
         raise ValueError("duplicate prediction IDs")
     result = evaluate_records(truth, {row["id"]: row for row in rows})
     if args.text_metrics:
-        from .caption_metrics import score_captions, record_text
-        from .schema import strict_loads
-        def text(row):
-            try:
-                return record_text(strict_loads(row["raw"]) if "raw" in row else row.get("record"))
-            except (ValueError, TypeError):
-                return ""
-        result["text"] = score_captions({i: [record_text(r)] for i, r in truth.items()},
-                                       {r["id"]: text(r) for r in rows}, metrics=args.text_metrics)
+        from .caption_metrics import score_record_texts
+        result["text"] = score_record_texts(truth, {r["id"]: r for r in rows}, metrics=args.text_metrics)
     write_json(args.out, result)
     print(json.dumps({key: value for key, value in result.items() if key != "per_sample"}))
 

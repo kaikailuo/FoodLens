@@ -75,9 +75,8 @@ def evaluate_caption(args):
 
 
 def qwen_train(args):
-    from .qwen_training import load_qwen_config, run_qwen_training
-    from .training import load_train_config
-    result = run_qwen_training(load_qwen_config(args.qwen_config), load_train_config(args.config),
+    from .qwen_training import load_qwen_config, load_qwen_train_config, run_qwen_training
+    result = run_qwen_training(load_qwen_config(args.qwen_config), load_qwen_train_config(args.config),
         train_annotations=args.train_annotations, val_annotations=args.val_annotations,
         data_root=args.data_root, out=args.out, resume=args.resume)
     print(json.dumps(result))

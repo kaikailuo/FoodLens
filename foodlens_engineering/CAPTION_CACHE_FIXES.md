@@ -2,6 +2,8 @@
 
 基于 `htl_1120` 的 `ebde49a35b77be285d6343343e0efa96dc74712a` 完成。保留第五章架构、数据划分、损失与贪心协议；修复 A/Hybrid 原先未生效的 Dropout 会改变后续训练，这是有意修复。没有真实数据训练或准确率结论。未改写用户提供的原始交接文件或报告/PDF。
 
+合入远程 main 的补充：保留远程已采用的 [Hybrid V2](HYBRID_V2.md) 和 [Qwen HF Trainer](QWEN_ROUND3.md)。下文 A/Hybrid 的修复和 17 项测试记录针对合并前的 GRU Hybrid，现在类名为 LegacyHybrid；当前 Hybrid V2 不继承 CaptionA，也不使用这两个 Caption 缓存。合并后的最新验收单列在 [实现记录](IMPLEMENTATION_STATUS.md#main-合并复核2026-11-24)，不改写历史数据/环境/测试结果。
+
 ## 改动与兼容
 
 | 项目 | 实现 | 兼容边界 |
@@ -26,7 +28,7 @@
 
 该片段应合入完整训练配置。`configs/train_caption_{a,b,b_global}_cache.json` 分别开启适用缓存；普通配置均关闭。两个开关互不影响，不适用的模型忽略对应开关并记录 effective=false。CLI 的 `--gru-cache-enabled` / `--no-gru-cache-enabled`、`--transformer-kv-cache-enabled` / `--no-transformer-kv-cache-enabled` 覆盖配置；predict 未指定时读取 checkpoint。具体训练/预测/恢复命令见 [README](README.md#caption-缓存与修复)。
 
-CE 训练只在验证生成时使用缓存；A SCST 另在两条策略生成时使用 GRU 缓存。Hybrid 原有生成已逐 token 保留 hidden，Qwen 的生成机制独立，均不受这两个 Caption 开关控制。缓存不是 CE teacher forcing 显存开关，也不保证总显存下降。
+CE 训练只在验证生成时使用缓存；A SCST 另在两条策略生成时使用 GRU 缓存。LegacyHybrid 原有生成已逐 token 保留 hidden；当前 Hybrid V2 沿用完整类别前缀，Qwen 的生成机制独立，均不受这两个 Caption 开关控制。缓存不是 CE teacher forcing 显存开关，也不保证总显存下降。
 
 run.json、checkpoint metadata 记录 `caption_generation`、`effective_caption_cache`；恢复另记录原开关。预测写 `输出文件.protocol.json`（配置、输入及 checkpoint 哈希、环境）。epochs.jsonl 记录 `validation_seconds`、`cuda_train_peak_bytes`、`cuda_validation_peak_bytes`、`cuda_peak_bytes`。CPU 显存值为 null；CUDA 记录 allocated 峰值，不等于驱动总占用。验证生成及独立 predict 使用 FP32，SCST 策略在训练 loss 的 autocast 范围内执行。
 

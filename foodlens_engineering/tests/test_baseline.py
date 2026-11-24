@@ -16,7 +16,7 @@ from foodlens.decode import GenerationConfig, predict_caption, predict_hybrid
 from foodlens.extensions import qwen_messages
 from foodlens.losses import hybrid_loss, token_loss
 from foodlens.metrics import evaluate_records
-from foodlens.models import (CaptionA, CaptionB, Hybrid, ModelConfig, VisualEncoder,
+from foodlens.models import (CaptionA, CaptionB, LegacyHybrid as Hybrid, ModelConfig, VisualEncoder,
                              causal_mask, grid_positions, transfer_caption_a)
 from foodlens.schema import TOTAL_FIELDS, assemble, canonical_items, normalize_name, strict_loads, validate_record
 from foodlens.text import Vocabulary, detokenize, tokenize

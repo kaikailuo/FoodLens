@@ -14,7 +14,7 @@ from foodlens.checkpoint import load_checkpoint, save_checkpoint, seed_everythin
 from foodlens.config import load_config
 from foodlens.decode import predict_caption
 from foodlens.generation import cache_options, checkpoint_generation, effective_cache_options
-from foodlens.models import CaptionA, CaptionB, Hybrid, ModelConfig, VisualEncoder, causal_mask, grid_positions, sinusoidal
+from foodlens.models import CaptionA, CaptionB, LegacyHybrid as LegacyHybridModel, ModelConfig, VisualEncoder, causal_mask, grid_positions, sinusoidal
 from foodlens.training import TrainConfig, parameter_groups, resume_compatible_config, run_training
 from foodlens.text import Vocabulary
 
@@ -33,7 +33,7 @@ def make_model(family, config=None):
     if family == "A":
         return CaptionA(16, config)
     if family == "hybrid":
-        return Hybrid(16, config)
+        return LegacyHybridModel(16, config)
     return CaptionB(16, config, global_only=family == "B-global")
 
 
@@ -359,6 +359,27 @@ class CacheCorrectness(unittest.TestCase):
 
 
 class CacheConfiguration(unittest.TestCase):
+    def test_hybrid_v2_resume_does_not_claim_legacy_gru_dropout_change(self):
+        from test_engineering import fixtures
+        with tempfile.TemporaryDirectory(dir=TEMP) as tmp:
+            root = Path(tmp); fixtures(root)
+            cfg = TrainConfig(task="hybrid", family="hybrid", model=asdict(tiny(.2)), engineering=True,
+                monitor="val_loss", metrics=[], epochs=1, batch_size=2, max_tokens=8)
+            common = dict(data_root=root, out=root/"run", train_annotations=root/"train.jsonl",
+                          val_annotations=root/"val.jsonl")
+            run_training(cfg, **common)
+            path = root/"run/last.pt"
+            state = torch.load(path, weights_only=False)
+            state["metadata"].pop("caption_a_dropout_version")
+            torch.save(state, path)
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                run_training(replace(cfg, epochs=2), resume=path, **common)
+            self.assertFalse(any("historical training trajectory" in str(w.message) for w in caught))
+            metadata = json.loads((root/"run/run.json").read_text(encoding="utf-8"))
+            self.assertIsNone(metadata["caption_a_dropout_version"])
+            self.assertFalse(metadata["legacy_dropout_resume"])
+
     def test_old_configs_and_invalid_switches(self):
         self.assertEqual(cache_options(), {"gru_cache_enabled": False, "transformer_kv_cache_enabled": False})
         for value in (0, 1, "false", None):

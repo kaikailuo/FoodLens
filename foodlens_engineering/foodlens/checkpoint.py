@@ -34,7 +34,8 @@ def save_checkpoint(path, model, optimizer, scheduler, *, vocab, statistics, met
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    torch.save({"format_version": 2, "model": model.state_dict(), "optimizer": optimizer.state_dict(),
+    torch.save({"format_version": 2, "architecture_version": getattr(model, "architecture_version", None),
+        "ingredient_vocabulary": vocab.metadata() if hasattr(vocab, "metadata") else None, "model": model.state_dict(), "optimizer": optimizer.state_dict(),
         "scheduler": scheduler.state_dict() if scheduler else None,
         "model_config": asdict(model.config), "vocab": vocab.tokens,
         "statistics": asdict(statistics) if statistics is not None else None,
@@ -51,6 +52,8 @@ def save_checkpoint(path, model, optimizer, scheduler, *, vocab, statistics, met
 def load_checkpoint(path, model, optimizer=None, scheduler=None, *, restore_rng=False, scaler=None):
     # Local checkpoints contain Python RNG tuples; only load trusted local artifacts.
     checkpoint = torch.load(path, map_location="cpu", weights_only=False)
+    if checkpoint.get("architecture_version") != getattr(model, "architecture_version", None):
+        raise ValueError("checkpoint architecture mismatch; legacy Hybrid cannot load into V2")
     model.load_state_dict(checkpoint["model"])
     if optimizer:
         optimizer.load_state_dict(checkpoint["optimizer"])

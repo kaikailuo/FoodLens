@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 from foodlens.models import ModelConfig
 from foodlens.training import TrainConfig
-from foodlens.qwen import QwenConfig
+from foodlens.qwen import QwenConfig, QwenTrainConfig
 
 
 def write_json(path, value):
@@ -21,8 +21,7 @@ write_json(folder / "train_hybrid.json", asdict(replace(base, task="hybrid", fam
 for method in ("scst", "ce_continue"):
     write_json(folder / ("train_"+method+".json"), asdict(replace(base, method=method, lr=1e-5, epochs=10, patience=11, updates_per_epoch=100)))
 write_json(folder / "qwen.json", asdict(QwenConfig()))
-write_json(folder / "train_qwen.json", asdict(replace(base, backend="qwen", task="hybrid", family="hybrid", monitor="hybrid",
-    lr=2e-4, batch_size=1, accumulation=16, epochs=3, max_tokens=128)))
+write_json(folder / "train_qwen.json", asdict(QwenTrainConfig()))
 write_json(folder / "judge_local.json", {"backend": "local", "qwen_config": "configs/qwen.json"})
 write_json(folder / "judge_api.json", {"backend": "api", "service_revision": "REPLACE_WITH_PROVIDER_PINNED_MODEL_VERSION", "timeout": 120})
 write_json(folder / "engineering_cpu.json", asdict(TrainConfig(engineering=True, monitor="val_loss", metrics=[],

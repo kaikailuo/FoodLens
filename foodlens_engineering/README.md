@@ -36,11 +36,11 @@ python3.12 -m venv .venv
 
 正式 Linux/CUDA 先按硬件安装兼容的 PyTorch/Torchvision，再装可选依赖并保存 freeze；不要把 CPU 锁定文件覆盖到 GPU 环境。BF16、FP16、NF4、CUDA 确定性及显存/吞吐均须目标机器试跑。METEOR 另需 PATH 上的 Java 和 pycocoevalcap 自带 jar/英文 paraphrase 资源；缺项明确报错，没有替代分数。Linux/CUDA、Java METEOR 未在本次实测。
 
-完整 `python -m unittest discover -s tests -v` 还包含依赖真实课程数据的旧测试。当前缺少 data/annotations/train.jsonl，旧测试 19 项通过、2 项因缺数据报错；不能称全量通过。
+完整 `python -m unittest discover -s tests -v` 还包含依赖真实课程数据的旧测试。11-23/24 的远程历史记录包含课程数据验证；当前合并环境没有 `data/annotations/train.jsonl`，两项旧测试报错，V2/Qwen 两项真实数据测试跳过，不能称全量通过。当前合并结果见 IMPLEMENTATION_STATUS。新增 V2 检查：`python -m unittest discover -s tests -p test_hybrid_v2.py -v`，无数据时跳过 RealDataTests。
 
 ## 数据契约与审计
 
-本次不获取或配置真实数据。取得资源后按 [data/README.md](../data/README.md) 归档。
+不修改原始数据。取得资源后按 [data/README.md](../data/README.md) 归档。
 
 - Caption manifest JSONL：每行 `id/image/caption/official_filename/sha256/duplicate_group/split`，可附来源 revision。image 相对 data 根；split 为 train/val/test，ID 全局唯一，哈希与重复组不跨划分。先完成可追溯映射、排除清单和官方测试优先的划分，禁止按行号拼接。
 - Nutrition JSONL：`dish_id/image/split/target`，保留学校原划分，target 符合严格 Schema。target_text/metadata 不进入推理。
@@ -73,7 +73,7 @@ RGB 清单由最终测试 manifest 提取 id/image；评价独立读取参考。
 
 ### Caption 缓存与修复
 
-A/Hybrid 的 `model.dropout` 现作用于词嵌入，训练开启、eval 关闭；B/B-global 只提取网格/GAP，不执行 A 的条件投影，保留原参数以兼容旧权重和优化器。恢复旧 A/Hybrid checkpoint 时，非零 Dropout 现在实际生效，会警告训练轨迹变化；不能据此复现修复前的训练结果。
+A/LegacyHybrid 的 `model.dropout` 现作用于词嵌入，训练开启、eval 关闭；B/B-global 只提取网格/GAP，不执行 A 的条件投影，保留原参数以兼容旧权重和优化器。恢复旧 A checkpoint 时，非零 Dropout 现在实际生效，会警告训练轨迹变化；不能据此复现修复前的训练结果。当前 Hybrid V2 使用自身的 Transformer Dropout，旧 GRU Hybrid 保留在 LegacyHybrid，仅兼容推理，不作为 V2 恢复点。
 
 训练 JSON 新增 `generation.gru_cache_enabled`、`generation.transformer_kv_cache_enabled`，均为布尔值且默认 false。开启示例为 `configs/train_caption_a_cache.json`、`train_caption_b_cache.json`、`train_caption_b_global_cache.json`。CLI 可以覆盖 JSON 或预测 checkpoint 中的开关：
 
@@ -85,7 +85,7 @@ python -m foodlens.cli predict --checkpoint artifacts/caption-b-cache/best.pt --
 python -m foodlens.cli predict --checkpoint artifacts/caption-b-cache/best.pt --manifest artifacts/test_rgb.jsonl --data-root ../data --device cuda --out artifacts/caption-b-cache/pred-full.jsonl --no-transformer-kv-cache-enabled
 ```
 
-开关影响生成：A 复用 GRU hidden（包括 SCST 的采样/贪心），B/B-global 复用每层 self-attention K/V 和视觉 cross-attention K/V。CE teacher forcing 不使用缓存；开关不能用于降低其前向/反向显存。Hybrid 保持已有逐步 GRU 生成，Qwen 由自身生成配置控制，这两个 Caption 开关对它们无效。缓存可能增加常驻张量，不能保证显存下降；应在目标 GPU 比较后决定。训练日志按 epoch 记录训练/验证显存峰值及验证时间，CPU 显存字段为 null。run.json/checkpoint 和预测旁的 `.protocol.json` 记录申请/实际生效开关，恢复时可切换。
+开关影响生成：A 复用 GRU hidden（包括 SCST 的采样/贪心），B/B-global 复用每层 self-attention K/V 和视觉 cross-attention K/V。CE teacher forcing 不使用缓存；开关不能用于降低其前向/反向显存。Hybrid V2 保留完整类别前缀生成，LegacyHybrid 保留逐步 GRU 生成，Qwen 由自身生成配置控制，这两个 Caption 开关对它们无效。缓存可能增加常驻张量，不能保证显存下降；应在目标 GPU 比较后决定。训练日志按 epoch 记录训练/验证显存峰值及验证时间，CPU 显存字段为 null。run.json/checkpoint 和预测旁的 `.protocol.json` 记录申请/实际生效开关，恢复时可切换。
 
 无数据基准及 CUDA/真实 checkpoint 对比命令见 [缓存交接说明](CAPTION_CACHE_FIXES.md)。当前验证生成使用 FP32；训练 precision 只控制损失前向，独立 predict 沿用 FP32。基准脚本可显式测试 CUDA BF16/FP16，尚未实测。
 
@@ -97,11 +97,15 @@ python -m foodlens.cli predict --checkpoint artifacts/hybrid/best.pt --manifest 
 python -m foodlens.cli evaluate --annotations ../data/annotations/test.jsonl --predictions artifacts/hybrid/test.jsonl --text-metrics BLEU-4 METEOR ROUGE-L CIDEr-D --out artifacts/hybrid/test_metrics.json
 ```
 
-主配置 transfer=visual_gru 复制视觉/投影/GRU 及旧词行；复制配置改为 transfer=visual、另选 out 完成仅视觉对照。保留所有旧词 ID，仅以训练文本追加词和 SEP。完整食材监督超长直接报错，不能截断重量配对。训练和自由生成都在产生 SEP logits 的状态回归重量；空项不回归。追踪空名/UNK/非有限值，丢弃未闭合项，合并重复名称，一位小数组装及严格校验 JSON，不约束食材重量之和等于整餐重量。
+2026-11-23 起新训练采用 [Hybrid V2](HYBRID_V2.md)：ResNet-18 的 49 个网格直接投影到 256 维，接 2 层、4 头、FFN 1024、Dropout 0.1 的 Transformer Decoder，无视觉 Transformer Encoder。Train 全名类别按规范化名称排序，独立于 Caption 词表。先合并同名重量，再成对排序；输入 BOS,c1,…,cK，目标 c1,…,cK,EOS。重量取已消费类别的 h1,…,hK，PAD 不监督。完整监督超长直接报错，不能截断重量配对。
 
-Hybrid/Qwen 正式验证按 Micro F1 选模，容差内比较五维 `mean(MAE_j/train_std_j)`，再比较 Schema 有效率；默认容差 1e-6。五维依次为总重量(g)、热量(kcal)、蛋白质(g)、脂肪(g)、碳水(g)。
+`--initialize` 可省略，此时使用配置中的 ImageNet ResNet-18 初始化。提供 Caption A 时，`transfer=visual` 只复制 `visual.features.*`，具体参数名记录在 run.json/Checkpoint；全局投影、网格投影、Transformer、类别 Embedding、输出层和回归头均重新初始化，回归输出偏置用 Train 均值初始化。不支持 visual_gru。旧 Hybrid Checkpoint 由 `restore_model()` 显式构建 LegacyHybrid，可推理但不能作为 V2 恢复点；旧 smoke 保留原 SEP 链路。Caption A/B 架构与权重加载不变。
 
-任务二文本固定为规范化、重复合并、字典序排序的食材名，用 ` ; ` 连接，不含数字；Schema 无效预测为空文本。除四文本指标外，报告精确名称 Micro F1、逐图 Macro F1、匹配/并集重量 MAE/MSE、五维 MAE/MSE、JSON/Schema 有效率及缺失/失败/截断。缺失侧重量置零，无匹配项误差为 null；完全解析失败为空食材/五维零预测；Schema 失败保留可读字段。非法名称及 Hybrid 清理失败仍计 FP。有效子集另报覆盖率，不能替代全样本结果。旧 evaluate 不带 text-metrics 时只运行结构评价，正式评价必须传四项。
+自由生成仅允许大于前一类别的 ID 或 EOS，允许空集合。选出类别后先消费并回归重量，再预测下一类；达到 Token/项数上限仍保留最后完整项并记录截断。非有限 logits/重量保留失败记录，非法整餐值用 null 标记 Schema 失败；JSON 组装保留一位小数，不约束食材重量和等于整餐重量。
+
+Hybrid V2 正式验证依次比较 Micro F1（大优）、食材 Weight Union MAE（g，小优）、五维 `mean(MAE_j/train_std_j)`（小优）、Schema 有效率（大优）；逐级容差均为 1e-6。选模只用 Validation。Qwen 保留原三项优先级，不在本轮改变。五维依次为总重量(g)、热量(kcal)、蛋白质(g)、脂肪(g)、碳水(g)。
+
+任务二正式四项文本指标统一使用**规范化完整 JSON**：名称 NFKC/小写/合并空白，同名重量求和，按名称字典序排序；字段固定为 items 及 TOTAL_FIELDS 顺序，项字段为 name、weight_g；全部数值一位小数，紧凑 JSON 序列化。名称、重量和整餐数值均参与文本评分；Schema 无效预测为空文本，保留全量参考与分母。结构 MAE/MSE 仍使用交付值，不以文本取整改变数值评价。除四文本指标外，报告精确名称 Micro F1、逐图 Macro F1、匹配/并集重量 MAE/MSE、五维 MAE/MSE、JSON/Schema 有效率及缺失/失败/截断。缺失侧重量置零，无匹配项误差为 null；完全解析失败为空食材/五维零预测；Schema 失败保留可读字段。非法名称及 Hybrid 清理失败仍计 FP。有效子集另报覆盖率，不能替代全样本结果。旧 evaluate 不带 text-metrics 时只运行结构评价，正式评价必须传四项。
 
 ## 公共训练与恢复边界
 
@@ -111,7 +115,7 @@ Hybrid/Qwen 正式验证按 Micro F1 选模，容差内比较五维 `mean(MAE_j/
 
 ## Qwen3-VL：本地 LoRA 与原始/微调配对
 
-train_qwen.json 复用公共训练与任务二选模配置；模型、LoRA 和图像处理参数以 qwen.json 为准，公共配置中的自主 model/transfer/layer4 字段不参与 Qwen 构建。
+本模块已迁移到 Hugging Face `Trainer`，参见[第三轮整改记录](QWEN_ROUND3.md)。train_qwen.json 使用独立 QwenTrainConfig，只含生效的训练和选模参数；模型、LoRA 和图像参数以 qwen.json 为准。兼容读取旧公共 TrainConfig，忽略自主模型字段；非空 updates_per_epoch 显式拒绝。
 
 configs/qwen.json 固定 Qwen3-VL-4B-Instruct 模型及 Processor revision `ebb281ec70b05090aa6165b016eac8ec08e71b17`。默认 local_files_only=true，不自动下载大模型。组员先准备该 revision 的本地 HF cache，或把 model_id 指向已准备目录并保留 revision 和文件校验记录。本地 Qwen 无需 API Key。
 
@@ -125,11 +129,21 @@ python -m foodlens.cli evaluate --annotations ../data/annotations/test.jsonl --p
 
 独立 qwen-predict 参数相同，省略 adapter 为原始模型。配对固定同一配置/manifest/指令/贪心协议，保留原始文本和全部失败，不重试或修复答案。collator 检查图像展开后完整对话与 generation prefix 严格一致，再只监督 assistant 回答和 im_end；图像/user/header/PAD/尾部换行不监督。超长要求减少像素或增大限制，不截断 JSON。
 
-LoRA 只匹配 `model.language_model.layers.N.self_attn.{q,k,v,o}_proj` 实际完整路径，输出 scope.json/可训练参数清单并校验无视觉层。默认 BF16 LoRA；独立配置 quantization=nf4 才启用 QLoRA，还需目标 CUDA 环境 bitsandbytes。真实 4B/Processor、NF4 算子及显存均未实测。
+LoRA 只匹配 `model.language_model.layers.N.self_attn.{q,k,v,o}_proj` 实际完整路径，在 run.json 保存 scope/可训练参数清单并校验无视觉层。默认 BF16 LoRA；独立配置 quantization=nf4 才启用 QLoRA，还需目标 CUDA 环境 bitsandbytes。真实 4B/Processor、NF4 算子及显存均未实测。
 
 processor_use_fast 在配置中显式固定，避免框架默认值变更；协议保存 Chat Template、Tokenizer 与图像 Processor 配置哈希，加载适配器时校验这些指纹。
 
-Qwen 先写不可变 epoch 子目录，再原子更新 best.json/last.json 指针。指针验证 adapter/训练状态 SHA256，避免半更新恢复；子目录保存 adapter、Processor、模板哈希、协议、优化器/调度器/scaler/RNG/进度，基础权重外置。可传指针或 epoch 目录，协议不一致拒绝加载；旧 epoch 保留供归档复核。恢复粒度同自主模型。
+Qwen 使用 Trainer 原生 `checkpoint-<global_step>`，每个完整 epoch 验证并保存 Adapter、Processor、优化器、Scheduler、AMP（启用时）、RNG 和 trainer_state.json。run.json/protocol.json 补充数据哈希、统计、版本、参数范围及生成协议；best.json/last.json 只保存相对路径，不再维护额外训练状态和重复权重哈希。恢复通过 resume_from_checkpoint，同一输出目录，只有总 epochs 可增加；数据、配置、处理协议及环境/源码须一致。旧自定义 epoch 包不能作为 Trainer 恢复点，旧 Adapter 可通过 epoch 目录推理。只加载可信本地产物。
+
+Trainer 管理 AdamW、常数学习率、AMP、梯度累计、裁剪和日志。原 StepLR 显式替换为常数调度，不声称与旧优化过程位级等价。公开 compute_loss_func 使用移位 Assistant CE 总和除以累计窗口监督 Token 总数，不再额外除以 accumulation；末个短窗口同样归一化。Gradient Checkpointing 使用 use_reentrant=false。
+
+每 epoch 全量 Validation 生成，按 Micro F1 → 五维 mean(MAE/train_std) → Schema 有效率逐级比较（1e-6 容差），std 仅从训练集拟合。StructuredSelection 的最优值/步数/早停计数由 Trainer 原生 Callback 状态保存与恢复；原生标量 EarlyStoppingCallback 无法表达此规则，因此保留轻量回调。load_best_model_at_end=false，训练结束的内存模型为 last，**配对推理显式传 best.json**。不使用测试集选模。工程模式可显式选择 val_loss。保留全部 checkpoint 供 best 路径和审计使用。
+
+当前仅支持单进程单卡；多卡机器先用 CUDA_VISIBLE_DEVICES 选择一张卡。CPU 验证固定 Transformers 4.57.1 / PEFT 0.17.1 / Accelerate 1.10.1，完整快照为 requirements-lock-qwen-cpu.txt；不是最新版本声明，也不是 GPU 依赖锁。无权重/无 GPU 时运行：`python -m unittest discover -s tests -p test_qwen_round3.py -v`。未安装 Qwen 可选依赖时对应测试显式跳过。
+
+CIDEr-D 离线评价（含 Validation）从**本次完整参考语料**计算 DF。比较模型时必须使用同一划分、样本 ID、完整 JSON 参考、Tokenizer 和 scorer 版本，不随预测成功率筛选语料。不把测试 DF 用于训练、奖励或选模；SCST 仍单独使用训练缓存。历史名称文本分数不能与整改后 JSON 分数直接比较。
+
+全样本 MSE 包含失败处理，不能解释为成功输出时的纯数值精度：缺失/解析失败为五维零预测；Schema 失败保留有限非负的可读字段，其余字段置零。valid_subset 只要求 JSON 通过 Schema；合法但标记截断的 JSON 仍在子集中，截断率单列。inference_failed 与 parse_failed 可重叠，不能相加为失败总数；缺失也计入 parse_failed。空子集误差为 null，子集始终报告覆盖率。详见整改记录及输出 protocol。
 
 ## SCST 与等步数 CE 对照
 

@@ -19,7 +19,7 @@ from foodlens.judge import (DIMENSIONS, JudgeConfig, export_human, import_human,
     parse_scores, prepare_candidates, run_judge, stable_id)
 from foodlens.judge_stats import analyze_judge, cluster_bootstrap, spearman, weighted_kappa
 from foodlens.losses import token_loss
-from foodlens.models import CaptionA, Hybrid, ModelConfig, transfer_caption_a
+from foodlens.models import CaptionA, Hybrid, ModelConfig, transfer_visual_backbone
 from foodlens.qwen import QwenConfig, answer_labels, generate_qwen, inject_lora, lora_targets, QwenCollator
 from foodlens.runtime import runtime, write_jsonl, reject_secrets
 from foodlens.schema import TOTAL_FIELDS
@@ -148,14 +148,14 @@ class PublicFoundationTests(unittest.TestCase):
             self.assertEqual(result["step"], 2)
             source, old, _ = restore_model(root/"a/best.pt")
             model, new, ckpt = restore_model(root/"h/last.pt")
-            self.assertEqual(new.tokens[:len(old)], old.tokens)
-            self.assertEqual(ckpt["metadata"]["transfer"]["copied_tokens"], len(old))
+            self.assertEqual(new.tokens[4:], ["brown rice"])
+            self.assertEqual(ckpt["metadata"]["transfer"]["copied_tokens"], 0)
             random_target = Hybrid(len(new), tiny())
-            before = random_target.gru.weight_ih_l0.detach().clone()
-            transfer_caption_a(source, old, random_target, new, mode="visual")
-            self.assertTrue(torch.equal(before, random_target.gru.weight_ih_l0))
-            self.assertTrue(torch.equal(source.visual.projection.weight, random_target.visual.projection.weight))
-            self.assertTrue(is_better([.5, 1., .9], [.5, 2., 1.], "hybrid", 1e-6))
+            before = random_target.decoder.layers[0].self_attn.in_proj_weight.detach().clone()
+            transfer_visual_backbone(source, random_target)
+            self.assertTrue(torch.equal(before, random_target.decoder.layers[0].self_attn.in_proj_weight))
+            self.assertTrue(torch.equal(source.visual.features[0].weight, random_target.visual.features[0].weight))
+            self.assertTrue(is_better([.5, 1., 1., .9], [.5, 2., 1., 1.], "hybrid", 1e-6))
 
     def test_accumulation_uses_global_token_denominator(self):
         from foodlens.training import train_epoch
@@ -240,7 +240,7 @@ class MetricTests(unittest.TestCase):
         from pycocoevalcap.cider.cider import Cider
         reference_score, individual = Cider().compute_score(refs, {"x": [preds["x"]], "y": [""]})
         self.assertAlmostEqual(result["scores"]["CIDEr-D"], reference_score)
-        self.assertEqual(record_text(record()), "brown rice")
+        self.assertEqual(json.loads(record_text(record())), record())
         with patch("shutil.which", return_value=None):
             with self.assertRaisesRegex(RuntimeError, "Java"):
                 score_captions(refs, preds, metrics=["METEOR"])
@@ -264,6 +264,9 @@ class QwenProtocolTests(unittest.TestCase):
             self.assertTrue((labels[batch["input_ids"].eq(image_id)] == -100).all())
             self.assertTrue((labels[batch["attention_mask"].eq(0)] == -100).all())
             self.assertEqual(int(labels.eq(processor.tokenizer.eos_token_id).sum()), 2)
+            for index, sample in enumerate(samples):
+                supervised = processor.tokenizer.decode(labels[index][labels[index].ne(-100)], skip_special_tokens=False)
+                self.assertEqual(supervised, json.dumps(sample["target"], ensure_ascii=False, separators=(",", ":")) + "<|im_end|>")
             self.assertGreater(batch["pixel_values"].numel(), 0)
             with self.assertRaisesRegex(ValueError, "never truncated"):
                 QwenCollator(processor, max_length=10)(samples)
@@ -286,9 +289,10 @@ class QwenProtocolTests(unittest.TestCase):
             self.assertEqual(full.keys(), resumed.keys())
             for key in full:
                 self.assertTrue(torch.equal(full[key], resumed[key]), key)
-            a = torch.load(full_path/"training_state.pt", weights_only=False)
-            b = torch.load(resumed_path/"training_state.pt", weights_only=False)
-            self.assertEqual(a["progress"], b["progress"])
+            a = json.loads((full_path/"trainer_state.json").read_text())
+            b = json.loads((resumed_path/"trainer_state.json").read_text())
+            self.assertEqual(a["global_step"], b["global_step"])
+            self.assertEqual(a["stateful_callbacks"], b["stateful_callbacks"])
             # Exercise paired inference and the frozen Judge using actual local tiny HF files.
             from types import SimpleNamespace
             from foodlens.commands import qwen_pair
@@ -314,10 +318,10 @@ class QwenProtocolTests(unittest.TestCase):
             output = read_jsonl(root/"tiny-judge.jsonl")[0]
             self.assertIsNotNone(output["raw"])
             self.assertIsNone(output["scores"])
-            with (full_path/"adapter_model.safetensors").open("ab") as stream:
-                stream.write(b"synthetic_corruption_test")
-            with self.assertRaisesRegex(ValueError, "incomplete or changed"):
-                resolve_adapter(root/"full/last.json")
+            # Trainer owns checkpoint integrity/loading; aliases only resolve paths.
+            with self.assertRaisesRegex(ValueError, "escapes"):
+                (root/"escape.json").write_text(json.dumps({"checkpoint": "../outside"}))
+                resolve_adapter(root/"escape.json")
 
     def test_answer_mask_exact_prefix_padding_and_end(self):
         ids = torch.tensor([[0, 0, 10, 60, 11, 12, 40, 41, 2], [10, 60, 60, 11, 12, 40, 2, 0, 0]])

@@ -2,7 +2,7 @@
 
 深度学习课程项目：食物图像描述生成，以及食材、重量与整餐营养信息的结构化预测。
 
-目前已接通 Caption A/B/B-global、Hybrid、Qwen3-VL LoRA、SCST 与 Judge 的训练/推理/评价入口，并完成 Windows CPU 合成工程验证；真实数据实验、正式训练及 Linux/GPU 验证尚未执行。合成样例和 tiny smoke 不能代表模型效果。
+目前已接通 Caption A/B/B-global、Hybrid、Qwen3-VL LoRA、SCST 与 Judge 的训练/推理/评价入口，并完成 Windows CPU 合成工程验证；真实数据实验、正式训练及 Linux/GPU 验证尚未执行。合成样例和 tiny smoke 不能代表模型效果。2026-11-24 Qwen 已迁移到 HF Trainer，并统一完整 JSON 文本评价，见[第三轮整改记录](foodlens_engineering/QWEN_ROUND3.md)；真实 GPU/4B/QLoRA 仍待验。2026-11-23 自主任务二已切换为 [Hybrid V2 类别级 Transformer](foodlens_engineering/HYBRID_V2.md)，本轮验证范围与兼容性见[实现状态](foodlens_engineering/IMPLEMENTATION_STATUS.md)。
 
 **给同学和 agent：** 先读 [AGENTS.md](AGENTS.md)，再按[工程 README](foodlens_engineering/README.md)复现。统一 CLI 已提供 `train`、`predict`、`evaluate-caption`、`qwen-train`、`qwen-pair` 和 Judge/人评工具，保留旧 smoke。复现不需要原作者的虚拟环境、历史产物或本地 `.agents/` 技能。
 
@@ -13,7 +13,7 @@
 | [课程原始要求](docs/COURSE_REQUIREMENTS.md) | 用户提供的教师材料整理稿：任务、指标、分组、阶段交付及日期说明 |
 | [foodlens_engineering/](foodlens_engineering/README.md) | Python 代码、配置、测试、依赖及运行说明 |
 | [docs/report/](docs/report/README.md) | 最终报告源文件、必要图片及参考文献 |
-| [research_proposal.pdf](docs/report/research_proposal.pdf) | 开题报告章节合编稿，收录第二、四、五、七、八部分 |
+| [research_proposal.pdf](docs/report/research_proposal.pdf) | 完整开题报告（29 页，含封面、目录、第一至九部分及参考文献） |
 | [technical_plan.tex](docs/report/sections/technical_plan.tex) | 最终第五章技术方案，工程实施依据 |
 | [docs/research/](docs/research/) | 成员调研记录、原附件和调研建议 |
 | [docs/proposal/](docs/proposal/) | 原始开题材料 |
@@ -28,7 +28,7 @@
 - 任务一：至少新实现两种指定结构，使用至少三种指定指标；当前方案为 A/B 与 BLEU-4、METEOR、ROUGE-L、CIDEr-D。
 - 任务二：比较任务一模型适配与微调多模态模型，报告文本指标、F1 和 MSE；MAE、结构有效率等作为补充。
 - 选做三选二：当前方案选择 SCST 和 Judge，两个方向均需交付，先完成必选任务再推进。
-- 中期需要原型；结题报告使用 Notebook/Markdown，另交幻灯片或 2—5 分钟演示视频。课程未强制 Web 界面。当前 PDF 收录第二、四、五、七、八部分，完整开题报告仍需整合其余部分。
+- 中期需要原型；结题报告使用 Notebook/Markdown，另交幻灯片或 2—5 分钟演示视频。课程未强制 Web 界面。当前完整开题报告为 29 页，后续模型实现变化由工程文档和结题报告跟踪；不回写已经提交的开题 PDF。
 
 正式开发、训练和完整实验以 **Linux GPU 服务器为主**，三位组员的 **Windows 本机用于轻量测试**。数据统一位于项目根 `data/`，任务二由组员从教学云平台自行下载并按数据说明归档。第五章约 300 元是早期估算，不作为实施预算上限；实验按课程要求和实际硬件推进。
 

@@ -2,7 +2,7 @@
 
 本文保存 2026-11-01 的历史验证范围与结果，文中的耗时、loss 和本地产物位置仅指该次运行。当前复现步骤以[工程 README](README.md)为准，实现状态变化后应另追加带日期的记录，不把历史验证等同于新环境已通过。
 
-**当前状态请同时阅读文末 2026-11-20 代码建设记录。** 下列 11-01/11-02 的结果及未完成项保留为历史，不能据此判断新代码仍只有旧 CLI。
+**当前状态请结合文末 2026-11-24 Hybrid V2 实施记录及 [Qwen 第三轮整改记录](QWEN_ROUND3.md)；11-20 Hybrid 为旧 GRU/SEP 实现，Qwen 为旧自主训练器，旧任务二文本仅含名称。** 下列历史结果及未完成项保留，不能据此判断新代码能力。
 
 工程位于仓库的 `foodlens_engineering/`。该次未修改报告、原始 data 或已有审计文件。Python 3.12 隔离venv安装CPU torch 2.9.1+cpu / torchvision 0.24.1+cpu；无预训练权重下载，无GPU训练。
 
@@ -169,3 +169,77 @@ python -m scripts.synthetic_acceptance --out artifacts/caption-cache-20261124/cl
 ### 尚未执行
 
 未运行 Linux/CUDA、GPU 峰值显存/吞吐、CUDA FP32/BF16/FP16 缓存等价、真实预训练 ResNet/正式权重的生成及真实数据训练/评价。GPU 测试已提供且因资源缺失明确 skip；目标机器上先运行新增测试和 benchmark，再选择适用缓存。CE 的 teacher forcing 不使用这两个缓存，不能据此声称训练显存下降。Java METEOR、真实 Qwen 权重及外部 Judge 的历史未验证边界不变。无需新增 API Key 即可使用本次 Caption 修复和缓存。
+
+
+## 2026-11-24：Hybrid V2 实施与 CPU 验收
+
+基准分支 `htl_1120`，HEAD `ebde49a35b77be285d6343343e0efa96dc74712a`，本轮改动尚未提交。需求及审查始于 11-23，产物目录沿用 `hybrid-v2-20261123`。原始数据、划分、历史审查报告及历史产物未修改；没有提交、推送或合并。架构与协议见 [HYBRID_V2.md](HYBRID_V2.md)，它替代第五章旧 Hybrid 的 GRU/SEP 方案；报告 PDF/旧图件未在本轮重制。
+
+### 实现范围与静态检查
+
+- `models.py:Hybrid` 独立于 Caption A，使用 49 网格投影和 2 层类别级 Transformer Decoder，没有视觉 Transformer Encoder。正式维度 256、4 头、FFN 1024、Dropout 0.1；保留原紧凑 Weight/Total Head、Softplus 和 Train 统计标准化 Smooth L1。
+- 新增 `ingredients.py:IngredientVocabulary`、`serialize_ingredients`；Train 全名映射、规则版本及 SHA-256 随 run.json 和 Checkpoint 保存。同名重量确定性求和，类别/重量成对排序。`data.py` 兼容旧序列化，新权重 gather 使用输入位置 1…K。未知类别仅用于验证诊断占位，不参与类别 CE，评价仍用未经改变的原始全名实体。
+- `decode.py:predict_hybrid_v2` 消费每个生成类别后回归重量，最后一项不因 EOS 或预算边界丢失；约束 ID 严格递增，允许首步 EOS，保存截断、失败与 Schema 检查结果。
+- `training.py` 不再强制 GRU 初始化；可直接预训练 ResNet-18 初始化，或从 Caption A 严格迁移 `visual.features.*`。`transfer_visual_backbone` 记录所有复制键，不复制投影/GRU/词表行/新头。V2 选模增加 Union 重量 MAE，优先级为 F1→重量→标准化五项 MAE→Schema。Qwen 维持原选优。
+- `checkpoint.py` 保存架构标记与完整类别映射。V2 epoch 恢复核对数据、配置、类别映射；旧 Hybrid 显式走 LegacyHybrid 推理，禁止作为 V2 恢复点。旧 smoke 显式保留 LegacyHybrid；Caption A/B 代码未改变。
+- `metrics.py` 补充 Micro Precision/Recall，保持原有名称键匹配、Matched/Union、全样本数值与失败分母。`losses.py` 无须修改，继续使用原三个损失；不新增 TF-set、SCST 或重量和约束。
+- 更新 `configs/train_hybrid.json`、`scripts/synthetic_acceptance.py`、`tests/test_baseline.py`、`tests/test_engineering.py`，新增 `tests/test_hybrid_v2.py`。根 README、工程 README、本记录及 HYBRID_V2.md 同步说明。`git diff --check` 无错误；无模型静态阻断项。
+
+### 实际命令与结果
+
+工作目录为 `foodlens_engineering/`。PowerShell 在调用前设置 `$env:GIT_CONFIG_COUNT='0'`，避免执行环境中不完整的 Git 配置计数导致版本采集失败；不修改仓库 Git 配置。
+
+```powershell
+.venv/Scripts/python.exe -m unittest discover -s tests -v
+.venv/Scripts/python.exe -m unittest discover -s tests -p test_hybrid_v2.py -v
+.venv/Scripts/python.exe -m scripts.synthetic_acceptance --out artifacts/hybrid-v2-20261123-cli
+```
+
+- 全量：47 项，45 通过、2 跳过、0 失败，40.175 秒；两个跳过项需要本机未安装的 Transformers/PEFT（Qwen），不将其称为通过。日志 `artifacts/hybrid-v2-tests.log`。
+- V2 专项：10 项全部通过、0 失败、0 跳过，33.905 秒；覆盖稳定映射/同名合并/顺序置换/输入目标移位、首末重量及 PAD/BOS mask、因果与 padding、网格 Cross-Attention、各头梯度、Teacher Forcing/自回归状态一致、EOS/重复/截断/非法回归、未知类全样本评价、选优、保存加载/逐张量一致的 epoch 恢复、旧模型兼容及真实数据。日志 `artifacts/hybrid-v2-focused.log`。
+- CLI 合成端到端：21 条公共 CLI 命令均退出 0，涵盖 A/B/B-global、V2 仅视觉迁移训练/推理/评价、Caption 恢复及原 CE/SCST/匿名人评工具回归。日志 `artifacts/hybrid-v2-cli.log`，逐命令 stdout/stderr 为 `artifacts/hybrid-v2-20261123-cli/commands.json`，环境与摘要为该目录 `acceptance.json`。V2 合成配置为 2 层、16 维、4 头、FFN 32、随机 tiny；不是正式 ResNet 效果。
+- 正式尺寸另用随机 ResNet-18（不下载权重）确认 49×256 Memory、2 层/4 头/1024 FFN、Weight 512→256→1 和 Total 768→256→5。没有以此证明预训练效果。
+
+### 真实数据预处理
+
+本机确有真实课程数据。逐项复核摘要保存于根 `outputs/hybrid_v2_20261124/preprocessing.json`，仅为本次本地产物，不是复现输入。Train 映射 SHA-256 为 `00fe7d8fac7b5436abd8265afe2460f8faec854649bfcae6901b6c7c86dda5c0`。三份 JSONL SHA-256 均与 data/sources.json 一致。Train 2338 条、151 类、8368 项；全部食材及重量 ID→名称往返一致、反序后序列/重量完全一致。Validation 414 条含 5 个未见类；Test 506 条含 3 个未见类。它们未扩充类别表，未作为 UNK 真值合并计分。三个划分共 3258 张 RGB 均通过既有读取与 224×224 预处理，无缺图/解码失败。本项不训练、不选模、不改变原划分。
+
+### 环境、限制与后续训练风险
+
+包内 Python 源码摘要为 `8b66c8f31ccad0c953f38bd801927d72b82feec7968df01886d45391b413feb5`，实际依赖快照为 `artifacts/hybrid-v2-freeze.txt`。实际为 Windows 11 / Python 3.12.14 / torch 2.9.1+cpu / torchvision 0.24.1+cpu / NumPy 2.4.6 / Pillow 13.0.0 / scipy 1.15.3 / pycocoevalcap 1.2，CUDA 不可用；与 11-20 锁定环境不同。只补装了仓库已有声明的 six、标准指标和 scipy 依赖，没有引入新依赖。最初的依赖缺失已修复后重跑；不覆盖历史结果。
+
+尚未验证真实 ImageNet 权重迁移后的收敛、真实数据训练与模型效果、Linux/CUDA/BF16 显存及吞吐、Java METEOR。闭集对未见食材必然漏检；长尾重量（如 2991g）、RGB 份量歧义、训练真实前缀与自由生成的差异以及既有同餐跨划分疑点仍会影响实验可信度。正式实验前需按仓库约定固定权重、数据、指标与资源试跑；本轮不修改异常标签，不扩展模型研究范围。
+
+
+## 2026-11-24：Qwen 第三轮 Trainer 与 JSON 评价整改
+
+起点 htl_1120 / f5a2014，保留已合入的 Hybrid V2。详情、文件清单、官方参考、协议变化及命令见 [QWEN_ROUND3.md](QWEN_ROUND3.md)。Qwen 训练基础设施改用 HF Trainer，保留 Assistant-only Token 分母、语言 LoRA、全量验证三层选模；原生 checkpoint/Callback 状态恢复替代自主管理训练状态。任务二统一完整规范化 JSON 四文本指标；失败数值惩罚保持，修复没有 raw/record 的失败行被人造 null 计入 JSON 合法率的边界。
+
+最终 Windows CPU 全量 58 项通过、0 失败、0 跳过（70.858 秒，artifacts/qwen-round3-complete.log）；公共 CLI 21 条、tiny Qwen CLI 5 条退出 0。真实课程 3258 张 RGB 通过 QwenDataset 读取，最长目标经合成 tiny Processor 完整编码。Java METEOR、官方 Processor/4B、Linux/CUDA/BF16/NF4 与正式效果均未验证。模块仅在静态与 CPU 工程边界暂时冻结。
+
+GPU Issue #3 已核对，但补充发布被自动审批拒绝，远端未修改；拟发布正文在本地 outputs/qwen_round3/issue3_appendix.md。无需因该外部发布阻塞继续阅读本地验收和代码。
+
+## Main 合并复核（2026-11-24）
+
+本地 Caption 修复提交 `91075d3` 与远程 main `d7cbcd2d066ecb9129ff496b6d391b5fcab40a1c` 整合。保留远程报告提交、Hybrid V2、完整 JSON 文本评价及 HF Trainer，不以旧 GRU Hybrid/旧 Qwen 手工训练器覆盖它们；同时保留 A Dropout、B 无用投影清理、两种默认关闭的 Caption 缓存。历史验收段落分别来自不同环境，本次不改写其数据可用性或分数。
+
+六处冲突按功能整合：decode 同时保留 V2 类别生成和 Caption 缓存；原生 training metadata 同时保留类别表/架构/选模及缓存配置；Qwen 训练器和独立配置保留远程版本，Caption generation 不加入 QwenTrainConfig；配置生成脚本保留独立 Qwen 配置及三套缓存示例；两侧实现记录全部保留。修复测试中的旧 Hybrid 明确引用 LegacyHybrid，并新增实际 V2 训练/恢复测试，确认它不会收到旧 GRU Dropout 的轨迹变化警告。
+
+本次实际仍为 Windows 11 / Python 3.12.14 / Torch 2.9.1+cpu / Torchvision 0.24.1+cpu / NumPy 2.2.6 / Pillow 11.3.0 / Transformers 4.57.1 / PEFT 0.17.1 / Accelerate 1.10.1。没有获取真实课程数据/权重、使用 GPU 或调用外部服务。解释器使用本地 `artifacts/caption-cache-20261124/venv/Scripts/python.exe`；新成员按 README 建环境。
+
+从工程目录执行，检查日志放根 `outputs/main-merge-20261124/`，合成产物放 `artifacts/main-merge-20261124/`，均不提交：
+
+```powershell
+$env:GIT_CONFIG_COUNT='0'
+$env:OPENBLAS_NUM_THREADS='1'
+$env:HF_HUB_OFFLINE='1'
+python -m unittest discover -s tests -v
+python -m scripts.synthetic_acceptance --out artifacts/main-merge-20261124/cli-acceptance
+python -m compileall -q foodlens scripts tests
+```
+
+本次全组 76 项：71 通过、2 错误、3 跳过，退出码 1（tests-final.log，17.460 秒）；所有实际代码断言通过，不能称全量通过。两项错误仍为旧 baseline 缺 `../data/annotations/train.jsonl`；Hybrid V2 和 Qwen 各一项真实数据检查因缺数据跳过，另一项为缓存 CUDA 测试跳过。本地 18 项缓存/修复测试包含在全组中，17 通过、1 CUDA 跳过；还覆盖远程 Hybrid V2 和 Qwen Trainer 的新增合成测试，包括梯度/监督、恢复、选模及输入隔离。
+
+本次报告/PDF 的暂存内容来自远程已有提交；用户自己的未提交报告改动保存在 `local-report-before-main-sync` stash，不混入合并提交。Linux/CUDA、真实数据/权重与服务等未验证范围保持不变。
+
+最终结果：全组 **76 项，71 通过、2 个缺数据错误、3 跳过**（17.460 秒，`tests-final.log`，退出码 1）。两项错误仍是旧 baseline 缺 `data/annotations/train.jsonl`；跳过为 CUDA 检查、Hybrid V2 和 Qwen 两项真实数据检查。没有代码断言失败，不能称全量通过。当前合成 CLI **21 条命令成功**（V2 只保留一条视觉迁移配置，历史 24 条记录不改写），见 `cli-acceptance.log` 和工程 `artifacts/main-merge-20261124/cli-acceptance/commands.json` / `acceptance.json`。配置、独立副本执行的配置生成器、32 条文档 CLI 参数和本地文件/锚点检查通过，见 `static-final.log`；compileall 与 pip check 通过。核心源码 SHA256 为 `8c9e12e3ad5edc66912452eec6904ccd660d31095b74bee3a578f337828c562d`，与 CLI 元数据一致。合并检查保留远程已有报告文件的原字节，不为消除其既有 CRLF/空白提示改写报告。
