@@ -1,0 +1,23 @@
+{
+  "seed": 42,
+  "device": "cuda",
+  "precision": "bf16",
+  "deterministic": true,
+  "threads": 2,
+  "epochs": 3,
+  "batch_size": 1,
+  "accumulation": 16,
+  "lr": 0.0002,
+  "weight_decay": 0.01,
+  "gradient_clip": 1.0,
+  "patience": 5,
+  "tolerance": 1e-06,
+  "monitor": "hybrid",
+  "metrics": [
+    "BLEU-4",
+    "METEOR",
+    "ROUGE-L",
+    "CIDEr-D"
+  ],
+  "engineering": false
+}

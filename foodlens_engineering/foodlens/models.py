@@ -140,7 +140,7 @@ class CaptionB(nn.Module):
         return self.decode(inputs, self.memory(images))
 
 
-class Hybrid(CaptionA):
+class LegacyHybrid(CaptionA):
     def __init__(self, vocabulary_size, config=None):
         super().__init__(vocabulary_size, config)
         h = self.config.hidden
@@ -166,12 +166,79 @@ class Hybrid(CaptionA):
                 "totals": self.total_head(torch.cat((v, z), -1))}
 
 
-def transfer_caption_a(source, source_vocab, target, target_vocab):
+class Hybrid(nn.Module):
+    """V2: class-level causal decoder; weights use consumed-class states."""
+    architecture_version = "hybrid_v2"
+
+    def __init__(self, vocabulary_size, config=None):
+        super().__init__()
+        self.config = config or ModelConfig()
+        c = self.config
+        self.visual = VisualEncoder(c)
+        self.grid_projection = nn.Linear(512, c.hidden)
+        self.embedding = nn.Embedding(vocabulary_size, c.hidden, padding_idx=0)
+        self.decoder = nn.TransformerDecoder(nn.TransformerDecoderLayer(
+            c.hidden, c.heads, c.feedforward, c.dropout, batch_first=True), c.layers)
+        for layer in self.decoder.layers:
+            for parameter in layer.parameters():
+                if parameter.dim() > 1:
+                    nn.init.xavier_uniform_(parameter)
+        self.output = nn.Linear(c.hidden, vocabulary_size)
+        self.weight_head = nn.Sequential(nn.Linear(c.hidden*2, c.hidden), nn.ReLU(),
+                                         nn.Linear(c.hidden, 1), nn.Softplus())
+        self.total_head = nn.Sequential(nn.Linear(512+c.hidden, c.hidden), nn.ReLU(),
+                                        nn.Linear(c.hidden, 5), nn.Softplus())
+
+    initialize_regression = LegacyHybrid.initialize_regression
+
+    def encode(self, images):
+        grid, v, z = self.visual(images)
+        memory = self.grid_projection(grid.flatten(2).transpose(1, 2))
+        memory = memory + grid_positions(*grid.shape[-2:], self.config.hidden,
+                                        device=grid.device, dtype=memory.dtype)
+        return memory, v, z
+
+    def decode(self, inputs, memory):
+        tokens = self.embedding(inputs) * math.sqrt(self.config.hidden)
+        tokens = tokens + sinusoidal(inputs.shape[1], self.config.hidden,
+                                     device=tokens.device, dtype=tokens.dtype)
+        states = self.decoder(tokens, memory, tgt_mask=causal_mask(inputs.shape[1], inputs.device),
+                              tgt_key_padding_mask=inputs.eq(0))
+        return self.output(states), states
+
+    def forward(self, images, inputs, boundaries):
+        memory, v, z = self.encode(images)
+        logits, states = self.decode(inputs, memory)
+        # boundaries are input class positions 1..K, including the EOS-predicting last state.
+        selected = states.gather(1, boundaries.unsqueeze(-1).expand(-1, -1, states.shape[-1]))
+        conditions = z[:, None].expand(-1, boundaries.shape[1], -1)
+        return {"logits": logits, "states": states,
+                "weights": self.weight_head(torch.cat((selected, conditions), -1)).squeeze(-1),
+                "totals": self.total_head(torch.cat((v, z), -1))}
+
+
+def transfer_visual_backbone(source, target):
+    """Copy only compatible CNN parameters/buffers, never GRU or projections."""
+    if source.config.backbone != target.config.backbone:
+        raise ValueError("visual backbone architecture mismatch")
+    old, new = source.visual.features.state_dict(), target.visual.features.state_dict()
+    if old.keys() != new.keys() or any(old[k].shape != new[k].shape for k in old):
+        raise ValueError("visual backbone parameter mismatch")
+    target.visual.features.load_state_dict(old, strict=True)
+    return {"mode": "visual", "modules": ["visual.features"], "copied_tokens": 0,
+            "parameters": ["visual.features."+k for k in old]}
+
+
+def transfer_caption_a(source, source_vocab, target, target_vocab, *, mode="visual_gru"):
     if target_vocab.tokens[:len(source_vocab)] != source_vocab.tokens:
         raise ValueError("task2 vocabulary must retain every task1 ID")
     if asdict(source.config) != asdict(target.config):
         raise ValueError("transfer requires identical encoder/GRU configurations")
     target.visual.load_state_dict(source.visual.state_dict())
+    if mode == "visual":
+        return {"copied_tokens": 0, "modules": ["visual"], "mode": mode}
+    if mode != "visual_gru":
+        raise ValueError("transfer mode must be visual or visual_gru")
     target.gru.load_state_dict(source.gru.state_dict())
     with torch.no_grad():
         for token, old_id in source_vocab.index.items():

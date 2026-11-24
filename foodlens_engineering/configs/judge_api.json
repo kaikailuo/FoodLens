@@ -1,0 +1,5 @@
+{
+  "backend": "api",
+  "service_revision": "REPLACE_WITH_PROVIDER_PINNED_MODEL_VERSION",
+  "timeout": 120
+}

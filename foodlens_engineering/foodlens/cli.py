@@ -1,4 +1,4 @@
-"""CPU smoke loop over real training images; not a model-quality experiment."""
+"""Unified training, RGB-only prediction, evaluation and extension command entry point."""
 import argparse
 from dataclasses import asdict, replace
 import json
@@ -11,11 +11,13 @@ from .data import NutritionDataset, RGBManifestDataset, TrainStatistics, collate
 from .decode import GenerationConfig, predict_hybrid
 from .losses import hybrid_loss
 from .metrics import evaluate_records
-from .models import Hybrid, ModelConfig
+from .models import LegacyHybrid as Hybrid, ModelConfig
 from .text import Vocabulary, detokenize, tokenize
+from .commands import add_commands
 
 
 def write_json(path, obj):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(json.dumps(obj, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
 
 
@@ -92,10 +94,11 @@ def smoke(args):
 
 def predict(args):
     torch.set_num_threads(args.threads)
-    checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
-    vocab = Vocabulary(checkpoint["vocab"])
-    model = Hybrid(len(vocab), ModelConfig(**checkpoint["model_config"]))
-    load_checkpoint(args.checkpoint, model)
+    from .runtime import runtime
+    from .training import restore_model, caption_prediction
+    from .decode import predict_caption
+    device, _ = runtime(args.device)
+    model, vocab, checkpoint = restore_model(args.checkpoint, device)
     dataset = RGBManifestDataset(args.manifest, args.data_root, limit=args.samples)
     destination = Path(args.out)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -104,10 +107,14 @@ def predict(args):
             sample_id = dataset.rows[i]["id"]
             try:
                 sample = dataset[i]
+                images = sample["image"].unsqueeze(0).to(device)
                 generation = GenerationConfig(**checkpoint["metadata"].get("generation_config", {}))
-                prediction = predict_hybrid(model, sample["image"].unsqueeze(0), vocab, generation)[0]
+                if checkpoint["metadata"].get("model_family", "hybrid") == "hybrid":
+                    prediction = predict_hybrid(model, images, vocab, generation)[0]
+                else:
+                    prediction = caption_prediction(predict_caption(model, images, max_tokens=generation.max_tokens)[0].tolist(), vocab)
             except (OSError, ValueError, RuntimeError) as error:
-                prediction = {"raw": "", "inference_error": f"{type(error).__name__}: {error}"}
+                prediction = {"raw": "", "caption": "", "status": "inference_failed", "inference_error": type(error).__name__}
             stream.write(json.dumps({"id": sample_id, **prediction}, allow_nan=False) + "\n")
     print(str(destination.resolve()))
 
@@ -121,6 +128,9 @@ def evaluate(args):
     if len({row["id"] for row in rows}) != len(rows):
         raise ValueError("duplicate prediction IDs")
     result = evaluate_records(truth, {row["id"]: row for row in rows})
+    if args.text_metrics:
+        from .caption_metrics import score_record_texts
+        result["text"] = score_record_texts(truth, {r["id"]: r for r in rows}, metrics=args.text_metrics)
     write_json(args.out, result)
     print(json.dumps({key: value for key, value in result.items() if key != "per_sample"}))
 
@@ -142,18 +152,21 @@ def main():
     infer.add_argument("--data-root", default="../data")
     infer.add_argument("--manifest", required=True, help="JSONL containing only id/image")
     infer.add_argument("--out", required=True)
-    infer.add_argument("--samples", type=int, default=4)
+    infer.add_argument("--samples", type=int, default=None, help="omit for the full manifest")
+    infer.add_argument("--device", default="cpu")
     infer.add_argument("--threads", type=int, default=2)
     infer.set_defaults(function=predict)
     score = commands.add_parser("evaluate")
     score.add_argument("--annotations", required=True)
     score.add_argument("--predictions", required=True)
     score.add_argument("--out", required=True)
+    score.add_argument("--text-metrics", nargs="+", choices=["BLEU-4", "METEOR", "ROUGE-L", "CIDEr-D"])
     score.set_defaults(function=evaluate)
+    add_commands(commands)
     args = parser.parse_args()
     if hasattr(args, "steps") and args.steps < 1:
         parser.error("steps must be positive")
-    if hasattr(args, "samples") and args.samples < 1:
+    if getattr(args, "samples", None) is not None and args.samples < 1:
         parser.error("samples must be positive")
     args.function(args)
 

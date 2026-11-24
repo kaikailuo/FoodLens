@@ -1,0 +1,4 @@
+{
+  "backend": "local",
+  "qwen_config": "configs/qwen.json"
+}

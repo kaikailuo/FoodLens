@@ -1,4 +1,4 @@
-"""Reserved integration boundaries. These are deliberately not mock implementations."""
+"""Shared fixed nutrition prompt and typing contracts for implemented extensions."""
 from typing import Protocol
 
 FIXED_NUTRITION_INSTRUCTION = (
@@ -21,7 +21,7 @@ def qwen_messages(rgb_image, *, training_target=None):
 
 
 class CaptionMetricBackend(Protocol):
-    """Pin tokenizer/version/scaling; CIDEr DF must be training-reference-only."""
+    """Pin tokenizer/version/scaling; offline DF is separate from training-only SCST DF."""
     def score(self, references: dict, predictions: dict) -> dict: ...
 
 

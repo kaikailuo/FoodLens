@@ -12,3 +12,4 @@ sympy==1.14.0
 torch==2.9.1+cpu
 torchvision==0.24.1+cpu
 typing_extensions==4.16.0
+six==1.17.0

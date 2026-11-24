@@ -54,8 +54,27 @@ def canonical_items(items):
     merged = {}
     for item in items:
         name = normalize_name(item["name"])
-        merged[name] = merged.get(name, 0.0) + float(item["weight_g"])
-    return [{"name": name, "weight_g": merged[name]} for name in sorted(merged)]
+        merged.setdefault(name, []).append(float(item["weight_g"]))
+    return [{"name": name, "weight_g": math.fsum(sorted(merged[name]))} for name in sorted(merged)]
+
+
+def canonical_record_text(record):
+    """Strict complete JSON v1: NFKC names, merged/sorted items, one decimal.
+
+    Validation precedes normalization; malformed predictions are never repaired.
+    Numeric formatting is explicit so every value (including zero) has one decimal.
+    """
+    errors = validate_record(record)
+    if errors:
+        raise ValueError(errors)
+    def numeric(value):
+        rendered = format(float(value), ".1f")
+        return "0.0" if rendered == "-0.0" else rendered
+    items = ["{\"name\":" + json.dumps(item["name"], ensure_ascii=False) +
+             ",\"weight_g\":" + numeric(item["weight_g"]) + "}"
+             for item in canonical_items(record["items"])]
+    return '{"items":[' + ",".join(items) + "]," + ",".join(
+        json.dumps(key) + ":" + numeric(record[key]) for key in TOTAL_FIELDS) + "}"
 
 
 def assemble(items, totals):

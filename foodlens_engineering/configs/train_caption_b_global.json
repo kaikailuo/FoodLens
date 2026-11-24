@@ -1,0 +1,52 @@
+{
+  "backend": "native",
+  "task": "caption",
+  "family": "B-global",
+  "model": {
+    "backbone": "resnet18",
+    "pretrained": true,
+    "hidden": 256,
+    "embedding": 256,
+    "heads": 4,
+    "layers": 2,
+    "feedforward": 1024,
+    "dropout": 0.1,
+    "frozen_backbone": true
+  },
+  "seed": 42,
+  "device": "cuda",
+  "precision": "bf16",
+  "deterministic": true,
+  "threads": 2,
+  "epochs": 30,
+  "batch_size": 16,
+  "accumulation": 1,
+  "lr": 0.0003,
+  "weight_decay": 0.01,
+  "layer4_lr_multiplier": 0.1,
+  "unfreeze_layer4_epoch": null,
+  "gradient_clip": 1.0,
+  "scheduler_step": 5,
+  "scheduler_gamma": 0.5,
+  "patience": 5,
+  "tolerance": 1e-06,
+  "monitor": "CIDEr-D",
+  "max_tokens": 64,
+  "max_items": 32,
+  "loss_weights": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "metrics": [
+    "BLEU-4",
+    "METEOR",
+    "ROUGE-L",
+    "CIDEr-D"
+  ],
+  "method": "ce",
+  "scst_weight": 0.5,
+  "transfer": "visual_gru",
+  "engineering": false,
+  "updates_per_epoch": null
+}

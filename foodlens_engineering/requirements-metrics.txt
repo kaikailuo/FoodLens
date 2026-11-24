@@ -1,0 +1,4 @@
+# Uses the existing torch/numpy environment. Java is required only for METEOR.
+pycocoevalcap==1.2
+six==1.17.0
+scipy==1.15.3

@@ -1,0 +1,18 @@
+# 来源、版本与方法边界（2026-11-20）
+
+本次直接阅读了下列源文件。自主 A/B/Hybrid、训练器、SCST 策略梯度、监督边界及 Judge 协议由本项目实现；没有搬入完整 caption/LLaVA 训练工程。未以外部结果推断本项目收益。
+
+| 来源与固定版本 | 实际使用 | 许可及适配判断 |
+| --- | --- | --- |
+| [ruotianluo/cider](https://github.com/ruotianluo/cider/tree/dbb3960165d86202ed3c417b412a000fc8e717f3)，[ciderD_scorer.py](https://github.com/ruotianluo/cider/blob/dbb3960165d86202ed3c417b412a000fc8e717f3/pyciderevalcap/ciderD/ciderD_scorer.py)，blob e88daf4870c36edcb7b2fd411d56b9ed8529f1d5 | 仅 vendoring 此标准 scorer。上游代码不改；本项目 wrapper 在内存设置训练 DF，不调用上游 pickle 文件加载路径。离线 corpus DF 与 SCST 固定 train DF 分开 | [BSD 2-Clause 原文](https://github.com/ruotianluo/cider/blob/dbb3960165d86202ed3c417b412a000fc8e717f3/license.txt)随代码保存为 third_party/CIDEr-LICENSE.txt。所查最新提交为 2019 年，故固定来源，不依赖旧工程训练栈 |
+| [pycocoevalcap](https://github.com/salaniz/pycocoevalcap/tree/a24f74c408c918f1f4ec34e9514bc8a76ce41ffd)，pip 1.2；阅读 eval.py、bleu、rouge、cider、meteor 源码 | 直接调用 BLEU-4/ROUGE-L 标准实现，METEOR 调用原 jar；用标准 Cider 与 vendored CIDEr-D 做数值等价检查。本项目使用固定 word_v1 分词，不声称是 COCO PTB 协议 | [根许可 BSD 2-Clause](https://github.com/salaniz/pycocoevalcap/blob/a24f74c408c918f1f4ec34e9514bc8a76ce41ffd/license.txt)；[METEOR 官方说明](https://github.com/cmu-mtlab/meteor/blob/master/README.html)另有 LGPL/WordNet 条款。未把 jar/资源复制进仓库。所查提交为 2022 年；Windows stdio/Java 路径由小型 wrapper 管理，Java 尚待实测 |
+| [ImageCaptioning.pytorch rewards.py](https://github.com/ruotianluo/ImageCaptioning.pytorch/blob/4c48a3304932d58c5349434e7b0085f48dcb4be4/captioning/utils/rewards.py)，2023 年提交 | 阅读训练参考缓存和 sampled-minus-greedy 组织；本项目独立实现 EOS/PAD mask、stop-gradient、同模式策略、CE 混合及训练恢复 | 仅算法/工程组织参考，没有复制该训练器/模型代码，也未引入其旧依赖 |
+| [Qwen3-VL data_processor.py](https://github.com/QwenLM/Qwen3-VL/blob/96588727e44c78b25ba03ea03b8e12f7e64fd0da/qwen-vl-finetune/qwenvl/data/data_processor.py)，2026-01-30 提交 | 核验官方消息组织、assistant mask、图像输入。独立实现 Processor 展开后前缀严格比较，取 tokenizer 的动态结束 ID，避免照搬官方脚本硬编码 token ID | [Apache-2.0](https://github.com/QwenLM/Qwen3-VL/blob/96588727e44c78b25ba03ea03b8e12f7e64fd0da/LICENSE)。未复制整套 finetune 工程；兼容性通过所锁版本 tiny 实测，不能外推到完整模型/GPU |
+| [Qwen3-VL-4B-Instruct](https://huggingface.co/Qwen/Qwen3-VL-4B-Instruct/tree/ebb281ec70b05090aa6165b016eac8ec08e71b17)，模型与 Processor 同 revision | 由官方元数据/Chat Template 固定配置；仅查询元数据，没有下载权重。模型/Processor revision 均可独立显式配置，运行记录模板哈希 | 模型卡 Apache-2.0。4B/BF16 为第五章主路线，NF4 是独立可选配置；没有声称真实显存或训练性能 |
+| [Transformers 4.57.1 Qwen3-VL 源码](https://github.com/huggingface/transformers/blob/v4.57.1/src/transformers/models/qwen3_vl/modeling_qwen3_vl.py)、[Processor](https://github.com/huggingface/transformers/blob/v4.57.1/src/transformers/models/qwen3_vl/processing_qwen3_vl.py)、[PEFT 0.17.1 LoRA](https://github.com/huggingface/peft/blob/v0.17.1/src/peft/tuners/lora/model.py)、Accelerate 1.10.1 | 调用官方加载、真实图像张量 forward、语言模块 LoRA、save/load；检查实际模型路径与可训练参数。安装版本锁定，而非跟随 main 自动升级 | 均通过包依赖使用，不复制框架。Transformers/PEFT 为 Apache-2.0；CUDA/量化后端与新版本兼容性须另测 |
+| [FLEUR fleur.py](https://github.com/Yebin46/FLEUR/blob/b9cd6c9c086113b9ad3d040522a85c776aff1225/fleur.py)，所查最后提交 2025-04-28 | 阅读视觉条件评分、解释和相关性组织。FoodLens 仍采用第五章固定四维 1—5 协议；不是 FLEUR 原始 0—1 平滑分数算法 | 所查仓库根未见明确 LICENSE，故不复制代码，不引入 LLaVA 子模块或权重。只借鉴研究动机，不声称复现 FLEUR |
+| [Food500-Cap README](https://github.com/aaronma2020/Food500-Cap/blob/a32dfe90c01801231aad92c59f6bebe8a8e0dfe6/README.md) | 核验官方 filename/caption 数据来源及 19760/4940 说明；保留本地历史计数差异，未下载/重排数据 | 数据与图片的来源及许可须在真实 manifest 阶段补齐；不把仓库可访问等同于数据可任意再分发 |
+
+S2-Transformer、Inverse Cooking、Nutrition5k 属于已有研究材料。本次未直接引入其结构、权重、数据或软件依赖。B 仍是第五章标准网格 Encoder/Decoder，Hybrid 仍是边界回归路线，Judge 仍为冻结原始模型；没有悄悄替换研究对照。
+
+工程优化为累积窗口的正确分母、模型内视觉记忆复用、epoch 恢复、原子 checkpoint 与严格监督检查。这些改善了可检查性；没有测量或声称准确率/吞吐收益。

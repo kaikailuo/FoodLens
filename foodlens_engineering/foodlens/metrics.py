@@ -19,7 +19,10 @@ def evaluate_records(truth_by_id, prediction_by_id, *, _include_subset=True):
         if validate_record(truth):
             raise ValueError(f"invalid ground truth: {sample_id}")
         prediction = prediction_by_id.get(sample_id, {"raw": ""})
-        raw = prediction.get("raw", json.dumps(prediction.get("record")))
+        # A failure row with neither raw nor record has no JSON output. Do not
+        # manufacture the syntactically valid literal "null" for its syntax rate.
+        raw = prediction["raw"] if "raw" in prediction else (
+            json.dumps(prediction["record"]) if "record" in prediction else "")
         status, errors = "parse_failed", []
         try:
             record = strict_loads(raw)
@@ -69,6 +72,14 @@ def evaluate_records(truth_by_id, prediction_by_id, *, _include_subset=True):
                            "tp": sample_tp, "fp": sample_fp, "fn": sample_fn})
     n = len(truth_by_id)
     result = {"samples": n, "prediction_extras": sorted(set(prediction_by_id)-set(truth_by_id)),
+              "missing_predictions": len(set(truth_by_id)-set(prediction_by_id)),
+              "prediction_coverage": len(set(truth_by_id) & set(prediction_by_id))/n if n else None,
+              "parse_failed": sum(row["status"] == "parse_failed" for row in per_sample),
+              "schema_failed": sum(row["status"] == "schema_failed" for row in per_sample),
+              "inference_failed": sum(bool(prediction_by_id.get(i, {}).get("inference_error")) or
+                  prediction_by_id.get(i, {}).get("status") == "inference_failed" for i in truth_by_id),
+              "name_micro_precision": tp/(tp+fp) if tp+fp else (1.0 if not fn else 0.0),
+              "name_micro_recall": tp/(tp+fn) if tp+fn else 1.0,
               "name_micro_f1": 2*tp/(2*tp+fp+fn) if 2*tp+fp+fn else 1.0,
               "name_macro_f1": _mean(macro), "tp": tp, "fp": fp, "fn": fn,
               "weight_matched": _errors(matched), "weight_union": _errors(union),
@@ -78,6 +89,10 @@ def evaluate_records(truth_by_id, prediction_by_id, *, _include_subset=True):
               "schema_valid_rate": schema_valid/n if n else None,
               "truncation_rate": truncated/n if n else None,
               "valid_subset_coverage": len(valid_ids)/n if n else None,
+              "protocol": {"failure_totals": "unparseable/missing: zero vector; Schema failure: readable finite nonnegative fields retained, other fields zero",
+                           "failure_items": "unparseable/missing: empty; readable names/weights retained; invalid names are FP",
+                           "valid_subset": "Schema-valid JSON, including truncated but complete JSON; coverage uses all truth IDs",
+                           "all_sample_mse": "end-to-end error including failure handling, not conditional numeric precision"},
               "per_sample": per_sample}
     if _include_subset:
         result["valid_subset"] = evaluate_records({i: truth_by_id[i] for i in valid_ids},
