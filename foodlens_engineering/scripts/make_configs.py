@@ -1,15 +1,22 @@
 """Regenerate reviewed method examples; no data/model access."""
 from dataclasses import asdict, replace
 from pathlib import Path
+import json
 from foodlens.models import ModelConfig
 from foodlens.training import TrainConfig
 from foodlens.qwen import QwenConfig
-from foodlens.runtime import write_json
+
+
+def write_json(path, value):
+    # Portable LF config examples, independent of the Windows text newline setting.
+    path.write_bytes(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False).encode("utf-8"))
 
 folder = Path(__file__).resolve().parents[1] / "configs"
 base = TrainConfig(model=asdict(ModelConfig(pretrained=True)), device="cuda", precision="bf16")
 for family, filename in (("A", "train_caption_a.json"), ("B", "train_caption_b.json"), ("B-global", "train_caption_b_global.json")):
     write_json(folder / filename, asdict(replace(base, family=family)))
+    generation = {"gru_cache_enabled": family == "A", "transformer_kv_cache_enabled": family != "A"}
+    write_json(folder / filename.replace(".json", "_cache.json"), asdict(replace(base, family=family, generation=generation)))
 write_json(folder / "train_hybrid.json", asdict(replace(base, task="hybrid", family="hybrid", monitor="hybrid", max_tokens=128)))
 for method in ("scst", "ce_continue"):
     write_json(folder / ("train_"+method+".json"), asdict(replace(base, method=method, lr=1e-5, epochs=10, patience=11, updates_per_epoch=100)))

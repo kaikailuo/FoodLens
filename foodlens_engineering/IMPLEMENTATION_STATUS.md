@@ -129,3 +129,43 @@ CLI 合成 manifest SHA256 为 `2a0af8cb19a1adbda65f3b9ca7ff2856ec2e042ea0de67d9
 5. 真实冻结 Judge（本地权重或兼容 API 的 Key/地址/模型固定版本）及两名独立人评；API 环境变量可空，尚无真实 Judge 分数/人评一致性结论。
 
 各方法的具体安装、训练、恢复、推理及评价命令均在 [README](README.md)，例配置位于 configs/，无密钥示例为 .env.example。报告/PDF、正式实验、可视化结果和课程提交材料不属于本次代码验收结果。
+
+## Caption 修复与可选缓存验收（2026-11-24）
+
+基于 `htl_1120` 的 `ebde49a35b77be285d6343343e0efa96dc74712a`，在 `codex/caption-cache-fixes` 实施；按用户指令完成后提交到本地 main，不执行远程 push。保留用户原有报告 README/PDF、context README、学生资源包及原始 Caption 交接文档，不纳入修复提交。上面的 11 月 20 日记录保持历史含义。
+
+### 实现范围
+
+A/Hybrid 词嵌入 Dropout 生效；B/B-global 不计算无用的条件投影，保留旧参数及优化器布局。新增可选 GRU hidden 和真实每层 self/cross KV 缓存，默认关闭；接通训练验证、CLI 独立预测、恢复覆盖、配置示例与协议元数据。A SCST 的 GRU hidden 不 detach，奖励、loss 及参数梯度等价已用真实张量和 CIDEr-D 验证；B 的 teacher forcing 不走 KV 路径。旧 checkpoint 可恢复，但旧 A/Hybrid 非零 Dropout 的训练轨迹改变，会警告并记录版本。详细边界、开关和 GPU 命令见 [CAPTION_CACHE_FIXES.md](CAPTION_CACHE_FIXES.md)。
+
+### 实际环境与运行证据
+
+Windows 11、Python 3.12.14、Torch 2.9.1+cpu、Torchvision 0.24.1+cpu；其余版本同 `requirements-lock-test-cpu.txt`。Codex bundled Python 更新后创建本次独立 venv，复用本地已有的锁定依赖，没有下载数据/模型。CUDA 不可用。
+
+本次下列命令从工程目录执行，解释器为 `artifacts/caption-cache-20261124/venv/Scripts/python.exe`；新成员按 README 自建环境，不依赖这个被忽略的本机目录。
+
+```powershell
+python -m unittest discover -s tests -p test_caption_cache.py -v
+python -m unittest discover -s tests -p test_engineering.py -v
+python -m unittest discover -s tests -v
+python -m scripts.synthetic_acceptance --out artifacts/caption-cache-20261124/cli-acceptance
+```
+
+| 检查 | 本次实际结果 | 根目录下的日志/产物 |
+| --- | --- | --- |
+| 新增缓存与修复测试 | 17 项运行，16 通过，1 项 CUDA 跳过 | outputs/caption-cache-20261124/new-tests.log |
+| 既有工程测试 | 16/16 通过，含真实随机 tiny Qwen/PEFT 恢复、SCST 和 Judge 统计 | outputs/caption-cache-20261124/engineering-regression.log |
+| 全部 unittest | 54 项，51 通过、2 错误、1 CUDA 跳过；退出码 1 | outputs/caption-cache-20261124/all-tests.log |
+| 独立进程 CLI 合成验收 | 24 条命令成功，输出保留故意缺图项；非正式效果 | outputs/caption-cache-20261124/cli-acceptance.log；foodlens_engineering/artifacts/caption-cache-20261124/cli-acceptance/acceptance.json、commands.json |
+| 串行缓存基准 | A/B/B-global 两模式 token 一致，CPU 中位延时 61.02→10.67 / 95.09→43.38 / 88.84→41.82 ms | foodlens_engineering/artifacts/caption-cache-20261124/benchmark-serial-{A,B,B-global}.json |
+| 静态/依赖/文档复核 | compileall、pip check、git diff --check 通过；本地链接/锚点、全部训练配置及 baseline、32 条 CLI 示例解析通过 | outputs/caption-cache-20261124/compileall.log、pip-check.log、docs-config-check.log |
+
+全组的两项错误为既有 `test_input_isolation_and_qwen_boundary`、`test_training_name_roundtrip_including_parentheses` 缺少 `../data/annotations/train.jsonl`，不是断言失败；未补造课程数据，不能称全量通过。新增的输入隔离与 CLI 测试使用独立合成 fixture。全组也重跑了全部新增测试和既有 ModelTests 7 项。
+
+本次核心 Python 源码树 SHA256 为 `c34e5b8af616fac79f431b8426f32b366b3c1886bbe9eeed65aeb59669672c2e`，基准/CLI 元数据同时记录父提交及 tracked diff SHA256。首次单组测试的 Git 子进程收到宿主不完整的 GIT_CONFIG 环境变量，源码哈希仍记录；后续全组、串行基准及 CLI 用进程内 `GIT_CONFIG_COUNT=0` 运行，Git revision 正常记录，没有修改仓库或全局 Git 配置。CLI 合成 manifest SHA256 仍为 `2a0af8cb19a1adbda65f3b9ca7ff2856ec2e042ea0de67d98950e36c8c2d3b44`。
+
+串行基准参数：tiny hidden=32/layers=2/FF=128、CPU FP32、2 threads、batch=4、RGB=224、64 tokens、预热 3、交替顺序各测 12 次，随机 EOS bias 明确压低以测满长度。仅可用于该合成配置延时比较。CUDA 峰值为 null，不能填写估算值。原始多次延时/p95 及资源接入命令在缓存交接说明；初次并发基准保留为调试产物，不用于报告结果。
+
+### 尚未执行
+
+未运行 Linux/CUDA、GPU 峰值显存/吞吐、CUDA FP32/BF16/FP16 缓存等价、真实预训练 ResNet/正式权重的生成及真实数据训练/评价。GPU 测试已提供且因资源缺失明确 skip；目标机器上先运行新增测试和 benchmark，再选择适用缓存。CE 的 teacher forcing 不使用这两个缓存，不能据此声称训练显存下降。Java METEOR、真实 Qwen 权重及外部 Judge 的历史未验证边界不变。无需新增 API Key 即可使用本次 Caption 修复和缓存。

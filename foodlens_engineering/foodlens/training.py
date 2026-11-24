@@ -6,6 +6,7 @@ import json
 import math
 from pathlib import Path
 import time
+import warnings
 import torch
 from torch.utils.data import DataLoader
 from .caption_metrics import CiderDReward, record_text, score_captions, check_metric_dependencies
@@ -19,6 +20,7 @@ from .models import CaptionA, CaptionB, Hybrid, ModelConfig, transfer_caption_a
 from .runtime import append_log, autocast, environment, reject_secrets, runtime, to_device, write_json, write_jsonl
 from .scst import captions_from_tokens, scst_loss
 from .text import Vocabulary
+from .generation import cache_options, caption_generation, effective_cache_options
 
 
 @dataclass
@@ -54,9 +56,11 @@ class TrainConfig:
     transfer: str = "visual_gru"
     engineering: bool = False
     updates_per_epoch: int | None = None
+    generation: dict = field(default_factory=cache_options)
 
     def __post_init__(self):
         reject_secrets(asdict(self))
+        self.generation = cache_options(self.generation)
         if any(type(getattr(self, name)) is not bool for name in ("engineering", "deterministic")):
             raise ValueError("engineering/deterministic must be boolean")
         if self.backend not in {"native", "qwen"}:
@@ -111,6 +115,14 @@ class TrainConfig:
 
 def load_train_config(path):
     return TrainConfig(**json.loads(Path(path).read_text(encoding="utf-8")))
+
+
+def resume_compatible_config(value):
+    """Only epochs and equivalent generation execution switches may change on resume."""
+    value = dict(value)
+    cache_options(value.pop("generation", {}))  # validate old/new values before ignoring runtime-only switches
+    value.pop("epochs", None)
+    return value
 
 
 def build_model(family, vocab_size, config, *, loading=False):
@@ -187,7 +199,8 @@ def train_epoch(model, loader, optimizer, scaler, device, config, statistics, *,
                         # Both policies use eval mode (dropout off), with gradients enabled only for sampling.
                         model.eval()
                         try:
-                            rl, diagnostics = scst_loss(model, batch["images"], batch["ids"], reward, vocab=reward.vocab, max_tokens=config.max_tokens)
+                            rl, diagnostics = scst_loss(model, batch["images"], batch["ids"], reward, vocab=reward.vocab,
+                                max_tokens=config.max_tokens, gru_cache_enabled=config.generation["gru_cache_enabled"])
                         finally:
                             model.train()
                         loss = (1-config.scst_weight)*loss + config.scst_weight*rl*len(batch["ids"])/sample_count
@@ -227,7 +240,7 @@ def validate(model, dataset, collator, config, vocab, statistics, device):
         numerator += float(loss)*count
         denominator += count
         if config.task == "caption":
-            generated = predict_caption(model, batch["images"], max_tokens=config.max_tokens)
+            generated = predict_caption(model, batch["images"], max_tokens=config.max_tokens, **config.generation)
             for sample_id, tokens in zip(batch["ids"], generated.tolist(), strict=True):
                 predictions[sample_id] = caption_prediction(tokens, vocab)
             truth.update(dict(zip(batch["ids"], batch["references"], strict=True)))
@@ -323,11 +336,10 @@ def run_training(config, *, data_root, out, manifest=None, train_annotations=Non
     if saved:
         if saved.get("format_version") != 2 or not saved.get("progress"):
             raise ValueError("training resume requires format v2 epoch checkpoint")
-        original_config = dict(saved["metadata"]["train_config"])
-        requested_config = asdict(config)
-        original_config.pop("epochs"); requested_config.pop("epochs")
+        original_config = resume_compatible_config(saved["metadata"]["train_config"])
+        requested_config = resume_compatible_config(asdict(config))
         if original_config != requested_config:
-            raise ValueError("resume configuration differs (only total epochs may change)")
+            raise ValueError("resume configuration differs (only total epochs and generation cache switches may change)")
         # Initialization hash persists on resume even without the original file.
         current_data = {k: v for k, v in hashes.items() if k != "initial_checkpoint"}
         saved_data = {k: v for k, v in saved["metadata"]["input_hashes"].items() if k != "initial_checkpoint"}
@@ -377,22 +389,40 @@ def run_training(config, *, data_root, out, manifest=None, train_annotations=Non
         reward.vocab = vocab
         if saved and saved["metadata"].get("df_cache_sha256") != sha256(df_cache):
             raise ValueError("SCST resume reward cache changed")
+    legacy_dropout_resume = bool(saved and config.family in {"A", "hybrid"} and model.config.dropout > 0
+        and saved["metadata"].get("caption_a_dropout_version", 1) < 2)
+    if legacy_dropout_resume:
+        warnings.warn("Restoring a pre-fix A/Hybrid checkpoint: configured Dropout now takes effect; "
+                      "weights/optimizer load normally, but the historical training trajectory is not reproduced.", UserWarning)
     metadata = {"model_family": config.family, "train_config": asdict(config), "input_hashes": hashes,
                 "transfer": transfer, "length_audit": audit, "environment": environment(),
                 "resume_granularity": "completed epoch, num_workers=0, same device/software; no mid-epoch continuation",
                 "df_cache_sha256": sha256(df_cache) if df_cache else None,
-                "generation_config": asdict(GenerationConfig(config.max_tokens, config.max_items))}
+                "generation_config": asdict(GenerationConfig(config.max_tokens, config.max_items)),
+                "caption_generation": caption_generation(config.max_tokens, config.generation),
+                "effective_caption_cache": effective_cache_options(config.family, config.generation),
+                "caption_a_dropout_version": 2 if config.family in {"A", "hybrid"} else None,
+                "legacy_dropout_resume": legacy_dropout_resume,
+                "resume_generation_options": cache_options(saved["metadata"]["train_config"].get("generation", {})) if saved else None}
     write_json(destination / "run.json", {**metadata, "vocab": vocab.tokens, "statistics": asdict(statistics) if statistics else None})
     if progress["bad_epochs"] >= config.patience:
         raise ValueError("checkpoint already early-stopped; initialize a new run for continuation")
     for epoch in range(progress["epoch"], config.epochs):
         start = time.perf_counter()
+        if device.type == "cuda":
+            torch.cuda.reset_peak_memory_stats(device)
         if config.unfreeze_layer4_epoch is not None and epoch >= config.unfreeze_layer4_epoch:
             model.visual.unfreeze_layer4()
         try:
             step = train_epoch(model, _loader(train, collator, config, epoch, True), optimizer, scaler, device,
                                config, statistics, reward=reward, step=progress["step"], log_path=destination / "train.jsonl")
+            train_peak = torch.cuda.max_memory_allocated(device) if device.type == "cuda" else None
+            if device.type == "cuda":
+                torch.cuda.reset_peak_memory_stats(device)
+            validation_start = time.perf_counter()
             result, predictions = validate(model, val, collator, config, vocab, statistics, device)
+            validation_seconds = time.perf_counter()-validation_start
+            validation_peak = torch.cuda.max_memory_allocated(device) if device.type == "cuda" else None
         except Exception as error:
             # Exception class only: external service messages/configuration must not leak credentials.
             append_log(destination / "events.jsonl", {"epoch": epoch, "status": "failed", "error_type": type(error).__name__})
@@ -406,7 +436,10 @@ def run_training(config, *, data_root, out, manifest=None, train_annotations=Non
         write_jsonl(destination / "validation_predictions.jsonl", ({"id": i, **p} for i, p in predictions.items()))
         append_log(destination / "epochs.jsonl", {"epoch": epoch+1, "update": step, "selection": selected,
             "improved": improved, "val_loss": result["val_loss"], "seconds": time.perf_counter()-start,
-            "cuda_peak_bytes": torch.cuda.max_memory_allocated(device) if device.type == "cuda" else None})
+            "validation_seconds": validation_seconds,
+            "effective_caption_cache": effective_cache_options(config.family, config.generation),
+            "cuda_train_peak_bytes": train_peak, "cuda_validation_peak_bytes": validation_peak,
+            "cuda_peak_bytes": max(train_peak, validation_peak) if device.type == "cuda" else None})
         for filename in (["best.pt", "last.pt"] if improved else ["last.pt"]):
             save_checkpoint(destination / filename, model, optimizer, scheduler, vocab=vocab, statistics=statistics,
                             metadata={**metadata, "checkpoint_role": filename.removesuffix(".pt")}, step=step, scaler=scaler, progress=progress)

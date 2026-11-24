@@ -15,15 +15,23 @@ def policy_loss(log_probabilities, tokens, sampled_rewards, baseline_rewards):
     return -(advantage * (log_probabilities * eos_mask(tokens)).sum(1)).mean()
 
 
-def generate_policy(model, images, *, max_tokens, sample):
+def generate_policy(model, images, *, max_tokens, sample, gru_cache_enabled=False):
     if max_tokens < 1:
         raise ValueError("max_tokens must be positive")
+    if type(gru_cache_enabled) is not bool:
+        raise ValueError("gru_cache_enabled must be boolean")
     prefix = torch.ones(len(images), 1, device=images.device, dtype=torch.long)
     finished = torch.zeros(len(images), device=images.device, dtype=torch.bool)
     memory = model.memory(images) if hasattr(model, "memory") else model.visual(images)[2]
+    hidden = None
     probabilities, generated = [], []
     for _ in range(max_tokens):
-        logits = model.decode(prefix, memory)
+        if gru_cache_enabled and not hasattr(model, "memory"):
+            # Retain autograd through hidden state for the sampled policy. Do not
+            # call inference_mode helpers or detach recurrent state here.
+            logits, _, hidden = model.decode(prefix[:, -1:], memory, hidden)
+        else:
+            logits = model.decode(prefix, memory)
         if isinstance(logits, tuple):
             logits = logits[0]
         logits = logits[:, -1].float()
@@ -56,14 +64,14 @@ def captions_from_tokens(tokens, vocab):
     return captions
 
 
-def scst_loss(model, images, sample_ids, reward, *, vocab, max_tokens=64):
+def scst_loss(model, images, sample_ids, reward, *, vocab, max_tokens=64, gru_cache_enabled=False):
     original_mode = model.training
     # Disable dropout in both branches while retaining gradients in sampled branch.
     model.eval()
     try:
         with torch.no_grad():
-            greedy, _ = generate_policy(model, images, max_tokens=max_tokens, sample=False)
-        sampled, logp = generate_policy(model, images, max_tokens=max_tokens, sample=True)
+            greedy, _ = generate_policy(model, images, max_tokens=max_tokens, sample=False, gru_cache_enabled=gru_cache_enabled)
+        sampled, logp = generate_policy(model, images, max_tokens=max_tokens, sample=True, gru_cache_enabled=gru_cache_enabled)
         sampled_text = captions_from_tokens(sampled, vocab)
         greedy_text = captions_from_tokens(greedy, vocab)
         rewards = logp.new_tensor(reward(sample_ids, sampled_text))

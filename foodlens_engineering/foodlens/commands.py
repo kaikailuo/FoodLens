@@ -7,7 +7,10 @@ from .runtime import write_json
 
 def train(args):
     from .training import load_train_config, run_training
-    result = run_training(load_train_config(args.config), data_root=args.data_root, out=args.out,
+    from .generation import override_cache_options
+    config = load_train_config(args.config)
+    config.generation = override_cache_options(config.generation, args)
+    result = run_training(config, data_root=args.data_root, out=args.out,
         manifest=args.manifest, train_annotations=args.train_annotations, val_annotations=args.val_annotations,
         resume=args.resume, initialize=args.initialize, df_cache=args.df_cache)
     print(json.dumps(result))
@@ -142,6 +145,8 @@ def add_commands(commands):
     def root(parser):
         parser.add_argument("--data-root", default="../data")
     run = command("train", train)
+    from .generation import add_cache_arguments
+    add_cache_arguments(run)
     required(run, "config", "out")
     for name in ("manifest", "train-annotations", "val-annotations", "resume", "initialize", "df-cache"):
         run.add_argument("--"+name)

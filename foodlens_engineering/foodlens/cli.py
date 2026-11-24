@@ -14,6 +14,8 @@ from .metrics import evaluate_records
 from .models import Hybrid, ModelConfig
 from .text import Vocabulary, detokenize, tokenize
 from .commands import add_commands
+from .generation import (add_cache_arguments, checkpoint_generation, override_cache_options,
+                         caption_generation, effective_cache_options)
 
 
 def write_json(path, obj):
@@ -99,6 +101,10 @@ def predict(args):
     from .decode import predict_caption
     device, _ = runtime(args.device)
     model, vocab, checkpoint = restore_model(args.checkpoint, device)
+    family = checkpoint["metadata"].get("model_family", "hybrid")
+    caption_settings = checkpoint_generation(checkpoint["metadata"])
+    generation_options = override_cache_options({key: caption_settings[key] for key in
+        ("gru_cache_enabled", "transformer_kv_cache_enabled")}, args)
     dataset = RGBManifestDataset(args.manifest, args.data_root, limit=args.samples)
     destination = Path(args.out)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -112,10 +118,16 @@ def predict(args):
                 if checkpoint["metadata"].get("model_family", "hybrid") == "hybrid":
                     prediction = predict_hybrid(model, images, vocab, generation)[0]
                 else:
-                    prediction = caption_prediction(predict_caption(model, images, max_tokens=generation.max_tokens)[0].tolist(), vocab)
+                    prediction = caption_prediction(predict_caption(model, images,
+                        max_tokens=caption_settings["max_tokens"], **generation_options)[0].tolist(), vocab)
             except (OSError, ValueError, RuntimeError) as error:
                 prediction = {"raw": "", "caption": "", "status": "inference_failed", "inference_error": type(error).__name__}
             stream.write(json.dumps({"id": sample_id, **prediction}, allow_nan=False) + "\n")
+    from .runtime import environment
+    write_json(str(destination) + ".protocol.json", {"checkpoint_sha256": sha256(args.checkpoint),
+        "manifest_sha256": sha256(args.manifest), "model_family": family,
+        "caption_generation": caption_generation(caption_settings["max_tokens"], generation_options),
+        "effective_caption_cache": effective_cache_options(family, generation_options), "environment": environment()})
     print(str(destination.resolve()))
 
 
@@ -155,6 +167,7 @@ def main():
     run.add_argument("--threads", type=int, default=2)
     run.set_defaults(function=smoke)
     infer = commands.add_parser("predict")
+    add_cache_arguments(infer)
     infer.add_argument("--checkpoint", required=True)
     infer.add_argument("--data-root", default="../data")
     infer.add_argument("--manifest", required=True, help="JSONL containing only id/image")

@@ -17,7 +17,7 @@ from .qwen import (QwenConfig, QwenCollator, QwenDataset, generate_qwen, inject_
                    load_qwen, parse_qwen_prediction, template_hash, processor_signature)
 from .runtime import append_log, autocast, environment, runtime, to_device, write_json, write_jsonl
 from .schema import TOTAL_FIELDS
-from .training import TrainConfig, is_better
+from .training import TrainConfig, is_better, resume_compatible_config
 
 
 def load_qwen_config(path):
@@ -109,8 +109,8 @@ def run_qwen_training(qconfig, train_config, *, train_annotations, val_annotatio
     progress = {"epoch": 0, "step": 0, "best": None, "bad_epochs": 0}
     if resume:
         state = torch.load(Path(resume) / "training_state.pt", map_location="cpu", weights_only=False)
-        previous, requested = dict(state["train_config"]), asdict(train_config)
-        previous.pop("epochs"); requested.pop("epochs")
+        previous = resume_compatible_config(state["train_config"])
+        requested = resume_compatible_config(asdict(train_config))
         if previous != requested or state["input_hashes"] != hashes or state["protocol"] != protocol:
             raise ValueError("Qwen resume configuration/data mismatch")
         optimizer.load_state_dict(state["optimizer"])

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from .models import ModelConfig
 from .decode import GenerationConfig
+from .generation import cache_options
 
 
 def load_config(path):
@@ -38,8 +39,11 @@ def load_config(path):
     if type(generation.max_tokens) is not int or type(generation.max_items) is not int:
         raise ValueError("generation lengths must be integers")
     caption = value["caption_generation"]
-    if set(caption) != {"max_tokens", "strategy"} or caption["strategy"] != "greedy" or type(caption["max_tokens"]) is not int or caption["max_tokens"] < 1:
+    required_caption = {"max_tokens", "strategy"}
+    optional_caption = set(cache_options())
+    if not required_caption <= caption.keys() or set(caption) - required_caption - optional_caption or caption["strategy"] != "greedy" or type(caption["max_tokens"]) is not int or caption["max_tokens"] < 1:
         raise ValueError("invalid caption generation")
+    caption.update(cache_options({key: caption[key] for key in optional_caption if key in caption}))
     value["model"] = asdict(model)
     value["nutrition_generation"] = asdict(generation)
     return value

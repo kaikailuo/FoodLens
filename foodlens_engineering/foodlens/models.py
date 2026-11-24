@@ -49,9 +49,14 @@ class VisualEncoder(nn.Module):
         self.features[-1].requires_grad_(True)
         # Keep backbone eval mode deliberately: fine-tune weights with fixed BN.
 
-    def forward(self, images):
+    def extract_features(self, images):
+        """Grid/GAP only; B does not need A's conditional projection."""
         grid = self.features(images)
         v = grid.mean((-2, -1))
+        return grid, v
+
+    def forward(self, images):
+        grid, v = self.extract_features(images)
         z = self.projection(v).tanh()
         return grid, v, z
 
@@ -62,11 +67,12 @@ class CaptionA(nn.Module):
         self.config = config or ModelConfig()
         self.visual = VisualEncoder(self.config)
         self.embedding = nn.Embedding(vocabulary_size, self.config.embedding, padding_idx=0)
+        self.embedding_dropout = nn.Dropout(self.config.dropout)
         self.gru = nn.GRU(self.config.embedding + self.config.hidden, self.config.hidden, batch_first=True)
         self.output = nn.Linear(self.config.hidden, vocabulary_size)
 
     def decode(self, inputs, z, initial=None):
-        embedded = self.embedding(inputs)
+        embedded = self.embedding_dropout(self.embedding(inputs))
         conditions = z.unsqueeze(1).expand(-1, inputs.shape[1], -1)
         states, hidden = self.gru(torch.cat((embedded, conditions), -1), z.unsqueeze(0) if initial is None else initial)
         return self.output(states), states, hidden
@@ -76,10 +82,10 @@ class CaptionA(nn.Module):
         return self.decode(inputs, z)[0]
 
 
-def sinusoidal(length, dimension, *, device, dtype):
+def sinusoidal(length, dimension, *, device, dtype, offset=0):
     if dimension % 2:
         raise ValueError("sinusoidal dimension must be even")
-    position = torch.arange(length, device=device, dtype=dtype).unsqueeze(1)
+    position = torch.arange(offset, offset + length, device=device, dtype=dtype).unsqueeze(1)
     scale = torch.exp(torch.arange(0, dimension, 2, device=device, dtype=dtype) * (-math.log(10000) / dimension))
     result = torch.zeros(length, dimension, device=device, dtype=dtype)
     result[:, 0::2], result[:, 1::2] = (position * scale).sin(), (position * scale).cos()
@@ -121,7 +127,7 @@ class CaptionB(nn.Module):
                         nn.init.xavier_uniform_(parameter)
 
     def memory(self, images):
-        grid, v, _ = self.visual(images)
+        grid, v = self.visual.extract_features(images)
         if self.global_only:
             tokens = self.grid_projection(v).unsqueeze(1)
         else:
@@ -138,6 +144,24 @@ class CaptionB(nn.Module):
 
     def forward(self, images, inputs):
         return self.decode(inputs, self.memory(images))
+
+    @torch.inference_mode()
+    def decode_step(self, inputs, memory, cache=None):
+        """One token per sample. KV state belongs to this request, never the module."""
+        from .incremental import decoder_step, init_decoder_cache
+        if self.training:
+            raise ValueError("Transformer KV cache is inference-only; call eval()")
+        if inputs.ndim != 2 or inputs.shape != (memory.shape[0], 1):
+            raise ValueError("incremental inputs must have shape [batch, 1]")
+        if cache is None:
+            cache = init_decoder_cache(self, memory)
+        if cache.owner != id(self) or cache.memory is not memory:
+            raise ValueError("KV cache cannot be reused with another model/image request")
+        tokens = self.embedding(inputs) * math.sqrt(self.config.hidden)
+        tokens = tokens + sinusoidal(1, self.config.hidden, device=tokens.device,
+                                    dtype=tokens.dtype, offset=cache.position)
+        states = decoder_step(self.decoder, tokens, inputs.ne(0), cache)
+        return self.output(states), cache
 
 
 class Hybrid(CaptionA):

@@ -16,3 +16,9 @@
 S2-Transformer、Inverse Cooking、Nutrition5k 属于已有研究材料。本次未直接引入其结构、权重、数据或软件依赖。B 仍是第五章标准网格 Encoder/Decoder，Hybrid 仍是边界回归路线，Judge 仍为冻结原始模型；没有悄悄替换研究对照。
 
 工程优化为累积窗口的正确分母、模型内视觉记忆复用、epoch 恢复、原子 checkpoint 与严格监督检查。这些改善了可检查性；没有测量或声称准确率/吞吐收益。
+
+## Caption 缓存修复补充（2026-11-24）
+
+增量解码独立实现，使用项目已锁定的 PyTorch 2.9.1；阅读其 [TransformerDecoder/Layer 源码](https://github.com/pytorch/pytorch/blob/v2.9.1/torch/nn/modules/transformer.py)、[MultiheadAttention 投影与 SDPA 调用](https://github.com/pytorch/pytorch/blob/v2.9.1/torch/nn/functional.py)、[SDPA 官方文档](https://docs.pytorch.org/docs/2.9/generated/torch.nn.functional.scaled_dot_product_attention.html)及 [GRU 文档](https://docs.pytorch.org/docs/2.9/generated/torch.nn.GRU.html)，核对 norm/residual 顺序、packed QKV/KV、mask 方向与 recurrent hidden。尤其 SDPA 的布尔 True 表示允许，不能直接照搬 MHA 的屏蔽语义；单步 query 的已有 K/V 只含过去/当前，不使用非方形 is_causal 对齐。
+
+未搬入其他模型库/旧训练器，也未新增依赖或可训练参数；原 PyTorch 层保留用于 teacher forcing 和权重存储。PyTorch 为 [BSD-style 许可](https://github.com/pytorch/pytorch/blob/v2.9.1/LICENSE)。CPU 合成基准仅用于本次工程延时比较，详见 [缓存交接说明](CAPTION_CACHE_FIXES.md)，不代表 GPU、正式权重或描述质量提升。

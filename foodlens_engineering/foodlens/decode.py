@@ -72,16 +72,33 @@ def predict_hybrid(model, images, vocab, config=None):
 
 
 @torch.inference_mode()
-def predict_caption(model, images, *, max_tokens=64):
+def predict_caption(model, images, *, max_tokens=64, gru_cache_enabled=False, transformer_kv_cache_enabled=False):
+    from .generation import caption_generation
+    caption_generation(max_tokens, {"gru_cache_enabled": gru_cache_enabled,
+                                   "transformer_kv_cache_enabled": transformer_kv_cache_enabled})
     model.eval()
     sequences = torch.ones(images.shape[0], 1, dtype=torch.long, device=images.device)
     finished = torch.zeros(images.shape[0], dtype=torch.bool, device=images.device)
     if hasattr(model, "memory"):
         memory = model.memory(images)
-        step = lambda prefix: model.decode(prefix, memory)
+        if transformer_kv_cache_enabled:
+            cache = None
+            def step(prefix):
+                nonlocal cache
+                logits, cache = model.decode_step(prefix[:, -1:], memory, cache)
+                return logits
+        else:
+            step = lambda prefix: model.decode(prefix, memory)
     else:
         _, _, z = model.visual(images)
-        step = lambda prefix: model.decode(prefix, z)[0]
+        if gru_cache_enabled:
+            hidden = None
+            def step(prefix):
+                nonlocal hidden
+                logits, _, hidden = model.decode(prefix[:, -1:], z, hidden)
+                return logits
+        else:
+            step = lambda prefix: model.decode(prefix, z)[0]
     for _ in range(max_tokens):
         logits = step(sequences)[:, -1].clone()
         if not torch.isfinite(logits).all():

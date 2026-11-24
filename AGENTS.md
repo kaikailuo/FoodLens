@@ -24,7 +24,7 @@
 ## 当前可做与不可声称的结果
 
 - 当前 CLI 已接通自主模型 `train/predict/evaluate-caption/evaluate`、Qwen 训练/配对和 Judge/人评工具，保留旧 smoke；具体命令见工程 README。
-- A/B/B-global/Hybrid、四指标调用后端、Qwen LoRA、SCST 和 Judge 核心代码已实现；2026-11-20 验证为 Windows/Python 3.12/CPU 合成工程测试，真实权重、Java METEOR、Linux/CUDA 与外部服务仍需验证。
+- A/B/B-global/Hybrid、四指标调用后端、Qwen LoRA、SCST 和 Judge 核心代码已实现；2026-11-20 及 2026-11-24 验证为 Windows/Python 3.12/CPU 合成工程测试，真实权重、Java METEOR、Linux/CUDA 与外部服务仍需验证。Caption Dropout/投影修复、默认关闭的 GRU/KV 缓存及实际延时记录见工程 CAPTION_CACHE_FIXES.md；缓存不改变 CE teacher forcing，GPU 显存收益未测。
 - CPU smoke 使用随机 tiny 骨干；不得称为预训练 ResNet 基线效果、完整实验或 GPU 资源测试。
 - 仓库不附完整数据、虚拟环境、权重和历史 `artifacts/`。按工程 README 创建本次产物，不依赖原作者本机文件。
 - 主要开发、正式训练和完整实验面向 Linux GPU 服务器；三位组员的 Windows 本机用于轻量测试。现有完成验证的记录仍为 Windows/Python 3.12/CPU，Linux 示例和 CUDA 训练不能标成已经实测。

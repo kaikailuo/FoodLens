@@ -43,5 +43,9 @@
   "scst_weight": 0.5,
   "transfer": "visual_gru",
   "engineering": true,
-  "updates_per_epoch": null
+  "updates_per_epoch": null,
+  "generation": {
+    "gru_cache_enabled": false,
+    "transformer_kv_cache_enabled": false
+  }
 }

@@ -1,6 +1,6 @@
 # FoodLens 工程入口
 
-依据[课程要求](../docs/COURSE_REQUIREMENTS.md)和[第五章](../docs/report/sections/technical_plan.tex)，已接通 Caption A/B/B-global、Hybrid、Qwen3-VL LoRA、SCST 与 Judge 的代码入口。**2026-11-20 的实际验证为 Windows/Python 3.12/CPU 合成工程测试，没有正式训练、真实数据效果或 GPU 性能结论。** 历史与本次记录分别见 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)，来源与许可见 [THIRD_PARTY.md](THIRD_PARTY.md)。
+依据[课程要求](../docs/COURSE_REQUIREMENTS.md)和[第五章](../docs/report/sections/technical_plan.tex)，已接通 Caption A/B/B-global、Hybrid、Qwen3-VL LoRA、SCST 与 Judge 的代码入口。**截至 2026-11-24 的实际验证为 Windows/Python 3.12/CPU 合成工程测试，没有正式训练、真实数据效果或 GPU 性能结论。** 历史与本次记录分别见 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)，来源与许可见 [THIRD_PARTY.md](THIRD_PARTY.md)。Caption 修复、缓存开关与基准结果见 [CAPTION_CACHE_FIXES.md](CAPTION_CACHE_FIXES.md)。
 
 ## 环境及无数据验收
 
@@ -13,6 +13,7 @@ python -m venv .venv
 & .venv/Scripts/python.exe -m pip install -r requirements-lock-test-cpu.txt
 & .venv/Scripts/python.exe -m pip check
 & .venv/Scripts/python.exe -m unittest discover -s tests -p test_engineering.py -v
+& .venv/Scripts/python.exe -m unittest discover -s tests -p test_caption_cache.py -v
 & .venv/Scripts/python.exe -m unittest discover -s tests -p test_baseline.py -k ModelTests -v
 & .venv/Scripts/python.exe -m scripts.synthetic_acceptance --out artifacts/my-synthetic-check
 ```
@@ -24,6 +25,7 @@ python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements-lock-test-cpu.txt
 .venv/bin/python -m pip check
 .venv/bin/python -m unittest discover -s tests -p test_engineering.py -v
+.venv/bin/python -m unittest discover -s tests -p test_caption_cache.py -v
 .venv/bin/python -m unittest discover -s tests -p test_baseline.py -k ModelTests -v
 .venv/bin/python -m scripts.synthetic_acceptance --out artifacts/my-synthetic-check
 ```
@@ -69,6 +71,24 @@ RGB 清单由最终测试 manifest 提取 id/image；评价独立读取参考。
 
 四指标共享 `foodlens.word_v1`：NFKC、小写、词/标点切分后空格连接。**它不是 COCO PTB，不能直接与采用 PTB 的发表分数比较。** BLEU-4/METEOR/ROUGE-L 调用 pycocoevalcap 1.2 的标准代码/原始 METEOR jar，CIDEr-D 调用固定上游 scorer，sigma=6。前三项保留 0—1，CIDEr-D 保留标准 scorer 自带 ×10，不再 ×100。离线 DF 取整个被评价参考语料；SCST 使用独立训练缓存。单图语料的 CIDEr-D 可能退化为零，应保留语料级评价。
 
+### Caption 缓存与修复
+
+A/Hybrid 的 `model.dropout` 现作用于词嵌入，训练开启、eval 关闭；B/B-global 只提取网格/GAP，不执行 A 的条件投影，保留原参数以兼容旧权重和优化器。恢复旧 A/Hybrid checkpoint 时，非零 Dropout 现在实际生效，会警告训练轨迹变化；不能据此复现修复前的训练结果。
+
+训练 JSON 新增 `generation.gru_cache_enabled`、`generation.transformer_kv_cache_enabled`，均为布尔值且默认 false。开启示例为 `configs/train_caption_a_cache.json`、`train_caption_b_cache.json`、`train_caption_b_global_cache.json`。CLI 可以覆盖 JSON 或预测 checkpoint 中的开关：
+
+```bash
+python -m foodlens.cli train --config configs/train_caption_a.json --manifest ../data/caption_manifest.jsonl --data-root ../data --out artifacts/caption-a-cache --gru-cache-enabled
+python -m foodlens.cli train --config configs/train_caption_b.json --manifest ../data/caption_manifest.jsonl --data-root ../data --out artifacts/caption-b-cache --transformer-kv-cache-enabled
+python -m foodlens.cli train --config configs/train_caption_b.json --manifest ../data/caption_manifest.jsonl --data-root ../data --out artifacts/caption-b-cache --resume artifacts/caption-b-cache/last.pt --no-transformer-kv-cache-enabled
+python -m foodlens.cli predict --checkpoint artifacts/caption-b-cache/best.pt --manifest artifacts/test_rgb.jsonl --data-root ../data --device cuda --out artifacts/caption-b-cache/pred-kv.jsonl --transformer-kv-cache-enabled
+python -m foodlens.cli predict --checkpoint artifacts/caption-b-cache/best.pt --manifest artifacts/test_rgb.jsonl --data-root ../data --device cuda --out artifacts/caption-b-cache/pred-full.jsonl --no-transformer-kv-cache-enabled
+```
+
+开关影响生成：A 复用 GRU hidden（包括 SCST 的采样/贪心），B/B-global 复用每层 self-attention K/V 和视觉 cross-attention K/V。CE teacher forcing 不使用缓存；开关不能用于降低其前向/反向显存。Hybrid 保持已有逐步 GRU 生成，Qwen 由自身生成配置控制，这两个 Caption 开关对它们无效。缓存可能增加常驻张量，不能保证显存下降；应在目标 GPU 比较后决定。训练日志按 epoch 记录训练/验证显存峰值及验证时间，CPU 显存字段为 null。run.json/checkpoint 和预测旁的 `.protocol.json` 记录申请/实际生效开关，恢复时可切换。
+
+无数据基准及 CUDA/真实 checkpoint 对比命令见 [缓存交接说明](CAPTION_CACHE_FIXES.md)。当前验证生成使用 FP32；训练 precision 只控制损失前向，独立 predict 沿用 FP32。基准脚本可显式测试 CUDA BF16/FP16，尚未实测。
+
 ## Hybrid：迁移、自由生成与评价
 
 ```bash
@@ -87,7 +107,7 @@ Hybrid/Qwen 正式验证按 Micro F1 选模，容差内比较五维 `mean(MAE_j/
 
 训练支持 AdamW、冻结骨干且 BN 保持 eval、unfreeze_layer4_epoch（从 0 起）、骨干低学习率倍率、梯度裁剪/累积和 CUDA BF16/FP16。累积窗口分别按全窗口 token/食材/样本分母归一化，末个短窗口仍更新。
 
-自主 best.pt/last.pt 原子替换，包含模型、优化器、调度器、AMP scaler、epoch/update、best/bad_epochs、词表/训练统计、Python/NumPy/Torch/CUDA RNG、配置及版本。仅加载可信本地产物。恢复从**上个完整保存 epoch 的下一 epoch**开始，num_workers=0，seed+epoch 重建 shuffle，不恢复未保存 batch 或梯度。仅总 epochs 可增加，其他配置和数据哈希须一致。中断 epoch 会重跑，按 update 识别重复日志。相同 CPU/软件已验证精确恢复；跨设备/依赖版本/CUDA 不保证位级相同。已早停状态不能直接恢复追加训练，须初始化新研究对照。
+自主 best.pt/last.pt 原子替换，包含模型、优化器、调度器、AMP scaler、epoch/update、best/bad_epochs、词表/训练统计、Python/NumPy/Torch/CUDA RNG、配置及版本。仅加载可信本地产物。恢复从**上个完整保存 epoch 的下一 epoch**开始，num_workers=0，seed+epoch 重建 shuffle，不恢复未保存 batch 或梯度。总 epochs 可增加，generation 中两个缓存执行开关可切换，其余配置和数据哈希须一致。中断 epoch 会重跑，按 update 识别重复日志。修复后的相同 CPU/软件及配置已验证精确恢复；旧 A/Hybrid 的非零 Dropout 训练轨迹不复现，跨设备/依赖版本/CUDA 不保证位级相同。已早停状态不能直接恢复追加训练，须初始化新研究对照。
 
 ## Qwen3-VL：本地 LoRA 与原始/微调配对
 
